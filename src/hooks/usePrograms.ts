@@ -1,6 +1,4 @@
-'use client';
-
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export interface Program {
   id: string;
@@ -16,40 +14,38 @@ export function usePrograms() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchPrograms = async () => {
-    try {
-      setLoading(true);
-      const res = await fetch('/api/programs');
-      if (!res.ok) throw new Error('Failed to fetch programs');
-      const data = await res.json();
-      setPrograms(data);
-      setError(null);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Unknown error');
-    } finally {
-      setLoading(false);
-    }
-  };
+  useEffect(() => {
+    fetch('/api/programs')
+      .then((res) => {
+        if (!res.ok) throw new Error('Error al cargar programas');
+        return res.json();
+      })
+      .then((data) => {
+        setPrograms(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        setError(err.message);
+        setLoading(false);
+      });
+  }, []);
 
-  const createProgram = async (programData: Omit<Program, 'id'>) => {
+  const createProgram = async (data: Omit<Program, 'id'>) => {
     const res = await fetch('/api/programs', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(programData),
+      body: JSON.stringify(data),
     });
 
-    if (res.ok) {
-      await fetchPrograms();
-      return { success: true };
-    } else {
+    if (!res.ok) {
       const error = await res.json();
-      return { success: false, message: error.message };
+      throw new Error(error.message || 'Error al crear programa');
     }
+
+    const newProgram = await res.json();
+    setPrograms((prev) => [...prev, newProgram]);
+    return newProgram;
   };
 
-  useEffect(() => {
-    fetchPrograms();
-  }, []);
-
-  return { programs, loading, error, refetch: fetchPrograms, createProgram };
+  return { programs, loading, error, createProgram };
 }

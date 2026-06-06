@@ -1,6 +1,4 @@
-'use client';
-
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
 export interface User {
@@ -16,23 +14,22 @@ export function useAuth() {
   const router = useRouter();
 
   useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        const res = await fetch('/api/auth/me');
-        if (res.ok) {
-          const data = await res.json();
-          setUser(data);
-        } else {
-          setUser(null);
-        }
-      } catch (error) {
-        setUser(null);
-      } finally {
-        setLoading(false);
-      }
-    };
+    const token = localStorage.getItem('token');
+    if (!token) {
+      setLoading(false);
+      return;
+    }
 
-    checkAuth();
+    fetch('/api/auth/me', {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error('No autorizado');
+        return res.json();
+      })
+      .then((data) => setUser(data))
+      .catch(() => localStorage.removeItem('token'))
+      .finally(() => setLoading(false));
   }, []);
 
   const login = async (email: string, password: string) => {
@@ -42,19 +39,19 @@ export function useAuth() {
       body: JSON.stringify({ email, password }),
     });
 
-    if (res.ok) {
-      const data = await res.json();
-      setUser(data.user);
-      router.push('/dashboard');
-      return { success: true };
-    } else {
+    if (!res.ok) {
       const error = await res.json();
-      return { success: false, message: error.message };
+      throw new Error(error.message || 'Error al iniciar sesión');
     }
+
+    const { token, user } = await res.json();
+    localStorage.setItem('token', token);
+    setUser(user);
+    router.push('/dashboard');
   };
 
-  const logout = async () => {
-    await fetch('/api/auth/logout', { method: 'POST' });
+  const logout = () => {
+    localStorage.removeItem('token');
     setUser(null);
     router.push('/login');
   };
