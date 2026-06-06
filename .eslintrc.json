@@ -1,0 +1,17 @@
+{
+  "extends": ["next/core-web-vitals", "plugin:vitest/recommended"],
+  "plugins": ["vitest"],
+  "rules": {
+    "no-console": ["warn", { "allow": ["warn", "error"] }],
+    "prefer-const": "error"
+  },
+  "overrides": [
+    {
+      "files": ["*.test.ts", "*.test.tsx"],
+      "env": {
+        "node": true,
+        "jest": true
+      }
+    }
+  ]
+}

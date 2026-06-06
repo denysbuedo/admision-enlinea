@@ -1,67 +1,56 @@
-import { NextRequest, NextResponse } from "next/server";
-import { db } from "@/db";
-import { users, universities } from "@/db/schema";
-import { eq } from "drizzle-orm";
-import { hashPassword, signToken } from "@/lib/auth";
+import { NextResponse } from 'next/server';
+import { db } from '@/db';
+import { users } from '@/db/schema';
+import { userRegisterSchema } from '@/lib/validations';
+import bcrypt from 'bcryptjs';
 
-export async function POST(request: NextRequest) {
+export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { name, email, password, role = "aspirant", universityName } = body;
-
-    if (!name || !email || !password) {
-      return NextResponse.json({ error: "Nombre, email y contraseña son requeridos" }, { status: 400 });
+    
+    // 1. Validar datos con Zod
+    const validation = userRegisterSchema.safeParse(body);
+    
+    if (!validation.success) {
+      return NextResponse.json(
+        { error: 'Datos inválidos', details: validation.error.flatten() },
+        { status: 400 }
+      );
     }
 
-    // Check if user already exists
-    const existing = await db.select().from(users).where(eq(users.email, email));
-    if (existing.length > 0) {
-      return NextResponse.json({ error: "El email ya está registrado" }, { status: 400 });
+    const { name, email, password, role } = validation.data;
+
+    // 2. Verificar si el usuario ya existe
+    const existingUser = await db.select().from(users).where((u) => u.email === email).limit(1);
+    
+    if (existingUser.length > 0) {
+      return NextResponse.json(
+        { error: 'El email ya está registrado' },
+        { status: 409 }
+      );
     }
 
-    const hashedPassword = await hashPassword(password);
+    // 3. Hashear contraseña
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-    let universityId: number | undefined;
-
-    // If registering as university, create university record
-    if (role === "university" && universityName) {
-      const [uni] = await db.insert(universities).values({
-        name: universityName,
-      }).returning();
-      universityId = uni.id;
-    }
-
-    const [user] = await db.insert(users).values({
+    // 4. Insertar en DB
+    const [newUser] = await db.insert(users).values({
       name,
       email,
       password: hashedPassword,
-      role,
-      universityId: universityId ?? null,
+      role: role || 'student',
     }).returning();
 
-    const token = signToken({
-      userId: user.id,
-      email: user.email,
-      role: user.role,
-      universityId: user.universityId,
-    });
+    // 5. Responder sin enviar la contraseña
+    const { password: _, ...userWithoutPassword } = newUser;
 
-    const response = NextResponse.json({
-      user: { id: user.id, name: user.name, email: user.email, role: user.role },
-      message: "Registro exitoso",
-    });
+    return NextResponse.json(userWithoutPassword, { status: 201 });
 
-    response.cookies.set("auth_token", token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
-      maxAge: 60 * 60 * 24 * 7,
-      path: "/",
-    });
-
-    return response;
   } catch (error) {
-    console.error("Register error:", error);
-    return NextResponse.json({ error: "Error interno del servidor" }, { status: 500 });
+    console.error('Error en registro:', error);
+    return NextResponse.json(
+      { error: 'Error interno del servidor' },
+      { status: 500 }
+    );
   }
 }
