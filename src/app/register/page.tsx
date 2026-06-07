@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense } from "react";
+import { GraduationCap, Building2, Mail, Lock, User, CheckCircle, AlertCircle } from "lucide-react";
 
 function RegisterForm() {
   const router = useRouter();
@@ -61,7 +62,7 @@ function RegisterForm() {
       if (role === "university") router.push("/university");
       else router.push("/dashboard");
     } catch {
-      setError("Error de conexión");
+      setError("Error de conexión. Intenta nuevamente.");
     } finally {
       setLoading(false);
     }
@@ -70,118 +71,171 @@ function RegisterForm() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-slate-50 px-4 py-8">
       <div className="w-full max-w-md">
+        {/* Logo y título */}
         <div className="text-center mb-8">
           <Link href="/" className="inline-flex items-center gap-2 mb-6">
-            <div className="w-10 h-10 rounded-xl gradient-bg flex items-center justify-center text-white font-bold text-xl">G</div>
-            <span className="text-2xl font-bold text-slate-800">GradCall</span>
+            <div className="w-10 h-10 rounded-xl bg-[#003f8f] flex items-center justify-center text-white font-bold text-xl shadow-md">
+              N
+            </div>
+            <span className="text-2xl font-bold text-slate-800">Nexo</span>
           </Link>
-          <h1 className="text-2xl font-bold text-slate-800">Crear Cuenta</h1>
-          <p className="text-slate-500 mt-1">Únete a GradCall</p>
+          <h1 className="text-2xl font-bold text-slate-800">Crear cuenta</h1>
+          <p className="text-slate-500 mt-1">Comienza tu camino académico</p>
         </div>
 
-        <div className="card">
-          {error && <div className="alert alert-error">{error}</div>}
+        {/* Tarjeta del formulario */}
+        <div className="bg-white rounded-2xl shadow-lg border border-slate-200 p-6 md:p-8">
+          {error && (
+            <div className="mb-6 bg-red-50 border border-red-200 rounded-lg p-3 flex items-center gap-2 text-red-700 text-sm">
+              <AlertCircle className="w-4 h-4 flex-shrink-0" />
+              {error}
+            </div>
+          )}
 
-          {/* Role Selector */}
+          {/* Selector de rol */}
           <div className="mb-6">
-            <label className="label">Tipo de cuenta</label>
+            <label className="block text-sm font-semibold text-slate-700 mb-2">
+              Tipo de cuenta
+            </label>
             <div className="grid grid-cols-2 gap-3">
               <button
                 type="button"
-                onClick={() => setForm({ ...form, role: "aspirant" })}
-                className={`p-3 rounded-xl border-2 text-center transition-all ${
+                onClick={() => setForm({ ...form, role: "aspirant", universityName: "" })}
+                className={`p-4 rounded-xl border-2 text-center transition-all ${
                   form.role === "aspirant"
-                    ? "border-blue-600 bg-blue-50 text-blue-700"
-                    : "border-slate-200 text-slate-600 hover:border-slate-300"
+                    ? "border-[#003f8f] bg-[#e6f0ff] text-[#003f8f]"
+                    : "border-slate-200 text-slate-600 hover:border-slate-300 hover:bg-slate-50"
                 }`}
               >
-                <div className="text-2xl mb-1">🎓</div>
+                <GraduationCap className={`w-8 h-8 mx-auto mb-2 ${
+                  form.role === "aspirant" ? "text-[#003f8f]" : "text-slate-400"
+                }`} />
                 <div className="font-semibold text-sm">Aspirante</div>
               </button>
               <button
                 type="button"
                 onClick={() => setForm({ ...form, role: "university" })}
-                className={`p-3 rounded-xl border-2 text-center transition-all ${
+                className={`p-4 rounded-xl border-2 text-center transition-all ${
                   form.role === "university"
-                    ? "border-blue-600 bg-blue-50 text-blue-700"
-                    : "border-slate-200 text-slate-600 hover:border-slate-300"
+                    ? "border-[#003f8f] bg-[#e6f0ff] text-[#003f8f]"
+                    : "border-slate-200 text-slate-600 hover:border-slate-300 hover:bg-slate-50"
                 }`}
               >
-                <div className="text-2xl mb-1">🏛️</div>
+                <Building2 className={`w-8 h-8 mx-auto mb-2 ${
+                  form.role === "university" ? "text-[#003f8f]" : "text-slate-400"
+                }`} />
                 <div className="font-semibold text-sm">Universidad</div>
               </button>
             </div>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">
+            {/* Nombre completo */}
             <div>
-              <label className="label">Nombre completo</label>
-              <input
-                type="text"
-                className="input-field"
-                placeholder="Tu nombre"
-                value={form.name}
-                onChange={e => setForm({ ...form, name: e.target.value })}
-                required
-              />
-            </div>
-
-            {form.role === "university" && (
-              <div>
-                <label className="label">Nombre de la Universidad</label>
+              <label className="block text-sm font-semibold text-slate-700 mb-1">
+                Nombre completo
+              </label>
+              <div className="relative">
+                <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                 <input
                   type="text"
-                  className="input-field"
-                  placeholder="Universidad Nacional..."
-                  value={form.universityName}
-                  onChange={e => setForm({ ...form, universityName: e.target.value })}
+                  className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-slate-300 focus:border-[#003f8f] focus:ring-2 focus:ring-[#003f8f]/20 outline-none transition-all"
+                  placeholder="Tu nombre completo"
+                  value={form.name}
+                  onChange={e => setForm({ ...form, name: e.target.value })}
                   required
                 />
               </div>
+            </div>
+
+            {/* Nombre de universidad (solo para rol university) */}
+            {form.role === "university" && (
+              <div>
+                <label className="block text-sm font-semibold text-slate-700 mb-1">
+                  Nombre de la universidad
+                </label>
+                <div className="relative">
+                  <Building2 className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                  <input
+                    type="text"
+                    className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-slate-300 focus:border-[#003f8f] focus:ring-2 focus:ring-[#003f8f]/20 outline-none transition-all"
+                    placeholder="Universidad Nacional..."
+                    value={form.universityName}
+                    onChange={e => setForm({ ...form, universityName: e.target.value })}
+                    required
+                  />
+                </div>
+              </div>
             )}
 
+            {/* Email */}
             <div>
-              <label className="label">Correo electrónico</label>
-              <input
-                type="email"
-                className="input-field"
-                placeholder="tu@email.com"
-                value={form.email}
-                onChange={e => setForm({ ...form, email: e.target.value })}
-                required
-              />
-            </div>
-            <div>
-              <label className="label">Contraseña</label>
-              <input
-                type="password"
-                className="input-field"
-                placeholder="Mínimo 6 caracteres"
-                value={form.password}
-                onChange={e => setForm({ ...form, password: e.target.value })}
-                required
-              />
-            </div>
-            <div>
-              <label className="label">Confirmar contraseña</label>
-              <input
-                type="password"
-                className="input-field"
-                placeholder="Repite tu contraseña"
-                value={form.confirmPassword}
-                onChange={e => setForm({ ...form, confirmPassword: e.target.value })}
-                required
-              />
+              <label className="block text-sm font-semibold text-slate-700 mb-1">
+                Correo electrónico
+              </label>
+              <div className="relative">
+                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                <input
+                  type="email"
+                  className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-slate-300 focus:border-[#003f8f] focus:ring-2 focus:ring-[#003f8f]/20 outline-none transition-all"
+                  placeholder="tu@email.com"
+                  value={form.email}
+                  onChange={e => setForm({ ...form, email: e.target.value })}
+                  required
+                />
+              </div>
             </div>
 
-            <button type="submit" className="btn-primary w-full justify-center py-3" disabled={loading}>
-              {loading ? "Creando cuenta..." : "Crear Cuenta"}
+            {/* Contraseña */}
+            <div>
+              <label className="block text-sm font-semibold text-slate-700 mb-1">
+                Contraseña
+              </label>
+              <div className="relative">
+                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                <input
+                  type="password"
+                  className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-slate-300 focus:border-[#003f8f] focus:ring-2 focus:ring-[#003f8f]/20 outline-none transition-all"
+                  placeholder="Mínimo 6 caracteres"
+                  value={form.password}
+                  onChange={e => setForm({ ...form, password: e.target.value })}
+                  required
+                />
+              </div>
+            </div>
+
+            {/* Confirmar contraseña */}
+            <div>
+              <label className="block text-sm font-semibold text-slate-700 mb-1">
+                Confirmar contraseña
+              </label>
+              <div className="relative">
+                <CheckCircle className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                <input
+                  type="password"
+                  className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-slate-300 focus:border-[#003f8f] focus:ring-2 focus:ring-[#003f8f]/20 outline-none transition-all"
+                  placeholder="Repite tu contraseña"
+                  value={form.confirmPassword}
+                  onChange={e => setForm({ ...form, confirmPassword: e.target.value })}
+                  required
+                />
+              </div>
+            </div>
+
+            {/* Botón submit */}
+            <button
+              type="submit"
+              className="w-full bg-[#003f8f] text-white font-semibold py-3 rounded-lg hover:bg-[#002e6b] transition-all disabled:opacity-50 disabled:cursor-not-allowed mt-2"
+              disabled={loading}
+            >
+              {loading ? "Creando cuenta..." : "Crear cuenta"}
             </button>
           </form>
 
+          {/* Link a login */}
           <div className="mt-6 text-center text-sm text-slate-500">
             ¿Ya tienes cuenta?{" "}
-            <Link href="/login" className="text-blue-700 font-semibold hover:underline">
+            <Link href="/login" className="text-[#003f8f] font-semibold hover:underline">
               Inicia sesión
             </Link>
           </div>
@@ -193,7 +247,7 @@ function RegisterForm() {
 
 export default function RegisterPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen flex items-center justify-center">Cargando...</div>}>
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center text-slate-500">Cargando...</div>}>
       <RegisterForm />
     </Suspense>
   );

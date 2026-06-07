@@ -5,7 +5,7 @@ export const userRegisterSchema = z.object({
   name: z.string().min(2, "El nombre debe tener al menos 2 caracteres"),
   email: z.string().email("Email inválido"),
   password: z.string().min(6, "La contraseña debe tener al menos 6 caracteres"),
-  role: z.enum(['student', 'admin', 'reviewer']).optional().default('student'),
+  role: z.enum(['student', 'admin', 'university', 'reviewer']).optional().default('student'),
 });
 
 // Esquema para creación de programa
