@@ -38,7 +38,7 @@ export async function POST(request: Request) {
       name,
       email,
       password: hashedPassword,
-      role: role || 'student',
+      role: role || 'aspirant',
     }).returning();
 
     // 5. Responder sin enviar la contraseña
