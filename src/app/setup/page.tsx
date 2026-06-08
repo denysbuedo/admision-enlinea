@@ -2,6 +2,20 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import {
+  CheckCircle,
+  AlertCircle,
+  Loader2,
+  Shield,
+  Mail,
+  Lock,
+  ArrowRight,
+  Database,
+  UserPlus,
+  LogIn,
+  Settings,
+  Key,
+} from "lucide-react";
 
 export default function SetupPage() {
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
@@ -29,98 +43,157 @@ export default function SetupPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-slate-100 to-slate-200 flex items-center justify-center p-4">
       <div className="bg-white rounded-2xl shadow-xl max-w-md w-full p-8">
         {/* Logo / Header */}
         <div className="text-center mb-8">
-          <div className="w-16 h-16 bg-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
-            <span className="text-white text-2xl font-bold">G</span>
+          <div className="w-16 h-16 bg-[#003f8f] rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-md">
+            <span className="text-white text-2xl font-bold">N</span>
           </div>
-          <h1 className="text-2xl font-bold text-gray-900">GradCall Setup</h1>
-          <p className="text-gray-500 mt-1">Configuración inicial del sistema</p>
+          <h1 className="text-2xl font-bold text-slate-800">Configuración inicial</h1>
+          <p className="text-slate-500 mt-1">Preparesu plataforma Nexo</p>
         </div>
 
         {/* Steps */}
         <div className="space-y-4 mb-8">
           <div className="flex items-start gap-3">
-            <div className="w-6 h-6 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center text-sm font-bold flex-shrink-0 mt-0.5">1</div>
+            <div className="w-6 h-6 rounded-full bg-[#e6f0ff] text-[#003f8f] flex items-center justify-center text-sm font-bold flex-shrink-0 mt-0.5">
+              1
+            </div>
             <div>
-              <p className="font-medium text-gray-800">Crear Super Admin</p>
-              <p className="text-sm text-gray-500">Crea la cuenta de administrador principal del sistema</p>
+              <div className="flex items-center gap-2">
+                <UserPlus className="w-4 h-4 text-[#003f8f]" />
+                <p className="font-medium text-slate-700">Crear Super Administrador</p>
+              </div>
+              <p className="text-sm text-slate-500 mt-0.5">
+                Crea la cuenta de administrador principal del sistema
+              </p>
             </div>
           </div>
+
           <div className="flex items-start gap-3">
-            <div className="w-6 h-6 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center text-sm font-bold flex-shrink-0 mt-0.5">2</div>
+            <div className="w-6 h-6 rounded-full bg-[#e6f0ff] text-[#003f8f] flex items-center justify-center text-sm font-bold flex-shrink-0 mt-0.5">
+              2
+            </div>
             <div>
-              <p className="font-medium text-gray-800">Iniciar sesión</p>
-              <p className="text-sm text-gray-500">Usa las credenciales del admin para entrar al sistema</p>
+              <div className="flex items-center gap-2">
+                <LogIn className="w-4 h-4 text-[#003f8f]" />
+                <p className="font-medium text-slate-700">Iniciar sesión</p>
+              </div>
+              <p className="text-sm text-slate-500 mt-0.5">
+                Usa las credenciales del administrador para acceder al sistema
+              </p>
             </div>
           </div>
+
           <div className="flex items-start gap-3">
-            <div className="w-6 h-6 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center text-sm font-bold flex-shrink-0 mt-0.5">3</div>
+            <div className="w-6 h-6 rounded-full bg-[#e6f0ff] text-[#003f8f] flex items-center justify-center text-sm font-bold flex-shrink-0 mt-0.5">
+              3
+            </div>
             <div>
-              <p className="font-medium text-gray-800">Gestionar la plataforma</p>
-              <p className="text-sm text-gray-500">Aprueba universidades, convocatorias y usuarios</p>
+              <div className="flex items-center gap-2">
+                <Settings className="w-4 h-4 text-[#003f8f]" />
+                <p className="font-medium text-slate-700">Gestionar la plataforma</p>
+              </div>
+              <p className="text-sm text-slate-500 mt-0.5">
+                Aprueba universidades, convocatorias y gestiona usuarios
+              </p>
             </div>
           </div>
         </div>
 
-        {/* Action */}
+        {/* Action Button - Estado idle */}
         {status === "idle" && (
           <button
             onClick={handleSetup}
-            className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-6 rounded-xl transition-colors"
+            className="w-full flex items-center justify-center gap-2 bg-[#003f8f] hover:bg-[#002e6b] text-white font-semibold py-3 px-6 rounded-xl transition-all shadow-sm"
           >
-            🚀 Inicializar Sistema
+            <Database className="w-5 h-5" />
+            Inicializar sistema
           </button>
         )}
 
+        {/* Action Button - Estado loading */}
         {status === "loading" && (
-          <div className="w-full bg-indigo-100 text-indigo-600 font-semibold py-3 px-6 rounded-xl text-center">
-            ⏳ Creando administrador...
+          <div className="w-full flex items-center justify-center gap-2 bg-[#e6f0ff] text-[#003f8f] font-semibold py-3 px-6 rounded-xl">
+            <Loader2 className="w-5 h-5 animate-spin" />
+            Creando administrador...
           </div>
         )}
 
+        {/* Estado success */}
         {status === "success" && (
           <div className="space-y-4">
-            <div className={`rounded-xl p-4 ${alreadyExists ? "bg-yellow-50 border border-yellow-200" : "bg-green-50 border border-green-200"}`}>
-              <p className={`font-semibold ${alreadyExists ? "text-yellow-800" : "text-green-800"}`}>
-                {alreadyExists ? "⚠️ " : "✅ "}{message}
+            <div
+              className={`rounded-xl p-4 flex items-start gap-3 ${
+                alreadyExists
+                  ? "bg-amber-50 border border-amber-200"
+                  : "bg-green-50 border border-green-200"
+              }`}
+            >
+              {alreadyExists ? (
+                <AlertCircle className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
+              ) : (
+                <CheckCircle className="w-5 h-5 text-green-600 flex-shrink-0 mt-0.5" />
+              )}
+              <p
+                className={`font-semibold ${
+                  alreadyExists ? "text-amber-800" : "text-green-800"
+                }`}
+              >
+                {message}
               </p>
             </div>
 
-            {/* Credentials box */}
-            <div className="bg-gray-50 border border-gray-200 rounded-xl p-4">
-              <p className="text-sm font-semibold text-gray-700 mb-3">🔑 Credenciales de acceso:</p>
+            {/* Credenciales */}
+            <div className="bg-slate-50 border border-slate-200 rounded-xl p-4">
+              <div className="flex items-center gap-2 mb-3">
+                <Key className="w-4 h-4 text-[#003f8f]" />
+                <p className="text-sm font-semibold text-slate-700">Credenciales de acceso</p>
+              </div>
               <div className="space-y-2">
-                <div className="flex items-center justify-between bg-white rounded-lg px-3 py-2 border border-gray-200">
-                  <span className="text-xs text-gray-500 font-medium">Email</span>
-                  <code className="text-sm font-mono text-indigo-700">admin@gradcall.com</code>
+                <div className="flex items-center justify-between bg-white rounded-lg px-3 py-2 border border-slate-200">
+                  <div className="flex items-center gap-2">
+                    <Mail className="w-3.5 h-3.5 text-slate-400" />
+                    <span className="text-xs text-slate-500 font-medium">Email</span>
+                  </div>
+                  <code className="text-sm font-mono text-[#003f8f] font-semibold">
+                    admin@nexo.com
+                  </code>
                 </div>
-                <div className="flex items-center justify-between bg-white rounded-lg px-3 py-2 border border-gray-200">
-                  <span className="text-xs text-gray-500 font-medium">Contraseña</span>
-                  <code className="text-sm font-mono text-indigo-700">Admin123!</code>
+                <div className="flex items-center justify-between bg-white rounded-lg px-3 py-2 border border-slate-200">
+                  <div className="flex items-center gap-2">
+                    <Lock className="w-3.5 h-3.5 text-slate-400" />
+                    <span className="text-xs text-slate-500 font-medium">Contraseña</span>
+                  </div>
+                  <code className="text-sm font-mono text-[#003f8f] font-semibold">
+                    Admin123!
+                  </code>
                 </div>
               </div>
             </div>
 
+            {/* Botón ir al login */}
             <Link
               href="/login"
-              className="block w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-6 rounded-xl transition-colors text-center"
+              className="w-full flex items-center justify-center gap-2 bg-[#003f8f] hover:bg-[#002e6b] text-white font-semibold py-3 px-6 rounded-xl transition-all text-center"
             >
-              Ir al Login →
+              Ir al inicio de sesión
+              <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
         )}
 
+        {/* Estado error */}
         {status === "error" && (
           <div className="space-y-4">
-            <div className="bg-red-50 border border-red-200 rounded-xl p-4">
-              <p className="font-semibold text-red-800">❌ Error: {message}</p>
+            <div className="bg-red-50 border border-red-200 rounded-xl p-4 flex items-start gap-3">
+              <AlertCircle className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
+              <p className="font-semibold text-red-800">{message}</p>
             </div>
             <button
               onClick={() => setStatus("idle")}
-              className="w-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold py-3 px-6 rounded-xl transition-colors"
+              className="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold py-3 px-6 rounded-xl transition-all"
             >
               Intentar de nuevo
             </button>
@@ -128,13 +201,21 @@ export default function SetupPage() {
         )}
 
         {/* Footer links */}
-        <div className="mt-6 pt-6 border-t border-gray-100 text-center">
-          <p className="text-sm text-gray-400">
+        <div className="mt-6 pt-6 border-t border-slate-100 text-center">
+          <p className="text-sm text-slate-400">
             ¿Ya tienes cuenta?{" "}
-            <Link href="/login" className="text-indigo-600 hover:underline font-medium">
+            <Link href="/login" className="text-[#003f8f] hover:underline font-medium">
               Iniciar sesión
             </Link>
           </p>
+        </div>
+
+        {/* Mensaje de seguridad */}
+        <div className="mt-4 pt-2 text-center">
+          <div className="flex items-center justify-center gap-1 text-xs text-slate-400">
+            <Shield className="w-3 h-3" />
+            <span>Configuración segura del sistema</span>
+          </div>
         </div>
       </div>
     </div>
