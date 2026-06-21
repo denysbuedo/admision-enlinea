@@ -46,7 +46,7 @@ export default function LoginPage() {
         <div className="text-center mb-8">
           <Link href="/" className="inline-flex items-center gap-2 mb-6">
             <div className="w-10 h-10 rounded-xl gradient-bg flex items-center justify-center text-white font-bold text-xl">G</div>
-            <span className="text-2xl font-bold text-slate-800">GradCall</span>
+            <span className="text-2xl font-bold text-slate-800">Nexo</span>
           </Link>
           <h1 className="text-2xl font-bold text-slate-800">Iniciar Sesión</h1>
           <p className="text-slate-500 mt-1">Accede a tu cuenta</p>
@@ -93,7 +93,7 @@ export default function LoginPage() {
 
         <div className="mt-4 card bg-blue-50 border border-blue-200">
           <p className="text-xs text-blue-700 font-semibold mb-2">🔑 Credenciales de prueba:</p>
-          <p className="text-xs text-blue-600">Admin: admin@gradcall.com / Admin123!</p>
+          <p className="text-xs text-blue-600">Admin: admin@nexo.com / Admin123!</p>
           <p className="text-xs text-blue-500 mt-1">
             (Primero visita <code className="bg-blue-100 px-1 rounded">/api/admin/seed</code> para crear el admin)
           </p>

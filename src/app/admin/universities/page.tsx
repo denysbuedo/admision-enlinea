@@ -1,30 +1,49 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 
 interface University {
   id: number;
   name: string;
   country: string;
+  acronym?: string | null;
+  website?: string | null;
+}
+
+interface SessionUser {
+  id: string;
+  email: string;
+  role: string;
+  universityId: number | null;
 }
 
 export default function AdminUniversitiesPage() {
-  const { data: session, status } = useSession();
   const router = useRouter();
+  const [sessionUser, setSessionUser] = useState<SessionUser | null>(null);
+  const [authLoading, setAuthLoading] = useState(true);
   const [universities, setUniversities] = useState<University[]>([]);
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({ name: '', country: 'Cuba', acronym: '', website: '' });
-  const [msg, setMsg] = useState<{ type: 'success' | 'error', text: string } | null>(null);
+  const [msg, setMsg] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
 
   useEffect(() => {
-    if (status === 'unauthenticated' || (session && session.user.role !== 'super_admin')) {
-      router.push('/login');
-    } else if (status === 'authenticated') {
-      fetchUniversities();
-    }
-  }, [session, status, router]);
+    fetch('/api/auth/me')
+      .then((res) => {
+        if (!res.ok) throw new Error('No autorizado');
+        return res.json();
+      })
+      .then((user: SessionUser) => {
+        if (user.role !== 'super_admin') {
+          router.push('/login');
+          return;
+        }
+        setSessionUser(user);
+        fetchUniversities();
+      })
+      .catch(() => router.push('/login'))
+      .finally(() => setAuthLoading(false));
+  }, [router]);
 
   const fetchUniversities = async () => {
     const res = await fetch('/api/admin/universities');
@@ -56,7 +75,8 @@ export default function AdminUniversitiesPage() {
     setLoading(false);
   };
 
-  if (status === 'loading') return <div>Cargando...</div>;
+  if (authLoading) return <div>Cargando...</div>;
+  if (!sessionUser) return null;
 
   return (
     <div className="container mx-auto p-6">
@@ -101,7 +121,7 @@ export default function AdminUniversitiesPage() {
                 className="mt-1 block w-full border border-gray-300 rounded-md p-2"
               />
             </div>
-             <div>
+            <div>
               <label className="block text-sm font-medium text-gray-700">Sitio Web (Opcional)</label>
               <input
                 type="url"

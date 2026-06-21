@@ -244,7 +244,7 @@ export default function DashboardPage() {
                         <p className="text-slate-500 text-sm mt-1">
                           {app.submittedAt
                             ? `Enviada el ${new Date(app.submittedAt).toLocaleDateString("es-ES")}`
-                            : `Creada el ${new Date(app.createdAt).tolocaleDateString("es-ES")}`}
+                            : `Creada el ${new Date(app.createdAt).toLocaleDateString("es-ES")}`}
                         </p>
                       </div>
                       <div className="flex items-center gap-3">

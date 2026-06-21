@@ -96,7 +96,7 @@ export default function SetupPage() {
                 <p className="font-medium text-slate-700">Gestionar la plataforma</p>
               </div>
               <p className="text-sm text-slate-500 mt-0.5">
-                Aprueba universidades, convocatorias y gestiona usuarios
+                Aprueba programas y gestiona usuarios
               </p>
             </div>
           </div>

@@ -28,7 +28,7 @@ export const universities = sqliteTable("universities", {
   updatedAt: integer("updated_at", { mode: "timestamp" }).$defaultFn(() => new Date()),
 });
 
-// Programs / Convocatorias table
+// Programs table
 export const programs = sqliteTable("programs", {
   id: integer("id").primaryKey({ autoIncrement: true }),
   universityId: integer("university_id").notNull(),

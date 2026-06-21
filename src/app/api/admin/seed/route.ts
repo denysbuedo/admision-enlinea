@@ -6,7 +6,7 @@ import { hashPassword } from "@/lib/auth";
 
 async function createSuperAdmin() {
   // Check if super admin already exists
-  const existing = await db.select().from(users).where(eq(users.email, "admin@gradcall.com"));
+  const existing = await db.select().from(users).where(eq(users.email, "admin@nexo.com"));
   if (existing.length > 0) {
     return { alreadyExists: true, message: "Super admin ya existe" };
   }
@@ -15,7 +15,7 @@ async function createSuperAdmin() {
 
   await db.insert(users).values({
     name: "Super Admin",
-    email: "admin@gradcall.com",
+    email: "admin@nexo.com",
     password: hashedPassword,
     role: "super_admin",
   });
@@ -24,7 +24,7 @@ async function createSuperAdmin() {
     alreadyExists: false,
     message: "Super admin creado exitosamente",
     credentials: {
-      email: "admin@gradcall.com",
+      email: "admin@nexo.com",
       password: "Admin123!",
     },
   };

@@ -1,22 +1,26 @@
 import { NextResponse } from 'next/server';
 import { db } from '@/db';
 import { universities } from '@/db/schema';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/auth';
+import { getSession } from '@/lib/auth';
 import { eq } from 'drizzle-orm';
 
 // GET: Listar universidades (Público para el formulario de registro, o protegido si prefieres)
 export async function GET() {
   try {
-    // Opcional: Si quieres proteger esta lista solo para admins, descomenta las siguientes líneas:
-    /*
-    const session = await getServerSession(authOptions);
-    if (!session || !['super_admin', 'university', 'aspirant'].includes(session.user.role)) {
-       return NextResponse.json({ error: 'No autorizado' }, { status: 403 });
-    }
-    */
+    // Opcional: Proteger si solo quieres que usuarios logueados vean la lista
+    // const session = await getSession();
+    // if (!session) return NextResponse.json({ error: 'No autorizado' }, { status: 401 });
 
-    const list = await db.select().from(universities).orderBy(universities.name);
+        const list = await db
+      .select({
+        id: universities.id,
+        name: universities.name,
+        country: universities.country,
+        acronym: universities.faculty,
+        website: universities.website,
+      })
+      .from(universities)
+      .orderBy(universities.name);
     return NextResponse.json(list);
   } catch (error) {
     console.error('Error fetching universities:', error);
@@ -27,7 +31,7 @@ export async function GET() {
 // POST: Crear universidad (Solo Super Admin)
 export async function POST(request: Request) {
   try {
-    const session = await getServerSession(authOptions);
+    const session = await getSession();
     
     if (!session || session.user.role !== 'super_admin') {
       return NextResponse.json({ error: 'No autorizado. Solo Super Admin.' }, { status: 403 });
@@ -46,10 +50,10 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Ya existe una universidad con ese nombre' }, { status: 409 });
     }
 
-    const [newUni] = await db.insert(universities).values({
+        const [newUni] = await db.insert(universities).values({
       name,
       country: country || 'Cuba',
-      acronym,
+      faculty: acronym,
       website,
     }).returning();
 

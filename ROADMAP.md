@@ -1,4 +1,4 @@
-# 🗺️ Hoja de Ruta - Admisión en Línea (GradCall)
+# 🗺️ Hoja de Ruta - Admisión en Línea (Nexo)
 
 Plan estratégico de evolución y desarrollo del proyecto. Este documento guía las prioridades de desarrollo y las mejoras planificadas.
 

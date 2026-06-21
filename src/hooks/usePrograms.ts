@@ -1,12 +1,19 @@
 import { useState, useEffect } from 'react';
 
 export interface Program {
-  id: string;
-  name: string;
-  universityId: string;
-  degree: string;
-  duration: number;
-  description?: string;
+  id: number;
+  title: string;
+  programType: 'curso' | 'diplomado' | 'especializacion' | 'maestria' | 'doctorado';
+  modality: 'presencial' | 'virtual' | 'hibrido';
+  duration?: string | null;
+  language: string;
+  location?: string | null;
+  credits?: number | null;
+  description?: string | null;
+  status: 'draft' | 'pending_approval' | 'published' | 'closed' | 'rejected';
+  universityId: number;
+  universityName?: string | null;
+  universityCountry?: string | null;
 }
 
 export function usePrograms() {

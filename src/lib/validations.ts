@@ -23,3 +23,11 @@ export const universityCreateSchema = z.object({
   acronym: z.string().optional(),
   website: z.string().url().optional().or(z.literal('')),
 });
+
+// Esquema para creación de programa
+export const programCreateSchema = z.object({
+  name: z.string().min(2, "El nombre del programa debe tener al menos 2 caracteres"),
+  universityId: z.string().min(1, "El ID de la universidad es requerido"),
+  degree: z.string().min(1, "El grado académico es requerido"),
+  duration: z.number().positive("La duración debe ser un número positivo"),
+});

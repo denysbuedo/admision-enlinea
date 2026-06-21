@@ -143,7 +143,7 @@ export default function UniversityDashboard() {
                 className="flex items-center gap-2 bg-[#003f8f] text-white font-medium px-4 py-2 rounded-lg hover:bg-[#002e6b] transition-all text-sm"
               >
                 <Plus className="w-4 h-4" />
-                Nueva convocatoria
+                Crear programa
               </Link>
               <button
                 onClick={handleLogout}
@@ -165,7 +165,7 @@ export default function UniversityDashboard() {
             <h1 className="text-2xl font-bold text-slate-800">Panel de control</h1>
           </div>
           <p className="text-slate-500 pl-8">
-            Gestione sus convocatorias y solicitudes de admisión
+            Gestione sus programas y solicitudes de admisión
           </p>
         </div>
 
@@ -176,7 +176,7 @@ export default function UniversityDashboard() {
               <BookOpen className="w-5 h-5 text-[#003f8f]" />
               <span className="text-xl font-bold text-slate-800">{stats.total}</span>
             </div>
-            <p className="text-xs text-slate-500">Convocatorias</p>
+            <p className="text-xs text-slate-500">Programas</p>
           </div>
 
           <div className="bg-white rounded-xl p-4 shadow-sm border border-slate-200">
@@ -225,7 +225,7 @@ export default function UniversityDashboard() {
           <div className="mb-6 bg-amber-50 border-l-4 border-amber-500 rounded-lg p-4 flex items-center gap-3">
             <AlertCircle className="w-5 h-5 text-amber-600" />
             <p className="text-amber-800 text-sm">
-              Tiene <strong>{stats.pending}</strong> convocatoria{stats.pending > 1 ? "s" : ""}{" "}
+              Tiene <strong>{stats.pending}</strong> programa{stats.pending > 1 ? "s" : ""}{" "}
               pendiente{stats.pending > 1 ? "s" : ""} de aprobación por el administrador
             </p>
           </div>
@@ -242,7 +242,7 @@ export default function UniversityDashboard() {
             }`}
           >
             <BookOpen className="w-4 h-4" />
-            Convocatorias ({programs.length})
+            Programas ({programs.length})
           </button>
           <button
             onClick={() => setActiveTab("applications")}
@@ -266,17 +266,17 @@ export default function UniversityDashboard() {
                   <BookOpen className="w-16 h-16 text-slate-300" />
                 </div>
                 <h3 className="text-lg font-semibold text-slate-600 mb-2">
-                  No tienes convocatorias aún
+                  No tienes programas aún
                 </h3>
                 <p className="text-slate-400 mb-4">
-                  Crea tu primera convocatoria de posgrado
+                  Crea tu primer programa de posgrado
                 </p>
                 <Link
                   href="/university/programs/new"
                   className="inline-flex items-center gap-2 bg-[#003f8f] text-white font-medium px-5 py-2 rounded-lg hover:bg-[#002e6b] transition-all"
                 >
                   <Plus className="w-4 h-4" />
-                  Crear convocatoria
+                  Crear programa
                 </Link>
               </div>
             ) : (

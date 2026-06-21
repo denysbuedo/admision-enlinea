@@ -110,10 +110,15 @@ export default function ProgramDetailPage() {
     setApplying(true);
     setMessage("");
     try {
+      if (!program?.id) {
+        setMessage("No se pudo identificar el programa");
+        return;
+      }
+      const payload = { programId: program.id };
       const res = await fetch("/api/applications", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ programId: program?.id }),
+        body: JSON.stringify(payload),
       });
       const data = await res.json();
       if (!res.ok) {
@@ -121,7 +126,8 @@ export default function ProgramDetailPage() {
           router.push(`/login`);
           return;
         }
-        setMessage(data.error || "Error al postular");
+        const detail = typeof data === 'object' && data && 'detail' in data ? (data as { detail?: string }).detail : '';
+        setMessage([data.error, detail].filter(Boolean).join(' — ') || "Error al postular");
       } else {
         router.push(`/dashboard/applications/${data.id}`);
       }
@@ -259,7 +265,7 @@ export default function ProgramDetailPage() {
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {[
-                  { label: "Apertura de convocatoria", date: program.openDate, icon: Calendar },
+                  { label: "Apertura de programa", date: program.openDate, icon: Calendar },
                   { label: "Cierre de postulaciones", date: program.deadlineDate, icon: Clock },
                   { label: "Publicación de resultados", date: program.resultsDate, icon: Award },
                   { label: "Inicio del programa", date: program.startDate, icon: GraduationCap },
@@ -434,7 +440,7 @@ export default function ProgramDetailPage() {
               ) : (
                 <div className="text-center py-3 bg-slate-100 rounded-lg text-slate-500 font-medium flex items-center justify-center gap-2">
                   <AlertCircle className="w-4 h-4" />
-                  Convocatoria cerrada
+                  Programa cerrado
                 </div>
               )}
 

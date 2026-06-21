@@ -19,8 +19,10 @@ import {
   Lock,
   Download,
   LayoutDashboard,
-  UserCheck,
   FileCheck,
+  Plus,
+  Globe,
+  MapPin,
 } from "lucide-react";
 
 interface Program {
@@ -53,6 +55,18 @@ interface Application {
   submittedAt: string;
 }
 
+interface University {
+  id: number;
+  name: string;
+  country: string | null;
+  city: string | null;
+  faculty: string | null;
+  website: string | null;
+  description: string | null;
+  isActive: boolean;
+  createdAt: string;
+}
+
 const statusLabels: Record<string, string> = {
   draft: "Borrador",
   pending_approval: "Pendiente",
@@ -76,17 +90,33 @@ export default function AdminDashboard() {
   const [programs, setPrograms] = useState<Program[]>([]);
   const [users, setUsers] = useState<User[]>([]);
   const [applications, setApplications] = useState<Application[]>([]);
+  const [univList, setUnivList] = useState<University[]>([]);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<"programs" | "users" | "applications">("programs");
+  const [activeTab, setActiveTab] = useState<"programs" | "users" | "applications" | "universities">("programs");
   const [message, setMessage] = useState({ type: "", text: "" });
+
+  // University modal state
+  const [showUnivModal, setShowUnivModal] = useState(false);
+  const [univForm, setUnivForm] = useState({ name: "", country: "", city: "", faculty: "", website: "", description: "" });
+  const [univLoading, setUnivLoading] = useState(false);
+  const [univMsg, setUnivMsg] = useState<{ type: "success" | "error"; text: string } | null>(null);
+
+  const fetchUniversities = async () => {
+    const res = await fetch("/api/admin/universities");
+    if (res.ok) {
+      const data = await res.json();
+      setUnivList(Array.isArray(data) ? data : []);
+    }
+  };
 
   useEffect(() => {
     Promise.all([
       fetch("/api/programs").then((r) => r.json()),
       fetch("/api/admin/users").then((r) => r.json()),
       fetch("/api/applications").then((r) => r.json()),
+      fetch("/api/admin/universities").then((r) => r.json()),
     ])
-      .then(([progs, usrs, apps]) => {
+      .then(([progs, usrs, apps, univs]) => {
         if (progs.error === "No autorizado" || usrs.error === "No autorizado") {
           router.push("/login");
           return;
@@ -94,10 +124,39 @@ export default function AdminDashboard() {
         setPrograms(Array.isArray(progs) ? progs : []);
         setUsers(Array.isArray(usrs) ? usrs : []);
         setApplications(Array.isArray(apps) ? apps : []);
+        setUnivList(Array.isArray(univs) ? univs : []);
         setLoading(false);
       })
       .catch(() => setLoading(false));
   }, [router]);
+
+  const handleCreateUniversity = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setUnivLoading(true);
+    setUnivMsg(null);
+    try {
+      const res = await fetch("/api/admin/universities", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(univForm),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setUnivMsg({ type: "success", text: "Universidad creada correctamente" });
+        setUnivForm({ name: "", country: "", city: "", faculty: "", website: "", description: "" });
+        fetchUniversities();
+        setTimeout(() => {
+          setShowUnivModal(false);
+          setUnivMsg(null);
+        }, 1500);
+      } else {
+        setUnivMsg({ type: "error", text: data.error || "Error al crear universidad" });
+      }
+    } catch {
+      setUnivMsg({ type: "error", text: "Error de conexión" });
+    }
+    setUnivLoading(false);
+  };
 
   const handleLogout = async () => {
     await fetch("/api/auth/logout", { method: "POST" });
@@ -257,14 +316,14 @@ export default function AdminDashboard() {
           <div className="mb-6 bg-amber-50 border-l-4 border-amber-500 rounded-lg p-4 flex items-center gap-3">
             <AlertCircle className="w-5 h-5 text-amber-600" />
             <p className="text-amber-800 text-sm">
-              Hay <strong>{stats.pendingApproval}</strong> convocatoria
+              Hay <strong>{stats.pendingApproval}</strong> programa
               {stats.pendingApproval > 1 ? "s" : ""} pendiente{stats.pendingApproval > 1 ? "s" : ""} de aprobación
             </p>
           </div>
         )}
 
         {/* Tabs */}
-        <div className="flex gap-1 mb-6 bg-white rounded-xl p-1 border border-slate-200 w-fit shadow-sm">
+        <div className="flex flex-wrap gap-1 mb-6 bg-white rounded-xl p-1 border border-slate-200 w-fit shadow-sm">
           <button
             onClick={() => setActiveTab("programs")}
             className={`flex items-center gap-2 px-5 py-2 rounded-lg text-sm font-medium transition-all ${
@@ -275,6 +334,17 @@ export default function AdminDashboard() {
           >
             <BookOpen className="w-4 h-4" />
             Programas ({programs.length})
+          </button>
+          <button
+            onClick={() => setActiveTab("universities")}
+            className={`flex items-center gap-2 px-5 py-2 rounded-lg text-sm font-medium transition-all ${
+              activeTab === "universities"
+                ? "bg-[#003f8f] text-white shadow-sm"
+                : "text-slate-600 hover:bg-slate-100"
+            }`}
+          >
+            <Building2 className="w-4 h-4" />
+            Universidades ({univList.length})
           </button>
           <button
             onClick={() => setActiveTab("users")}
@@ -299,6 +369,188 @@ export default function AdminDashboard() {
             Solicitudes ({applications.length})
           </button>
         </div>
+
+        {/* Universities Tab */}
+        {activeTab === "universities" && (
+          <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+            <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200">
+              <h2 className="text-base font-semibold text-slate-800">Universidades Registradas</h2>
+              <button
+                onClick={() => { setShowUnivModal(true); setUnivMsg(null); }}
+                className="flex items-center gap-2 bg-[#003f8f] text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-[#002e6b] transition-colors"
+              >
+                <Plus className="w-4 h-4" />
+                Nueva Universidad
+              </button>
+            </div>
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead className="bg-slate-50 border-b border-slate-200">
+                  <tr>
+                    <th className="text-left px-6 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Universidad</th>
+                    <th className="text-left px-6 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Facultad</th>
+                    <th className="text-left px-6 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">País / Ciudad</th>
+                    <th className="text-left px-6 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Web</th>
+                    <th className="text-left px-6 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Estado</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-200">
+                  {univList.length === 0 ? (
+                    <tr>
+                      <td colSpan={5} className="text-center text-slate-400 py-12">
+                        No hay universidades registradas. ¡Crea la primera!
+                      </td>
+                    </tr>
+                  ) : (
+                    univList.map((u) => (
+                      <tr key={u.id} className="hover:bg-slate-50 transition-colors">
+                        <td className="px-6 py-4">
+                          <div className="font-medium text-slate-800">{u.name}</div>
+                          {u.description && <div className="text-xs text-slate-400 mt-0.5 truncate max-w-xs">{u.description}</div>}
+                        </td>
+                        <td className="px-6 py-4 text-slate-500 text-sm">{u.faculty || "—"}</td>
+                        <td className="px-6 py-4 text-slate-500 text-sm">
+                          <div className="flex items-center gap-1">
+                            <MapPin className="w-3 h-3 text-slate-400" />
+                            {[u.city, u.country].filter(Boolean).join(", ") || "—"}
+                          </div>
+                        </td>
+                        <td className="px-6 py-4 text-sm">
+                          {u.website ? (
+                            <a href={u.website} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 text-[#003f8f] hover:underline">
+                              <Globe className="w-3 h-3" />
+                              Sitio web
+                            </a>
+                          ) : "—"}
+                        </td>
+                        <td className="px-6 py-4">
+                          <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${
+                            u.isActive ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"
+                          }`}>
+                            {u.isActive ? "Activa" : "Inactiva"}
+                          </span>
+                        </td>
+                      </tr>
+                    ))
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+
+        {/* University Creation Modal */}
+        {showUnivModal && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{ backgroundColor: "rgba(0,0,0,0.5)" }}>
+            <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg">
+              <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200">
+                <div className="flex items-center gap-2">
+                  <Building2 className="w-5 h-5 text-[#003f8f]" />
+                  <h2 className="text-lg font-semibold text-slate-800">Nueva Universidad</h2>
+                </div>
+                <button
+                  onClick={() => { setShowUnivModal(false); setUnivMsg(null); setUnivForm({ name: "", country: "", city: "", faculty: "", website: "", description: "" }); }}
+                  className="text-slate-400 hover:text-slate-600 transition-colors"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+              <form onSubmit={handleCreateUniversity} className="px-6 py-5 space-y-4">
+                {univMsg && (
+                  <div className={`p-3 rounded-lg text-sm flex items-center gap-2 ${
+                    univMsg.type === "success" ? "bg-green-50 text-green-700 border border-green-200" : "bg-red-50 text-red-700 border border-red-200"
+                  }`}>
+                    {univMsg.type === "success" ? <CheckCircle className="w-4 h-4" /> : <AlertCircle className="w-4 h-4" />}
+                    {univMsg.text}
+                  </div>
+                )}
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">Nombre <span className="text-red-500">*</span></label>
+                  <input
+                    type="text"
+                    required
+                    value={univForm.name}
+                    onChange={(e) => setUnivForm({ ...univForm, name: e.target.value })}
+                    placeholder="Ej: Universidad de La Habana"
+                    className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#003f8f] focus:border-transparent"
+                  />
+                </div>
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-1">País</label>
+                    <input
+                      type="text"
+                      value={univForm.country}
+                      onChange={(e) => setUnivForm({ ...univForm, country: e.target.value })}
+                      placeholder="Ej: Cuba"
+                      className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#003f8f] focus:border-transparent"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-1">Ciudad</label>
+                    <input
+                      type="text"
+                      value={univForm.city}
+                      onChange={(e) => setUnivForm({ ...univForm, city: e.target.value })}
+                      placeholder="Ej: La Habana"
+                      className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#003f8f] focus:border-transparent"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">Facultad / Unidad</label>
+                  <input
+                    type="text"
+                    value={univForm.faculty}
+                    onChange={(e) => setUnivForm({ ...univForm, faculty: e.target.value })}
+                    placeholder="Ej: Facultad de Ciencias Exactas"
+                    className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#003f8f] focus:border-transparent"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">Sitio Web</label>
+                  <input
+                    type="url"
+                    value={univForm.website}
+                    onChange={(e) => setUnivForm({ ...univForm, website: e.target.value })}
+                    placeholder="https://..."
+                    className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#003f8f] focus:border-transparent"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">Descripción</label>
+                  <textarea
+                    value={univForm.description}
+                    onChange={(e) => setUnivForm({ ...univForm, description: e.target.value })}
+                    placeholder="Breve descripción de la institución..."
+                    rows={3}
+                    className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#003f8f] focus:border-transparent resize-none"
+                  />
+                </div>
+                <div className="flex gap-3 pt-2">
+                  <button
+                    type="button"
+                    onClick={() => { setShowUnivModal(false); setUnivMsg(null); setUnivForm({ name: "", country: "", city: "", faculty: "", website: "", description: "" }); }}
+                    className="flex-1 border border-slate-300 text-slate-700 py-2.5 rounded-lg text-sm font-medium hover:bg-slate-50 transition-colors"
+                  >
+                    Cancelar
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={univLoading}
+                    className="flex-1 bg-[#003f8f] text-white py-2.5 rounded-lg text-sm font-medium hover:bg-[#002e6b] transition-colors disabled:opacity-60 flex items-center justify-center gap-2"
+                  >
+                    {univLoading ? (
+                      <><span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" /> Guardando...</>
+                    ) : (
+                      <><Plus className="w-4 h-4" /> Crear Universidad</>
+                    )}
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        )}
 
         {/* Programs Tab */}
         {activeTab === "programs" && (

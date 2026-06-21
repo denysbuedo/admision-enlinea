@@ -132,13 +132,20 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
           rejected: "Lamentamos informarte que tu solicitud no fue aprobada en esta ocasión.",
           waitlisted: "Tu solicitud ha sido colocada en lista de espera.",
         };
+        const statusLabels: Record<string, string> = {
+          under_review: "En revisión",
+          interview: "Entrevista",
+          approved: "Aprobada",
+          rejected: "Rechazada",
+          waitlisted: "Lista de espera",
+        };
 
         if (statusMessages[body.status]) {
           await db.insert(notifications).values({
             userId: existing.userId,
             applicationId: parseInt(id),
             type: `status_${body.status}`,
-            title: `Estado actualizado: ${body.status}`,
+            title: `Estado actualizado: ${statusLabels[body.status] || body.status}`,
             message: statusMessages[body.status],
           });
         }

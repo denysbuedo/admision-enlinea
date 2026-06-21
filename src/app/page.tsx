@@ -41,10 +41,10 @@ export default async function HomePage() {
       <section className="bg-[#003f8f] text-white py-24 px-4">
         <div className="max-w-4xl mx-auto text-center">
           <h1 className="text-5xl font-bold mb-6 leading-tight">
-            Convocatorias de Posgrado
+            Programas de posgrado
           </h1>
           <p className="text-xl text-blue-100 mb-10 max-w-2xl mx-auto">
-            Gestiona convocatorias de posgrado (cursos, diplomados, maestrías, especialidades, doctorados) y conecta a las universidades con los mejores aspirantes.
+            Gestiona programas de posgrado (cursos, diplomados, maestrías, especialidades, doctorados) y conecta a las universidades con los mejores aspirantes.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/programs" className="bg-white text-[#003f8f] font-bold px-8 py-3 rounded-xl hover:bg-blue-50 transition-colors text-lg shadow-lg">
@@ -71,7 +71,7 @@ export default async function HomePage() {
               {
                 icon: Building2,
                 title: "Para instituciones",
-                desc: "Diseñe y publique convocatorias con campos estandarizados. Gestione solicitudes, filtre candidatos y administre el flujo de admisión desde un solo lugar.",
+                desc: "Diseñe y publique programas con campos estandarizados. Gestione solicitudes, filtre candidatos y administre el flujo de admisión desde un solo lugar.",
                 bg: "bg-[#e6f0ff]",
                 iconColor: "text-[#003f8f]",
               },

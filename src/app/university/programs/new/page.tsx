@@ -180,7 +180,7 @@ export default function NewProgramPage() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Título */}
         <div className="mb-6">
-          <h1 className="text-2xl font-bold text-slate-800">Nueva convocatoria</h1>
+          <h1 className="text-2xl font-bold text-slate-800">Nuevo programa</h1>
           <p className="text-slate-500 mt-1">
             Complete la información del programa de posgrado
           </p>
@@ -329,7 +329,7 @@ export default function NewProgramPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-semibold text-slate-700 mb-1">
-                  Apertura de convocatoria
+                  Apertura de programa
                 </label>
                 <input
                   type="date"
@@ -707,7 +707,7 @@ export default function NewProgramPage() {
               <div className="bg-amber-50 border-l-4 border-amber-500 rounded-lg p-4 flex items-start gap-3">
                 <AlertCircle className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
                 <div className="text-sm text-amber-800">
-                  Al enviar esta convocatoria, será revisada por el equipo administrativo antes de ser publicada.
+                  Al enviar este programa, será revisado por el equipo administrativo antes de ser publicado.
                 </div>
               </div>
 

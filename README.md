@@ -1,4 +1,4 @@
-# 🎓 Admisión en Línea (GradCall)
+# 🎓 Admisión en Línea (Nexo)
 
 Plataforma integral de gestión de admisiones académicas para programas de postgrado. Conecta universidades con aspirantes mediante un proceso de aplicación estandarizado y profesional.
 
@@ -35,7 +35,7 @@ Plataforma integral de gestión de admisiones académicas para programas de post
 
 Las universidades enfrentan desafíos significativos en la gestión de procesos de admisión:
 - 📝 Procesos manuales y descentralizados
-- 🔄 Falta de estandarización en convocatorias
+- 🔄 Falta de estandarización en programas
 - 📊 Dificultad para tracking de aplicaciones
 - 💬 Comunicación ineficiente con aspirantes
 - 🔐 Gestión compleja de roles y permisos
@@ -43,7 +43,7 @@ Las universidades enfrentan desafíos significativos en la gestión de procesos 
 ### Solución
 
 Una plataforma unificada que:
-- ✅ Centraliza la gestión de convocatorias
+- ✅ Centraliza la gestión de programas
 - ✅ Estandariza el proceso de aplicación
 - ✅ Automatiza notificaciones y seguimiento
 - ✅ Proporciona dashboards por rol de usuario
@@ -61,7 +61,7 @@ Una plataforma unificada que:
 - 📁 Gestión de documentos adjuntos
 
 ### Para Universidades
-- 🏛️ Creación y gestión de convocatorias (25+ campos)
+- 🏛️ Creación y gestión de programas (25+ campos)
 - 👥 Revisión de aplicaciones recibidas
 - 🔄 Flujo de estados personalizable
 - 📤 Exportación de datos a CSV
@@ -123,7 +123,7 @@ Borrador → Enviado → En Revisión → Entrevista → Aprobado
 |-------|-------------|
 | `users` | Usuarios con autenticación JWT y roles |
 | `universities` | Información de instituciones |
-| `programs` | Convocatorias de postgrado (25+ campos) |
+| `programs` | Programas de postgrado (25+ campos) |
 | `applications` | Aplicaciones de aspirantes |
 | `documents` | Archivos adjuntos por aplicación |
 | `notifications` | Notificaciones del sistema |
@@ -215,7 +215,7 @@ El servidor se ejecutará en `http://localhost:3000`
 
 | Email | Contraseña |
 |-------|------------|
-| `admin@gradcall.com` | `Admin123!` |
+| `admin@nexo.com` | `Admin123!` |
 
 ### Rutas Principales
 
@@ -269,7 +269,7 @@ admision-enlinea/
 
 | Variable | Valor por Defecto | Descripción |
 |----------|-------------------|-------------|
-| `JWT_SECRET` | `gradcall-secret-key-2024` | Secreto para firmar tokens JWT |
+| `JWT_SECRET` | `nexo-secret-key-2024` | Secreto para firmar tokens JWT |
 | `NODE_ENV` | `development` | Entorno (production habilita cookies seguras) |
 
 ### Configurar Variables de Entorno

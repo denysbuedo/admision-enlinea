@@ -1,14 +1,15 @@
-import { NextRequest, NextResponse } from "next/server";
-import { db } from "@/db";
-import { users, universities } from "@/db/schema";
-import { eq, desc } from "drizzle-orm";
-import { getSession } from "@/lib/auth";
+import { NextResponse } from 'next/server';
+import { db } from '@/db';
+import { users, universities } from '@/db/schema';
+import { getSession } from '@/lib/auth';
+import { desc, eq } from 'drizzle-orm';
 
 export async function GET() {
   try {
     const session = await getSession();
-    if (!session || session.role !== "super_admin") {
-      return NextResponse.json({ error: "No autorizado" }, { status: 401 });
+
+    if (!session || session.user.role !== 'super_admin') {
+      return NextResponse.json({ error: 'No autorizado' }, { status: 403 });
     }
 
     const results = await db
@@ -28,7 +29,7 @@ export async function GET() {
 
     return NextResponse.json(results);
   } catch (error) {
-    console.error("Get users error:", error);
-    return NextResponse.json({ error: "Error interno del servidor" }, { status: 500 });
+    console.error('Error fetching users:', error);
+    return NextResponse.json({ error: 'Error interno del servidor' }, { status: 500 });
   }
 }

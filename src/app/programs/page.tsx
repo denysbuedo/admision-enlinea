@@ -18,6 +18,14 @@ import {
   Layers,
 } from 'lucide-react';
 
+const typeLabels: Record<string, string> = {
+  curso: "Curso",
+  diplomado: "Diplomado",
+  especializacion: "Especialización",
+  maestria: "Maestría",
+  doctorado: "Doctorado",
+};
+
 export default function ProgramsPage() {
   const { programs, loading, error } = usePrograms();
 
@@ -27,27 +35,27 @@ export default function ProgramsPage() {
   const [maxDuration, setMaxDuration] = useState<number | ''>('');
 
   const universities = useMemo(
-    () => Array.from(new Set(programs.map(p => p.university?.name || p.universityId))).filter(Boolean),
+    () => Array.from(new Set(programs.map(p => p.universityName || ''))).filter(Boolean),
     [programs]
   );
 
   const degrees = useMemo(
-    () => Array.from(new Set(programs.map(p => p.degree))),
+    () => Array.from(new Set(programs.map(p => p.programType))),
     [programs]
   );
 
   const filteredPrograms = useMemo(() => {
     return programs.filter(program => {
-      const matchesSearch = program.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      const matchesSearch = program.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
         program.description?.toLowerCase().includes(searchTerm.toLowerCase());
 
       const matchesUniversity = !selectedUniversity ||
-        (program.university?.name === selectedUniversity) ||
-        (program.universityId === selectedUniversity);
+        (program.universityName === selectedUniversity) ||
+        (program.universityId.toString() === selectedUniversity);
 
-      const matchesDegree = !selectedDegree || program.degree === selectedDegree;
+      const matchesDegree = !selectedDegree || program.programType === selectedDegree;
 
-      const matchesDuration = !maxDuration || program.duration <= Number(maxDuration);
+      const matchesDuration = !maxDuration || (parseInt(program.duration || '') <= Number(maxDuration));
 
       return matchesSearch && matchesUniversity && matchesDegree && matchesDuration;
     });
@@ -172,7 +180,7 @@ export default function ProgramsPage() {
               >
                 <option value="">Todos los grados</option>
                 {degrees.map((deg: string) => (
-                  <option key={deg} value={deg}>{deg}</option>
+                  <option key={deg} value={deg}>{typeLabels[deg] || deg}</option>
                 ))}
               </select>
               <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
@@ -208,7 +216,7 @@ export default function ProgramsPage() {
                     <div className="flex items-start justify-between mb-3">
                       <div className="flex-1">
                         <h3 className="text-xl font-bold text-slate-800 group-hover:text-[#003f8f] transition-colors line-clamp-2">
-                          {program.name}
+                          {program.title}
                         </h3>
                       </div>
                     </div>
@@ -217,7 +225,7 @@ export default function ProgramsPage() {
                     <div className="flex items-center gap-2 text-slate-500 text-sm mb-3">
                       <Building2 className="w-4 h-4 flex-shrink-0" />
                       <span className="line-clamp-1">
-                        {program.university?.name || 'Universidad'}
+                        {program.universityName || 'Universidad'}
                       </span>
                     </div>
 
@@ -225,11 +233,11 @@ export default function ProgramsPage() {
                     <div className="flex flex-wrap gap-3 mb-4">
                       <div className="flex items-center gap-1.5 text-sm text-slate-600 bg-slate-100 px-2 py-1 rounded-full">
                         <GraduationCap className="w-3.5 h-3.5" />
-                        {program.degree}
+                        {typeLabels[program.programType] || program.programType}
                       </div>
                       <div className="flex items-center gap-1.5 text-sm text-slate-600 bg-slate-100 px-2 py-1 rounded-full">
                         <Clock className="w-3.5 h-3.5" />
-                        {program.duration} semestres
+                        {program.duration || 'N/A'}
                       </div>
                       {program.modality && (
                         <div className="flex items-center gap-1.5 text-sm text-slate-600 bg-slate-100 px-2 py-1 rounded-full">
