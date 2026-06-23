@@ -98,15 +98,16 @@ PORT=3000
 HOSTNAME=0.0.0.0
 DB_URL=file:sqlite.db
 JWT_SECRET=<CAMBIAR_POR_UN_SECRETO_REAL>
+ADMIN_INITIAL_PASSWORD=<CAMBIAR_POR_UNA_CONTRASENA_INICIAL_SEGURA>
 ```
 
-Para generar un `JWT_SECRET` seguro:
+Para generar secretos seguros:
 
 ```bash
 openssl rand -hex 32
 ```
 
-Copia el resultado y reemplaza `<CAMBIAR_POR_UN_SECRETO_REAL>`.
+Copia valores distintos para `JWT_SECRET` y `ADMIN_INITIAL_PASSWORD`.
 
 ---
 
@@ -121,12 +122,17 @@ bun run db:migrate
 Despues de levantar la app, crea el super admin inicial:
 
 ```bash
-curl -X POST http://127.0.0.1:3000/api/admin/seed
+curl --noproxy '*' -X POST http://127.0.0.1:3000/api/admin/seed
 ```
 
-Credenciales del admin inicial: `admin@nexo.com` / `Admin123!`
+El correo del admin inicial es `admin@nexo.com`. La contrasena sera el valor configurado en `ADMIN_INITIAL_PASSWORD`.
 
-Despues de confirmar el acceso, cambia esta contrasena desde la aplicacion o elimina/deshabilita el mecanismo de seed si ya no se va a usar.
+Para cambiar la contrasena del admin existente desde el servidor:
+
+```bash
+cd /opt/admision-enlinea
+ADMIN_PASSWORD='<NUEVA_CONTRASENA_SEGURA>' bun run db:admin-password
+```
 
 ---
 

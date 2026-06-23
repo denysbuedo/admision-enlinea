@@ -195,8 +195,8 @@ bun run db:migrate
 
 5. **Crear usuario administrador**
 ```bash
-# Visitar la ruta una vez iniciado el servidor
-GET /api/admin/seed
+ADMIN_INITIAL_PASSWORD='<CONTRASENA_SEGURA>' bun dev
+curl --noproxy '*' -X POST http://127.0.0.1:3000/api/admin/seed
 ```
 
 ---
@@ -211,11 +211,15 @@ bun dev
 
 El servidor se ejecutará en `http://localhost:3000`
 
-### Credenciales de Administrador
+### Administrador Inicial
 
-| Email | Contraseña |
-|-------|------------|
-| `admin@nexo.com` | `Admin123!` |
+El usuario inicial es `admin@nexo.com`. La contrasena se toma de `ADMIN_INITIAL_PASSWORD` al ejecutar `/api/admin/seed`.
+
+Para cambiarla posteriormente:
+
+```bash
+ADMIN_PASSWORD='<NUEVA_CONTRASENA_SEGURA>' bun run db:admin-password
+```
 
 ### Rutas Principales
 

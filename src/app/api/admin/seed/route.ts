@@ -4,18 +4,25 @@ import { users } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { hashPassword } from "@/lib/auth";
 
+const ADMIN_EMAIL = "admin@nexo.com";
+
 async function createSuperAdmin() {
-  // Check if super admin already exists
-  const existing = await db.select().from(users).where(eq(users.email, "admin@nexo.com"));
+  const existing = await db.select().from(users).where(eq(users.email, ADMIN_EMAIL));
   if (existing.length > 0) {
     return { alreadyExists: true, message: "Super admin ya existe" };
   }
 
-  const hashedPassword = await hashPassword("Admin123!");
+  const initialPassword = process.env.ADMIN_INITIAL_PASSWORD;
+
+  if (!initialPassword) {
+    throw new Error("ADMIN_INITIAL_PASSWORD no configurada");
+  }
+
+  const hashedPassword = await hashPassword(initialPassword);
 
   await db.insert(users).values({
     name: "Super Admin",
-    email: "admin@nexo.com",
+    email: ADMIN_EMAIL,
     password: hashedPassword,
     role: "super_admin",
   });
@@ -23,10 +30,6 @@ async function createSuperAdmin() {
   return {
     alreadyExists: false,
     message: "Super admin creado exitosamente",
-    credentials: {
-      email: "admin@nexo.com",
-      password: "Admin123!",
-    },
   };
 }
 

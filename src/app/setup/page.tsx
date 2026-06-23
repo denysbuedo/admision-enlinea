@@ -7,14 +7,11 @@ import {
   AlertCircle,
   Loader2,
   Shield,
-  Mail,
-  Lock,
   ArrowRight,
   Database,
   UserPlus,
   LogIn,
   Settings,
-  Key,
 } from "lucide-react";
 
 export default function SetupPage() {
@@ -143,34 +140,6 @@ export default function SetupPage() {
               >
                 {message}
               </p>
-            </div>
-
-            {/* Credenciales */}
-            <div className="bg-slate-50 border border-slate-200 rounded-xl p-4">
-              <div className="flex items-center gap-2 mb-3">
-                <Key className="w-4 h-4 text-[#003f8f]" />
-                <p className="text-sm font-semibold text-slate-700">Credenciales de acceso</p>
-              </div>
-              <div className="space-y-2">
-                <div className="flex items-center justify-between bg-white rounded-lg px-3 py-2 border border-slate-200">
-                  <div className="flex items-center gap-2">
-                    <Mail className="w-3.5 h-3.5 text-slate-400" />
-                    <span className="text-xs text-slate-500 font-medium">Email</span>
-                  </div>
-                  <code className="text-sm font-mono text-[#003f8f] font-semibold">
-                    admin@nexo.com
-                  </code>
-                </div>
-                <div className="flex items-center justify-between bg-white rounded-lg px-3 py-2 border border-slate-200">
-                  <div className="flex items-center gap-2">
-                    <Lock className="w-3.5 h-3.5 text-slate-400" />
-                    <span className="text-xs text-slate-500 font-medium">Contraseña</span>
-                  </div>
-                  <code className="text-sm font-mono text-[#003f8f] font-semibold">
-                    Admin123!
-                  </code>
-                </div>
-              </div>
             </div>
 
             {/* Botón ir al login */}

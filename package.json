@@ -10,6 +10,7 @@
     "typecheck": "tsc --noEmit",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "bun run src/db/migrate.ts",
+    "db:admin-password": "bun run src/db/reset-admin-password.ts",
     "test": "vitest",
     "test:ui": "vitest --ui"
   },

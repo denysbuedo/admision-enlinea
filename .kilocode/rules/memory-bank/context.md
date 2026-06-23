@@ -83,7 +83,7 @@ Nexo is a complete academic admissions platform for managing postgraduate progra
 
 ### Initial Setup
 1. Visit `/api/admin/seed` (POST) to create super admin
-2. Login with `admin@nexo.com` / `Admin123!`
+2. Login with `admin@nexo.com` and the password configured in `ADMIN_INITIAL_PASSWORD`
 
 ## Session History
 
@@ -95,3 +95,4 @@ Nexo is a complete academic admissions platform for managing postgraduate progra
 | 2026-06-10 | **Gestión de Universidades desde Admin** — creado endpoint `POST /api/admin/universities/route.ts` (GET, POST, PATCH) protegido por rol `super_admin`; agregada pestaña "Universidades" en `/admin/page.tsx` con tabla de listado y modal de creación (campos: nombre*, país, ciudad, facultad, sitio web, descripción); se carga automáticamente junto con el resto del dashboard. |
 | 2026-06-12 | **Fix POST /api/applications** — corregido handler de creación de aplicaciones: agregada validación de rol `aspirant`, validación de `programId`, verificación de existencia y estado del programa (`published`), detección de duplicados por usuario; inserción con valores seguros. **Fix GET /api/applications** — ahora filtra correctamente: super_admin ve todo, universidad ve solo sus programas vía `programs.universityId`, aspirante ve sus propias aplicaciones vía `applications.userId`. **Nuevas páginas universidad** — creadas `/university/programs/[id]/page.tsx` (detalle de programa con stats) y `/university/programs/[id]/applications/page.tsx` (lista filtrada de solicitudes). |
 | 2026-06-23 | **Actualización de despliegue Ubuntu** — `DEPLOY.md` ajustado para producción en `nexo.mes.gob.cu` con HAProxy remoto terminando TLS. Se eliminó el flujo de Nginx local, se documentó Next.js escuchando en `0.0.0.0:3000`, firewall restringido a `<IP_HAPROXY>`, encabezados esperados (`Host`, `X-Forwarded-Proto`, `X-Forwarded-For`) y pruebas con `curl`. |
+| 2026-06-23 | **Endurecimiento de credenciales admin** — removidas las credenciales de prueba visibles en `/login` y `/setup`; `/api/admin/seed` ahora usa `ADMIN_INITIAL_PASSWORD` y no devuelve contraseñas; agregado script `bun run db:admin-password` para resetear la contraseña de `admin@nexo.com` con `ADMIN_PASSWORD`. |

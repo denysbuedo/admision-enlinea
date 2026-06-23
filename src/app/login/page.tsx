@@ -91,13 +91,6 @@ export default function LoginPage() {
           </div>
         </div>
 
-        <div className="mt-4 card bg-blue-50 border border-blue-200">
-          <p className="text-xs text-blue-700 font-semibold mb-2">🔑 Credenciales de prueba:</p>
-          <p className="text-xs text-blue-600">Admin: admin@nexo.com / Admin123!</p>
-          <p className="text-xs text-blue-500 mt-1">
-            (Primero visita <code className="bg-blue-100 px-1 rounded">/api/admin/seed</code> para crear el admin)
-          </p>
-        </div>
       </div>
     </div>
   );
