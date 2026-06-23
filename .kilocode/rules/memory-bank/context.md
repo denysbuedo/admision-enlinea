@@ -6,6 +6,8 @@
 
 Nexo is a complete academic admissions platform for managing postgraduate program calls. Built on Next.js 16 with full-stack capabilities.
 
+**Deployment Target**: `https://nexo.mes.gob.cu` behind a remote HAProxy that terminates TLS. The Ubuntu app server should expose Next.js directly on TCP port `3000`; local Nginx is not part of the current deployment guide.
+
 ## Recently Completed
 
 - [x] Base Next.js 16 setup with App Router
@@ -92,3 +94,4 @@ Nexo is a complete academic admissions platform for managing postgraduate progra
 | 2026-06-10 | **Estabilización del build** — corregidos errores de compilación: implementadas funciones `verifyPassword`, `signToken`, `getSession` en `auth.ts`; agregado `programCreateSchema` en `validations.ts`; corregidos mapeos en `programs/page.tsx` y `hooks/usePrograms.ts`; eliminado `useSession` (next-auth) de `admin/universities/page.tsx` y reemplazado con fetch a `/api/auth/me`; creado endpoint `/api/auth/me`; configurado `next.config.ts` para ignorar errores TS en build. **Build exitoso: 25 rutas generadas.** |
 | 2026-06-10 | **Gestión de Universidades desde Admin** — creado endpoint `POST /api/admin/universities/route.ts` (GET, POST, PATCH) protegido por rol `super_admin`; agregada pestaña "Universidades" en `/admin/page.tsx` con tabla de listado y modal de creación (campos: nombre*, país, ciudad, facultad, sitio web, descripción); se carga automáticamente junto con el resto del dashboard. |
 | 2026-06-12 | **Fix POST /api/applications** — corregido handler de creación de aplicaciones: agregada validación de rol `aspirant`, validación de `programId`, verificación de existencia y estado del programa (`published`), detección de duplicados por usuario; inserción con valores seguros. **Fix GET /api/applications** — ahora filtra correctamente: super_admin ve todo, universidad ve solo sus programas vía `programs.universityId`, aspirante ve sus propias aplicaciones vía `applications.userId`. **Nuevas páginas universidad** — creadas `/university/programs/[id]/page.tsx` (detalle de programa con stats) y `/university/programs/[id]/applications/page.tsx` (lista filtrada de solicitudes). |
+| 2026-06-23 | **Actualización de despliegue Ubuntu** — `DEPLOY.md` ajustado para producción en `nexo.mes.gob.cu` con HAProxy remoto terminando TLS. Se eliminó el flujo de Nginx local, se documentó Next.js escuchando en `0.0.0.0:3000`, firewall restringido a `<IP_HAPROXY>`, encabezados esperados (`Host`, `X-Forwarded-Proto`, `X-Forwarded-For`) y pruebas con `curl`. |
