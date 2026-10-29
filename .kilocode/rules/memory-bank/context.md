@@ -116,3 +116,9 @@ Nexo is a complete academic admissions platform for managing postgraduate progra
 
 - Deployment completed: compiled application commit `7844d18` active at `https://convocatorias.reduniv.edu.cu/`. Production build succeeded before activation; service healthy afterward. Browser smoke checks returned HTTP 200 on home/catalog/login/register, loaded Inter locally, verified absolute social image URL, and reported no page errors. No production data writes or full authenticated admission flows were tested.
 - Production DB was byte-identical to the pre-deployment backup after activation. Prior build and backups remain available on the server. Local and remote source trees were clean at application deployment; final documentation is synchronized separately without rebuilding unchanged application code.
+
+### CONVOCA visual v1.1 — 2026-10-28
+
+- Implemented the supplied v1.1 proposal for CONVOCA only: shared public navigation (72/64 px, navy, 1280 px container), accessible mobile menu, distinct supplied category SVGs and revised homepage surfaces. Dashboard navigation, API permissions, content and application workflows retained.
+- Typecheck, scoped ESLint, local build and 6 existing tests passed. Playwright checked five viewport widths without overflow and mobile keyboard/Escape behavior. Axe found no WCAG A/AA violations on the homepage across those widths. Details and limits in `docs/VISUAL-V1.1.md`; local screenshots in `.deploy/visual-v1.1/`.
+- Verified server baseline `42cb174` and pre-change backup `/opt/convoca-backups/v1.1-20261028/pre-deploy.tar.gz`; production data remains outside Git.

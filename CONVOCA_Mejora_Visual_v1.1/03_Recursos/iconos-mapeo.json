@@ -1,0 +1,32 @@
+[
+  {
+    "tipo": "Cursos",
+    "slug": "curso",
+    "archivo": "03_Recursos/SVG/icono-curso.svg",
+    "lucide_equivalente": "book-open"
+  },
+  {
+    "tipo": "Diplomados",
+    "slug": "diplomado",
+    "archivo": "03_Recursos/SVG/icono-diplomado.svg",
+    "lucide_equivalente": "award"
+  },
+  {
+    "tipo": "Especialidades",
+    "slug": "especialidad",
+    "archivo": "03_Recursos/SVG/icono-especialidad.svg",
+    "lucide_equivalente": "target"
+  },
+  {
+    "tipo": "Maestrías",
+    "slug": "maestria",
+    "archivo": "03_Recursos/SVG/icono-maestria.svg",
+    "lucide_equivalente": "graduation-cap"
+  },
+  {
+    "tipo": "Doctorados",
+    "slug": "doctorado",
+    "archivo": "03_Recursos/SVG/icono-doctorado.svg",
+    "lucide_equivalente": "microscope"
+  }
+]

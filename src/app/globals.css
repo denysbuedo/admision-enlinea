@@ -1,5 +1,6 @@
 @import "tailwindcss";
 @import "./brand-tokens.css";
+@import "./reduniv-nav.css";
 
 :root {
   --primary: #102B46;
@@ -263,11 +264,6 @@ button:disabled { opacity: .6; cursor: wait; }
 .input-field { min-height: 44px; }
 .btn-primary { min-height: 44px; }
 .site-container { max-width: 1200px; margin: auto; padding: 0 28px; }
-.public-header { background: var(--convoca-deep); color: white; border-bottom: 1px solid #ffffff18; }
-.header-inner { display: flex; align-items: center; justify-content: space-between; gap: 24px; min-height: 100px; }
-.public-header nav { display: flex; align-items: center; gap: 28px; font-size: 14px; }
-.public-header nav a:hover { color: var(--convoca-accent); }
-.nav-register { display: inline-flex; align-items: center; gap: 12px; border: 1px solid #7893a6; padding: 10px 16px; border-radius: 8px; }
 .home-hero { background: var(--convoca-deep); color: white; position: relative; overflow: hidden; }
 .home-hero::after { content: ''; position: absolute; width: 780px; height: 780px; border: 1px solid #25465c; border-radius: 50%; right: -360px; top: -130px; pointer-events: none; }
 .hero-layout { display: grid; grid-template-columns: 1.3fr 1fr; gap: 72px; align-items: center; padding-top: 82px; padding-bottom: 88px; position: relative; z-index: 1; }

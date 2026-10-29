@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import "./home-v1.1.css";
+import PublicHeader from "@/components/PublicHeader";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://convocatorias.reduniv.edu.cu"),
@@ -16,5 +18,5 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="es"><body>{children}</body></html>;
+  return <html lang="es"><body><PublicHeader />{children}</body></html>;
 }
