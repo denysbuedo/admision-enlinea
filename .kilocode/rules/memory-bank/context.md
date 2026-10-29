@@ -132,3 +132,6 @@ Nexo is a complete academic admissions platform for managing postgraduate progra
 - Homepage banner, content sections, routes and menu behavior are unchanged. The selected logo is byte-identical to the kit's `convoca-logo-principal.svg`.
 - Browser checks passed at 320/375/768/1024/1440 px: computed colors, dimensions, mobile Escape, no horizontal overflow or JS errors. Active indicator and CTA/link hover checked. Axe found no WCAG A/AA violations in the tested header states. Screenshots are local under `.deploy/header-light/`.
 - Server baseline `fc2c69d`; backup verified at `/opt/convoca-backups/header-light-20261029/pre-deploy.tar.gz`. This adjustment supersedes only the v1.1 dark public header.
+
+- Deployed compiled commit `3f9f2a2`: Linux build, TypeScript and scoped ESLint passed. Public-site browser checks confirmed white header/panel, official primary logo, exact 72/64 px heights, link/CTA hover and mint active underline across five widths; header axe audit reported no A/AA violations. Database byte comparison passed. Previous build retained under `/opt/convoca-backups/header-light-20261029/next-before`.
+
