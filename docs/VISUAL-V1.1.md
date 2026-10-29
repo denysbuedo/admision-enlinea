@@ -22,3 +22,8 @@ Implementación del paquete `CONVOCA_Mejora_Visual_v1.1`, autorizada por el usua
 ## Operación
 
 Copia previa verificada: `/opt/convoca-backups/v1.1-20261028/pre-deploy.tar.gz`. La versión nueva se compila en un directorio separado antes de detener el servicio para sustituir el build. La base de datos y las variables de entorno se conservan.
+
+## Resultado en producción
+
+Código compilado y desplegado: `fafc37f`. La compilación Linux pasó antes de activar el cambio. Portada, catálogo, login y registro responden HTTP 200 en https://convocatorias.reduniv.edu.cu/. Comprobaciones públicas en 1440/375 px: iconos, menú/Escape y ausencia de errores JavaScript correctos. La BD se verificó idéntica a la copia previa. Build anterior conservado en `/opt/convoca-backups/v1.1-20261028/next-before`. Las revisiones posteriores de documentación no cambian el build.
+

@@ -122,3 +122,6 @@ Nexo is a complete academic admissions platform for managing postgraduate progra
 - Implemented the supplied v1.1 proposal for CONVOCA only: shared public navigation (72/64 px, navy, 1280 px container), accessible mobile menu, distinct supplied category SVGs and revised homepage surfaces. Dashboard navigation, API permissions, content and application workflows retained.
 - Typecheck, scoped ESLint, local build and 6 existing tests passed. Playwright checked five viewport widths without overflow and mobile keyboard/Escape behavior. Axe found no WCAG A/AA violations on the homepage across those widths. Details and limits in `docs/VISUAL-V1.1.md`; local screenshots in `.deploy/visual-v1.1/`.
 - Verified server baseline `42cb174` and pre-change backup `/opt/convoca-backups/v1.1-20261028/pre-deploy.tar.gz`; production data remains outside Git.
+
+- v1.1 production deployment verified: compiled commit `fafc37f`, Linux build passed, homepage/catalog/login/register HTTP 200; public desktop/mobile menu and icons passed, no JS errors. Database byte comparison passed. Prior build retained at `/opt/convoca-backups/v1.1-20261028/next-before`. Documentation-only follow-up synchronized without changing compiled code.
+
