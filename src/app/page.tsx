@@ -4,6 +4,8 @@ import { redirect } from "next/navigation";
 import { ArrowUpRight, ArrowRight, BookOpen, Building2, ClipboardCheck, GraduationCap, Search } from "lucide-react";
 import Brand from "@/components/Brand";
 
+export const dynamic = "force-dynamic";
+
 const programs = [
   { name: "Cursos", type: "curso", detail: "Amplía tus conocimientos" },
   { name: "Diplomados", type: "diplomado", detail: "Profundiza en tu especialidad" },

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://convocatorias.reduniv.edu.cu"),
   title: "CONVOCA · Convocatorias y admisiones académicas",
   description: "Conecta oportunidades. Impulsa trayectorias. Explora programas de posgrado y gestiona tu postulación con CONVOCA, una plataforma de RedUniv.",
   openGraph: {
