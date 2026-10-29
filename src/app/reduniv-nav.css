@@ -1,49 +1,70 @@
-/* RedUniv — propuesta de estandarización 1.1. A validar con el equipo.
-   Unificar el sistema visual, NO forzar el mismo menú funcional en todas las aplicaciones. */
+/* Shared public navigation: CONVOCA light header, 2026-10-29. */
 :root {
- --ru-brand:#102B46; --ru-night:#0C1D30; --ru-mint:#49DCCB;
- --ru-action:#2776C9; --ru-slate:#4B6278; --ru-mist:#F5F9FC;
- --ru-line:#D8E5ED; --ru-white:#FFFFFF;
- --ru-container:1280px; --ru-header-height:72px; --ru-header-mobile:64px;
- --ru-font:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;
+  --ru-brand: #102B46;
+  --ru-night: #0C1D30;
+  --ru-mint: #49DCCB;
+  --ru-action: #2776C9;
+  --ru-slate: #4B6278;
+  --ru-mist: #F5F9FC;
+  --ru-line: #E6EDF4;
+  --ru-white: #FFFFFF;
+  --ru-container: 1280px;
+  --ru-header-height: 72px;
+  --ru-header-mobile: 64px;
+  --ru-font: Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
 }
-.ru-header { width:100%; background:var(--ru-brand); color:var(--ru-white); border-bottom:1px solid rgba(255,255,255,.13); }
-.ru-header__inner { width:min(100% - 48px,var(--ru-container)); min-height:var(--ru-header-height); margin-inline:auto; display:flex; align-items:center; justify-content:space-between; gap:24px; }
-.ru-header__brand { display:inline-flex; align-items:center; gap:12px; flex:none; color:var(--ru-white); text-decoration:none; font-family:var(--ru-font); font-weight:750; font-size:25px; line-height:1; letter-spacing:-.05em; }
-.ru-header__brand .ru-dot { color:var(--ru-mint); }
-.ru-header__nav { display:flex; align-items:center; justify-content:flex-end; gap:clamp(15px,2vw,30px); }
-.ru-header__link { color:var(--ru-white); font-size:14px; font-weight:550; text-decoration:none; text-underline-offset:7px; }
-.ru-header__link:hover,.ru-header__link[aria-current=page] { color:var(--ru-mint); text-decoration:underline; }
-.ru-header__cta { display:inline-flex; align-items:center; justify-content:center; min-height:40px; border-radius:10px; padding:0 17px; color:var(--ru-night); background:var(--ru-mint); text-decoration:none; font-size:14px; font-weight:700; white-space:nowrap; }
-.ru-header a:focus-visible {outline:3px solid var(--ru-mint);outline-offset:4px; border-radius:4px; }
-@media(max-width:760px){
- .ru-header__inner{width:calc(100% - 32px);min-height:var(--ru-header-mobile);gap:12px;}
- .ru-header__brand{font-size:23px;}
- .ru-header__nav .ru-header__link{display:none;}
- .ru-header__cta{font-size:13px;min-height:38px;padding:0 12px;}
+.ru-header {
+  position: relative;
+  z-index: 60;
+  width: 100%;
+  background: var(--ru-white);
+  color: var(--ru-brand);
+  border-bottom: 1px solid var(--ru-line);
 }
-/* Este es solo el estilo: la apertura de menú móvil, aria-expanded y teclado
-   deben implementarse con un control real en el framework correspondiente. */
-
-/* Accesibilidad y menú móvil con control interactivo (integrar estado React/Vue según stack). */
-.ru-header { position:relative; }
-.ru-header__toggle { display:none; border:1px solid rgba(255,255,255,.5); color:white; background:transparent; font:inherit; border-radius:9px; width:39px; height:39px; cursor:pointer; }
-.ru-header__toggle:focus-visible{outline:3px solid var(--ru-mint);outline-offset:3px}
-@media(max-width:760px){
- .ru-header__toggle{display:inline-flex;align-items:center;justify-content:center;margin-left:auto}
- .ru-header__nav{display:none;position:absolute;z-index:20;inset:100% 0 auto 0;background:var(--ru-brand);padding:12px 16px 18px;flex-direction:column;align-items:stretch;gap:8px;box-shadow:0 14px 22px rgba(0,0,0,.17)}
- .ru-header.is-open .ru-header__nav{display:flex}
- .ru-header__nav .ru-header__link{display:block;min-height:40px;padding:10px 6px}
- .ru-header__cta{display:flex;min-height:42px}
+.ru-header__inner {
+  width: 100%;
+  max-width: var(--ru-container);
+  min-height: calc(var(--ru-header-height) - 1px);
+  margin-inline: auto;
+  padding-inline: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
 }
-
-/* Framework integration: navigation layer, touch targets and active CTA. */
-.ru-header { z-index: 60; border-bottom: 0; box-shadow: inset 0 -1px #ffffff21; }
-.ru-header__inner { width: 100%; max-width: var(--ru-container); padding-inline: 24px; }
-.ru-header__cta:hover { background: #7ee8db; }
-.ru-header__cta[aria-current=page] { text-decoration: underline; text-underline-offset: 5px; }
-@media (max-width:760px) {
- .ru-header__inner { width:100%; padding-inline:16px; }
- .ru-header__toggle { width:44px; height:44px; }
- .ru-header__nav .ru-header__link { min-height:44px; }
+.ru-header__brand { display: inline-flex; align-items: center; flex: none; color: var(--ru-brand); text-decoration: none; }
+.ru-header__nav { display: flex; align-items: center; justify-content: flex-end; gap: clamp(15px, 2vw, 30px); }
+.ru-header__link { color: var(--ru-brand); font-size: 14px; font-weight: 550; text-decoration: none; }
+.ru-header__link:hover, .ru-header__link[aria-current=page] { color: var(--ru-action); }
+.ru-header__link[aria-current=page] {
+  text-decoration-line: underline;
+  text-decoration-color: var(--ru-mint);
+  text-decoration-thickness: 3px;
+  text-underline-offset: 8px;
+}
+.ru-header__cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  border-radius: 10px;
+  padding: 0 17px;
+  color: var(--ru-white);
+  background: var(--ru-brand);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.ru-header__cta:hover { background: var(--ru-action); }
+.ru-header__cta[aria-current=page] { box-shadow: inset 0 -3px var(--ru-mint); }
+.ru-header a:focus-visible, .ru-header__toggle:focus-visible { outline: 3px solid var(--ru-action); outline-offset: 4px; }
+.ru-header__toggle { display: none; border: 1px solid var(--ru-line); color: var(--ru-brand); background: var(--ru-white); font: inherit; border-radius: 9px; width: 44px; height: 44px; cursor: pointer; }
+@media (max-width: 760px) {
+  .ru-header__inner { min-height: calc(var(--ru-header-mobile) - 1px); padding-inline: 16px; gap: 12px; }
+  .ru-header__toggle { display: inline-flex; align-items: center; justify-content: center; margin-left: auto; }
+  .ru-header__nav { display: none; position: absolute; z-index: 20; inset: 100% 0 auto 0; background: var(--ru-white); border-bottom: 1px solid var(--ru-line); padding: 12px 16px 18px; flex-direction: column; align-items: stretch; gap: 8px; box-shadow: 0 14px 22px #102b461a; }
+  .ru-header.is-open .ru-header__nav { display: flex; }
+  .ru-header__nav .ru-header__link { display: block; min-height: 44px; padding: 10px 6px; }
+  .ru-header__cta { display: flex; min-height: 42px; font-size: 13px; padding: 0 12px; }
 }

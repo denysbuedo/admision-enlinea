@@ -49,7 +49,7 @@ function PublicNavigation({ pathname }: { pathname: string }) {
       if (!event.currentTarget.contains(event.relatedTarget)) setOpen(false);
     }}>
       <div className="ru-header__inner">
-        <Link href="/" className="ru-header__brand" aria-label="CONVOCA · Inicio" onClick={() => setOpen(false)}><Brand inverse /></Link>
+        <Link href="/" className="ru-header__brand" aria-label="CONVOCA · Inicio" onClick={() => setOpen(false)}><Brand /></Link>
         <button ref={toggle} type="button" className="ru-header__toggle" aria-controls="public-navigation" aria-expanded={open} aria-label={open ? "Cerrar menú" : "Abrir menú"} onClick={() => setOpen(!open)}>
           {open ? <X size={22} aria-hidden="true" /> : <Menu size={22} aria-hidden="true" />}
         </button>
@@ -63,3 +63,4 @@ function PublicNavigation({ pathname }: { pathname: string }) {
     </header>
   );
 }
+
