@@ -1,0 +1,23 @@
+{
+  "brand": "CONVOCA",
+  "brandVisual": "convoca.",
+  "tagline": "Conecta oportunidades. Impulsa trayectorias.",
+  "eyebrow": "CONVOCATORIAS · ADMISIONES · OPORTUNIDADES",
+  "hero": {
+    "title": "Tu próxima oportunidad comienza aquí.",
+    "description": "Descubre cursos, diplomados, especialidades, maestrías y doctorados de las instituciones participantes. Consulta programas, presenta tu solicitud y sigue el proceso de admisión desde un solo lugar.",
+    "primaryCta": "Explorar programas",
+    "secondaryCta": "Soy institución"
+  },
+  "sections": {
+    "institutions": {
+      "title": "Publica programas. Gestiona admisiones.",
+      "text": "Organiza tu oferta académica, recibe postulaciones, revisa aspirantes y da seguimiento a las solicitudes en una plataforma centralizada."
+    },
+    "applicants": {
+      "title": "Explora. Postula. Avanza.",
+      "text": "Encuentra programas de formación, completa tu solicitud y consulta su estado en línea."
+    }
+  },
+  "footer": "Una plataforma de RedUniv · Ministerio de Educación Superior de Cuba."
+}

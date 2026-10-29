@@ -1,0 +1,9 @@
+/* CONVOCA - Identidad visual v1.0 - importar tokens.css por separado o reemplazar los valores */
+@import url('../02_Colores/tokens.css');
+body {font-family:var(--convoca-font);color:var(--convoca-text);background:var(--convoca-bg)}
+.convoca-header {background:var(--convoca-deep);color:white}
+.convoca-cta {display:inline-flex;align-items:center;justify-content:center;border:0;border-radius:var(--convoca-radius-md);background:var(--convoca-accent);color:var(--convoca-deep);padding:12px 22px;font:600 15px var(--convoca-font);cursor:pointer}
+.convoca-cta:focus-visible, a:focus-visible {outline:3px solid var(--convoca-action);outline-offset:3px}
+.convoca-card {background:var(--convoca-bg);border:1px solid var(--convoca-border);border-radius:var(--convoca-radius-lg);padding:24px}
+.convoca-muted {color:var(--convoca-muted)}
+.convoca-data {font-family:var(--convoca-mono)}

@@ -165,7 +165,7 @@ export default function ReviewApplicationPage() {
           <div className="flex items-center justify-between h-16">
             <Link
               href="/university"
-              className="flex items-center gap-2 text-slate-600 hover:text-[#003f8f] transition-colors"
+              className="flex items-center gap-2 text-slate-600 hover:text-[#102B46] transition-colors"
             >
               <ArrowLeft className="w-4 h-4" />
               <span className="text-sm font-medium">Volver al panel</span>
@@ -217,7 +217,7 @@ export default function ReviewApplicationPage() {
             {/* Información Personal */}
             <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
               <div className="flex items-center gap-2 mb-4">
-                <User className="w-5 h-5 text-[#003f8f]" />
+                <User className="w-5 h-5 text-[#102B46]" />
                 <h2 className="text-lg font-bold text-slate-800">Información personal</h2>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -243,7 +243,7 @@ export default function ReviewApplicationPage() {
             {Object.keys(academic).length > 0 && (
               <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
                 <div className="flex items-center gap-2 mb-4">
-                  <GraduationCap className="w-5 h-5 text-[#003f8f]" />
+                  <GraduationCap className="w-5 h-5 text-[#102B46]" />
                   <h2 className="text-lg font-bold text-slate-800">Información académica</h2>
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -278,7 +278,7 @@ export default function ReviewApplicationPage() {
             {experience.length > 0 && experience[0]?.company && (
               <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
                 <div className="flex items-center gap-2 mb-4">
-                  <Briefcase className="w-5 h-5 text-[#003f8f]" />
+                  <Briefcase className="w-5 h-5 text-[#102B46]" />
                   <h2 className="text-lg font-bold text-slate-800">Experiencia profesional</h2>
                 </div>
                 <div className="space-y-4">
@@ -303,7 +303,7 @@ export default function ReviewApplicationPage() {
             {Object.values(complementary).some((v) => v) && (
               <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
                 <div className="flex items-center gap-2 mb-4">
-                  <Star className="w-5 h-5 text-[#003f8f]" />
+                  <Star className="w-5 h-5 text-[#102B46]" />
                   <h2 className="text-lg font-bold text-slate-800">Información complementaria</h2>
                 </div>
                 <div className="space-y-3">
@@ -351,7 +351,7 @@ export default function ReviewApplicationPage() {
             {app.history && app.history.length > 0 && (
               <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
                 <div className="flex items-center gap-2 mb-4">
-                  <History className="w-5 h-5 text-[#003f8f]" />
+                  <History className="w-5 h-5 text-[#102B46]" />
                   <h2 className="text-lg font-bold text-slate-800">Historial de cambios</h2>
                 </div>
                 <div className="space-y-3">
@@ -378,7 +378,7 @@ export default function ReviewApplicationPage() {
             {/* Panel de acciones */}
             <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 sticky top-20">
               <h3 className="font-bold text-slate-800 mb-4 flex items-center gap-2">
-                <FileCheck className="w-5 h-5 text-[#003f8f]" />
+                <FileCheck className="w-5 h-5 text-[#102B46]" />
                 Panel de evaluación
               </h3>
 
@@ -408,7 +408,7 @@ export default function ReviewApplicationPage() {
                   type="number"
                   min="0"
                   max="100"
-                  className="w-full px-3 py-2 rounded-lg border border-slate-300 focus:border-[#003f8f] focus:ring-2 focus:ring-[#003f8f]/20 outline-none transition-all"
+                  className="w-full px-3 py-2 rounded-lg border border-slate-300 focus:border-[#102B46] focus:ring-2 focus:ring-[#102B46]/20 outline-none transition-all"
                   value={score}
                   onChange={(e) => setScore(e.target.value)}
                 />
@@ -420,7 +420,7 @@ export default function ReviewApplicationPage() {
                   Notas de revisión
                 </label>
                 <textarea
-                  className="w-full px-3 py-2 rounded-lg border border-slate-300 focus:border-[#003f8f] focus:ring-2 focus:ring-[#003f8f]/20 outline-none transition-all resize-none"
+                  className="w-full px-3 py-2 rounded-lg border border-slate-300 focus:border-[#102B46] focus:ring-2 focus:ring-[#102B46]/20 outline-none transition-all resize-none"
                   rows={3}
                   placeholder="Observaciones sobre esta solicitud..."
                   value={reviewNotes}
@@ -447,12 +447,12 @@ export default function ReviewApplicationPage() {
             {/* Exportar */}
             <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
               <h3 className="font-bold text-slate-700 mb-3 flex items-center gap-2">
-                <Download className="w-4 h-4 text-[#003f8f]" />
+                <Download className="w-4 h-4 text-[#102B46]" />
                 Exportar datos
               </h3>
               <a
                 href={`/api/programs/${app.programId}/export?format=csv`}
-                className="flex items-center justify-center gap-2 w-full border-2 border-slate-200 text-slate-700 font-medium px-4 py-2.5 rounded-lg hover:border-[#003f8f] hover:text-[#003f8f] transition-all text-sm"
+                className="flex items-center justify-center gap-2 w-full border-2 border-slate-200 text-slate-700 font-medium px-4 py-2.5 rounded-lg hover:border-[#102B46] hover:text-[#102B46] transition-all text-sm"
               >
                 <Download className="w-4 h-4" />
                 Exportar solicitudes (CSV)

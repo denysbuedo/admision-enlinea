@@ -1,4 +1,5 @@
 "use client";
+import Brand from "@/components/Brand";
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
@@ -207,10 +208,7 @@ export default function AdminDashboard() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <Link href="/" className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg bg-[#003f8f] flex items-center justify-center text-white font-bold">
-                N
-              </div>
-              <span className="text-lg font-bold text-slate-800">Nexo</span>
+              <Brand />
               <span className="text-slate-400 text-sm">/ Super Administrador</span>
             </Link>
             <button
@@ -228,10 +226,10 @@ export default function AdminDashboard() {
         {/* Title */}
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-1">
-            <LayoutDashboard className="w-7 h-7 text-[#003f8f]" />
+            <LayoutDashboard className="w-7 h-7 text-[#102B46]" />
             <h1 className="text-2xl font-bold text-slate-800">Panel de Control</h1>
           </div>
-          <p className="text-slate-500 pl-10">Gestión global de la plataforma Nexo</p>
+          <p className="text-slate-500 pl-10">Gestión global de la plataforma CONVOCA</p>
         </div>
 
         {/* Message */}
@@ -256,7 +254,7 @@ export default function AdminDashboard() {
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4 mb-8">
           <div className="bg-white rounded-xl p-4 shadow-sm border border-slate-200">
             <div className="flex items-center justify-between mb-2">
-              <BookOpen className="w-5 h-5 text-[#003f8f]" />
+              <BookOpen className="w-5 h-5 text-[#102B46]" />
               <span className="text-2xl font-bold text-slate-800">{stats.totalPrograms}</span>
             </div>
             <p className="text-xs text-slate-500">Programas</p>
@@ -328,7 +326,7 @@ export default function AdminDashboard() {
             onClick={() => setActiveTab("programs")}
             className={`flex items-center gap-2 px-5 py-2 rounded-lg text-sm font-medium transition-all ${
               activeTab === "programs"
-                ? "bg-[#003f8f] text-white shadow-sm"
+                ? "bg-[#102B46] text-white shadow-sm"
                 : "text-slate-600 hover:bg-slate-100"
             }`}
           >
@@ -339,7 +337,7 @@ export default function AdminDashboard() {
             onClick={() => setActiveTab("universities")}
             className={`flex items-center gap-2 px-5 py-2 rounded-lg text-sm font-medium transition-all ${
               activeTab === "universities"
-                ? "bg-[#003f8f] text-white shadow-sm"
+                ? "bg-[#102B46] text-white shadow-sm"
                 : "text-slate-600 hover:bg-slate-100"
             }`}
           >
@@ -350,7 +348,7 @@ export default function AdminDashboard() {
             onClick={() => setActiveTab("users")}
             className={`flex items-center gap-2 px-5 py-2 rounded-lg text-sm font-medium transition-all ${
               activeTab === "users"
-                ? "bg-[#003f8f] text-white shadow-sm"
+                ? "bg-[#102B46] text-white shadow-sm"
                 : "text-slate-600 hover:bg-slate-100"
             }`}
           >
@@ -361,7 +359,7 @@ export default function AdminDashboard() {
             onClick={() => setActiveTab("applications")}
             className={`flex items-center gap-2 px-5 py-2 rounded-lg text-sm font-medium transition-all ${
               activeTab === "applications"
-                ? "bg-[#003f8f] text-white shadow-sm"
+                ? "bg-[#102B46] text-white shadow-sm"
                 : "text-slate-600 hover:bg-slate-100"
             }`}
           >
@@ -377,7 +375,7 @@ export default function AdminDashboard() {
               <h2 className="text-base font-semibold text-slate-800">Universidades Registradas</h2>
               <button
                 onClick={() => { setShowUnivModal(true); setUnivMsg(null); }}
-                className="flex items-center gap-2 bg-[#003f8f] text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-[#002e6b] transition-colors"
+                className="flex items-center gap-2 bg-[#102B46] text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-[#0C1D30] transition-colors"
               >
                 <Plus className="w-4 h-4" />
                 Nueva Universidad
@@ -417,7 +415,7 @@ export default function AdminDashboard() {
                         </td>
                         <td className="px-6 py-4 text-sm">
                           {u.website ? (
-                            <a href={u.website} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 text-[#003f8f] hover:underline">
+                            <a href={u.website} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 text-[#102B46] hover:underline">
                               <Globe className="w-3 h-3" />
                               Sitio web
                             </a>
@@ -445,7 +443,7 @@ export default function AdminDashboard() {
             <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg">
               <div className="flex items-center justify-between px-6 py-4 border-b border-slate-200">
                 <div className="flex items-center gap-2">
-                  <Building2 className="w-5 h-5 text-[#003f8f]" />
+                  <Building2 className="w-5 h-5 text-[#102B46]" />
                   <h2 className="text-lg font-semibold text-slate-800">Nueva Universidad</h2>
                 </div>
                 <button
@@ -472,7 +470,7 @@ export default function AdminDashboard() {
                     value={univForm.name}
                     onChange={(e) => setUnivForm({ ...univForm, name: e.target.value })}
                     placeholder="Ej: Universidad de La Habana"
-                    className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#003f8f] focus:border-transparent"
+                    className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#102B46] focus:border-transparent"
                   />
                 </div>
                 <div className="grid grid-cols-2 gap-3">
@@ -483,7 +481,7 @@ export default function AdminDashboard() {
                       value={univForm.country}
                       onChange={(e) => setUnivForm({ ...univForm, country: e.target.value })}
                       placeholder="Ej: Cuba"
-                      className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#003f8f] focus:border-transparent"
+                      className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#102B46] focus:border-transparent"
                     />
                   </div>
                   <div>
@@ -493,7 +491,7 @@ export default function AdminDashboard() {
                       value={univForm.city}
                       onChange={(e) => setUnivForm({ ...univForm, city: e.target.value })}
                       placeholder="Ej: La Habana"
-                      className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#003f8f] focus:border-transparent"
+                      className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#102B46] focus:border-transparent"
                     />
                   </div>
                 </div>
@@ -504,7 +502,7 @@ export default function AdminDashboard() {
                     value={univForm.faculty}
                     onChange={(e) => setUnivForm({ ...univForm, faculty: e.target.value })}
                     placeholder="Ej: Facultad de Ciencias Exactas"
-                    className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#003f8f] focus:border-transparent"
+                    className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#102B46] focus:border-transparent"
                   />
                 </div>
                 <div>
@@ -514,7 +512,7 @@ export default function AdminDashboard() {
                     value={univForm.website}
                     onChange={(e) => setUnivForm({ ...univForm, website: e.target.value })}
                     placeholder="https://..."
-                    className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#003f8f] focus:border-transparent"
+                    className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#102B46] focus:border-transparent"
                   />
                 </div>
                 <div>
@@ -524,7 +522,7 @@ export default function AdminDashboard() {
                     onChange={(e) => setUnivForm({ ...univForm, description: e.target.value })}
                     placeholder="Breve descripción de la institución..."
                     rows={3}
-                    className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#003f8f] focus:border-transparent resize-none"
+                    className="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#102B46] focus:border-transparent resize-none"
                   />
                 </div>
                 <div className="flex gap-3 pt-2">
@@ -538,7 +536,7 @@ export default function AdminDashboard() {
                   <button
                     type="submit"
                     disabled={univLoading}
-                    className="flex-1 bg-[#003f8f] text-white py-2.5 rounded-lg text-sm font-medium hover:bg-[#002e6b] transition-colors disabled:opacity-60 flex items-center justify-center gap-2"
+                    className="flex-1 bg-[#102B46] text-white py-2.5 rounded-lg text-sm font-medium hover:bg-[#0C1D30] transition-colors disabled:opacity-60 flex items-center justify-center gap-2"
                   >
                     {univLoading ? (
                       <><span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" /> Guardando...</>
@@ -616,7 +614,7 @@ export default function AdminDashboard() {
                           <div className="flex gap-3">
                             <Link
                               href={`/programs/${p.id}`}
-                              className="flex items-center gap-1 text-[#003f8f] hover:text-[#002e6b] text-sm font-medium"
+                              className="flex items-center gap-1 text-[#102B46] hover:text-[#0C1D30] text-sm font-medium"
                             >
                               <Eye className="w-3.5 h-3.5" />
                               Ver

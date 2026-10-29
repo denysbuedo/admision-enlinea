@@ -2,6 +2,15 @@
 
 ## Current State
 
+### Repository review — 2026-10-28
+
+- After a successful `git fetch origin --prune`, local `main` and `dev` matched `origin/main` and `origin/dev` at `7418f7ca4b2a70e8afac9eb5ea0e07e51e9cfb24` (2026-06-23). GitHub's default branch is `main`, independently confirmed with `git ls-remote --symref origin HEAD`. Before this documentation update, the working tree was clean: no changed files or ahead/behind commits.
+- Static review found public registration accepts and persists `super_admin` without authorization; JWT signing/verification falls back to a hardcoded secret when `JWT_SECRET` is absent; notification trigger authorization is commented out. These issues exist in the matching remote code too and were not fixed in this review.
+- `npm run typecheck` failed in the current local dependency installation, including missing Next.js type declarations. `next.config.ts` enables `ignoreBuildErrors`.
+- `npm run test -- --run` failed both suites before executing tests: Vitest references missing `src/test/setup.ts`, while the setup file is actually `test/setup.ts`.
+- `sqlite.db` is tracked in Git. No database contents or production environment were inspected. Code equality does not establish identical ignored environment files, installed dependencies, or deployed behavior.
+- Only this memory-bank entry was intentionally changed; no application fixes or deployment were performed.
+
 **Project Status**: ✅ Nexo platform fully implemented
 
 Nexo is a complete academic admissions platform for managing postgraduate program calls. Built on Next.js 16 with full-stack capabilities.
@@ -96,3 +105,11 @@ Nexo is a complete academic admissions platform for managing postgraduate progra
 | 2026-06-12 | **Fix POST /api/applications** — corregido handler de creación de aplicaciones: agregada validación de rol `aspirant`, validación de `programId`, verificación de existencia y estado del programa (`published`), detección de duplicados por usuario; inserción con valores seguros. **Fix GET /api/applications** — ahora filtra correctamente: super_admin ve todo, universidad ve solo sus programas vía `programs.universityId`, aspirante ve sus propias aplicaciones vía `applications.userId`. **Nuevas páginas universidad** — creadas `/university/programs/[id]/page.tsx` (detalle de programa con stats) y `/university/programs/[id]/applications/page.tsx` (lista filtrada de solicitudes). |
 | 2026-06-23 | **Actualización de despliegue Ubuntu** — `DEPLOY.md` ajustado para producción en `nexo.mes.gob.cu` con HAProxy remoto terminando TLS. Se eliminó el flujo de Nginx local, se documentó Next.js escuchando en `0.0.0.0:3000`, firewall restringido a `<IP_HAPROXY>`, encabezados esperados (`Host`, `X-Forwarded-Proto`, `X-Forwarded-For`) y pruebas con `curl`. |
 | 2026-06-23 | **Endurecimiento de credenciales admin** — removidas las credenciales de prueba visibles en `/login` y `/setup`; `/api/admin/seed` ahora usa `ADMIN_INITIAL_PASSWORD` y no devuelve contraseñas; agregado script `bun run db:admin-password` para resetear la contraseña de `admin@nexo.com` con `ADMIN_PASSWORD`. |
+
+### CONVOCA implementation — 2026-10-28
+
+- Connected to the production VM through the authorized SSH bastion, validating its existing host key. Production source matched `7418f7c`; only `bun.lock` integrity metadata and runtime `sqlite.db` differed. Adopted server lockfile, excluded access files and SQLite runtime data from future commits. Production data remains on the server.
+- Verified pre-change backup `/opt/convoca-backups/pre-convoca-20261028.tar.gz`. Direct health check with proxy bypass returned HTTP 200; an initial HTTP 503 originated from the server proxy, not Next.js.
+- Applied CONVOCA v1.0 official logos, colors, local Inter/IBM Plex Mono fonts with licenses, favicon and social preview. Redesigned homepage, updated branding/palette across existing screens, added program-type links and retained API/role identifiers.
+- Restored local Next.js dependency installation; typecheck and build passed. Fixed Vitest setup path and timezone-dependent sample test: 6 tests passed. Browser checks on home, catalog, login and register passed desktop/mobile without horizontal overflow or page errors; inspected homepage screenshots.
+- Added `PLAN-EVOLUCION.md` as a proposal for the next stage, including known authorization flaws, dependency review, functional coverage and operational hardening. These backend changes are deferred, not claimed fixed by the visual refresh.

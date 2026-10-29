@@ -1,6 +1,7 @@
 'use client';
+import Brand from "@/components/Brand";
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import Link from 'next/link';
 import { usePrograms } from '@/hooks/usePrograms';
 import {
@@ -32,6 +33,10 @@ export default function ProgramsPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedUniversity, setSelectedUniversity] = useState('');
   const [selectedDegree, setSelectedDegree] = useState('');
+  useEffect(() => {
+    const type = new URLSearchParams(window.location.search).get('type');
+    if (type && type in typeLabels) setSelectedDegree(type);
+  }, []);
   const [maxDuration, setMaxDuration] = useState<number | ''>('');
 
   const universities = useMemo(
@@ -87,21 +92,18 @@ export default function ProgramsPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <Link href="/" className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg bg-[#003f8f] flex items-center justify-center text-white font-bold">
-                N
-              </div>
-              <span className="text-lg font-bold text-slate-800">Nexo</span>
+              <Brand />
             </Link>
-            <nav className="hidden md:flex items-center gap-6">
-              <Link href="/" className="text-slate-600 hover:text-[#003f8f] transition-colors">
+            <nav className="flex items-center gap-3 text-sm">
+              <Link href="/" className="text-slate-600 hover:text-[#102B46] transition-colors">
                 Inicio
               </Link>
-              <Link href="/login" className="text-slate-600 hover:text-[#003f8f] transition-colors">
+              <Link href="/login" className="text-slate-600 hover:text-[#102B46] transition-colors">
                 Iniciar Sesión
               </Link>
               <Link
                 href="/register"
-                className="bg-[#003f8f] text-white px-4 py-2 rounded-lg hover:bg-[#002e6b] transition-all text-sm font-medium"
+                className="bg-[#102B46] text-white px-4 py-2 rounded-lg hover:bg-[#0C1D30] transition-all text-sm font-medium"
               >
                 Registrarse
               </Link>
@@ -115,7 +117,7 @@ export default function ProgramsPage() {
         <div className="mb-6">
           <Link
             href="/"
-            className="inline-flex items-center gap-2 text-[#003f8f] hover:text-[#002e6b] font-medium transition-colors"
+            className="inline-flex items-center gap-2 text-[#102B46] hover:text-[#0C1D30] font-medium transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
             Volver al inicio
@@ -125,7 +127,7 @@ export default function ProgramsPage() {
         {/* Título */}
         <div className="mb-8">
           <div className="flex items-center gap-2 mb-2">
-            <BookOpen className="w-7 h-7 text-[#003f8f]" />
+            <BookOpen className="w-7 h-7 text-[#102B46]" />
             <h1 className="text-3xl font-bold text-slate-800">Programas académicos</h1>
           </div>
           <p className="text-slate-500 pl-9">
@@ -136,7 +138,7 @@ export default function ProgramsPage() {
         {/* Barra de Filtros */}
         <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-5 mb-8">
           <div className="flex items-center gap-2 mb-4 pb-2 border-b border-slate-100">
-            <Filter className="w-4 h-4 text-[#003f8f]" />
+            <Filter className="w-4 h-4 text-[#102B46]" />
             <span className="text-sm font-semibold text-slate-700">Filtros de búsqueda</span>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -148,7 +150,7 @@ export default function ProgramsPage() {
                 placeholder="Buscar por nombre o descripción..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-9 pr-4 py-2 rounded-lg border border-slate-300 focus:border-[#003f8f] focus:ring-2 focus:ring-[#003f8f]/20 outline-none transition-all bg-white text-sm"
+                className="w-full pl-9 pr-4 py-2 rounded-lg border border-slate-300 focus:border-[#102B46] focus:ring-2 focus:ring-[#102B46]/20 outline-none transition-all bg-white text-sm"
               />
             </div>
 
@@ -158,7 +160,7 @@ export default function ProgramsPage() {
               <select
                 value={selectedUniversity}
                 onChange={(e) => setSelectedUniversity(e.target.value)}
-                className="w-full pl-9 pr-8 py-2 rounded-lg border border-slate-300 focus:border-[#003f8f] focus:ring-2 focus:ring-[#003f8f]/20 outline-none appearance-none bg-white text-sm"
+                className="w-full pl-9 pr-8 py-2 rounded-lg border border-slate-300 focus:border-[#102B46] focus:ring-2 focus:ring-[#102B46]/20 outline-none appearance-none bg-white text-sm"
               >
                 <option value="">Todas las universidades</option>
                 {universities.map((uni: any) => (
@@ -176,7 +178,7 @@ export default function ProgramsPage() {
               <select
                 value={selectedDegree}
                 onChange={(e) => setSelectedDegree(e.target.value)}
-                className="w-full pl-9 pr-8 py-2 rounded-lg border border-slate-300 focus:border-[#003f8f] focus:ring-2 focus:ring-[#003f8f]/20 outline-none appearance-none bg-white text-sm"
+                className="w-full pl-9 pr-8 py-2 rounded-lg border border-slate-300 focus:border-[#102B46] focus:ring-2 focus:ring-[#102B46]/20 outline-none appearance-none bg-white text-sm"
               >
                 <option value="">Todos los grados</option>
                 {degrees.map((deg: string) => (
@@ -196,7 +198,7 @@ export default function ProgramsPage() {
                 placeholder="Duración máxima (semestres)"
                 value={maxDuration}
                 onChange={(e) => setMaxDuration(e.target.value ? Number(e.target.value) : '')}
-                className="w-full pl-9 pr-4 py-2 rounded-lg border border-slate-300 focus:border-[#003f8f] focus:ring-2 focus:ring-[#003f8f]/20 outline-none transition-all bg-white text-sm"
+                className="w-full pl-9 pr-4 py-2 rounded-lg border border-slate-300 focus:border-[#102B46] focus:ring-2 focus:ring-[#102B46]/20 outline-none transition-all bg-white text-sm"
               />
             </div>
           </div>
@@ -209,13 +211,13 @@ export default function ProgramsPage() {
               {filteredPrograms.map((program: any) => (
                 <div
                   key={program.id}
-                  className="bg-white rounded-xl shadow-sm border border-slate-200 hover:shadow-md hover:border-[#003f8f]/30 transition-all overflow-hidden group"
+                  className="bg-white rounded-xl shadow-sm border border-slate-200 hover:shadow-md hover:border-[#102B46]/30 transition-all overflow-hidden group"
                 >
                   <div className="p-6">
                     {/* Header del programa */}
                     <div className="flex items-start justify-between mb-3">
                       <div className="flex-1">
-                        <h3 className="text-xl font-bold text-slate-800 group-hover:text-[#003f8f] transition-colors line-clamp-2">
+                        <h3 className="text-xl font-bold text-slate-800 group-hover:text-[#102B46] transition-colors line-clamp-2">
                           {program.title}
                         </h3>
                       </div>
@@ -259,7 +261,7 @@ export default function ProgramsPage() {
                     {/* Botón ver detalles */}
                     <Link
                       href={`/programs/${program.id}`}
-                      className="w-full flex items-center justify-center gap-2 bg-[#003f8f] text-white py-2.5 rounded-lg hover:bg-[#002e6b] transition-all font-medium text-sm"
+                      className="w-full flex items-center justify-center gap-2 bg-[#102B46] text-white py-2.5 rounded-lg hover:bg-[#0C1D30] transition-all font-medium text-sm"
                     >
                       Ver detalles
                       <ChevronRight className="w-4 h-4" />
@@ -297,14 +299,11 @@ export default function ProgramsPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-2">
-              <div className="w-7 h-7 rounded bg-[#003f8f] flex items-center justify-center text-white font-bold text-sm">
-                N
-              </div>
-              <span className="text-slate-700 font-semibold">Nexo</span>
+              <Brand />
               <span className="text-slate-400 text-sm">– Plataforma de admisiones de posgrado</span>
             </div>
             <div className="text-sm text-slate-400">
-              © 2026 Nexo. Todos los derechos reservados.
+              © 2026 CONVOCA. Todos los derechos reservados.
             </div>
           </div>
         </div>

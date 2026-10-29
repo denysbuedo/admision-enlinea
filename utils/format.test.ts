@@ -4,7 +4,7 @@ describe('Utilidades de Formato', () => {
   it('debería formatear una fecha correctamente', () => {
     // Ejemplo simple para validar que vitest corre
     const date = new Date('2024-01-01');
-    const formatted = date.toLocaleDateString('es-ES');
+    const formatted = date.toLocaleDateString('es-ES', { timeZone: 'UTC' });
     
     expect(formatted).toBe('1/1/2024');
   });

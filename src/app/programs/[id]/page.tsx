@@ -1,4 +1,5 @@
 "use client";
+import Brand from "@/components/Brand";
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
@@ -164,16 +165,13 @@ export default function ProgramDetailPage() {
           <div className="flex items-center justify-between h-16">
             <Link
               href="/programs"
-              className="flex items-center gap-2 text-slate-600 hover:text-[#003f8f] transition-colors"
+              className="flex items-center gap-2 text-slate-600 hover:text-[#102B46] transition-colors"
             >
               <ArrowLeft className="w-4 h-4" />
               <span className="text-sm font-medium">Volver a programas</span>
             </Link>
             <Link href="/" className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg bg-[#003f8f] flex items-center justify-center text-white font-bold">
-                N
-              </div>
-              <span className="text-lg font-bold text-slate-800">Nexo</span>
+              <Brand />
             </Link>
           </div>
         </div>
@@ -186,7 +184,7 @@ export default function ProgramDetailPage() {
             {/* Tarjeta de encabezado */}
             <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
               <div className="flex items-start gap-4 mb-4">
-                <div className="w-14 h-14 rounded-xl bg-[#003f8f] flex items-center justify-center text-white text-2xl font-bold flex-shrink-0 shadow-md">
+                <div className="w-14 h-14 rounded-xl bg-[#102B46] flex items-center justify-center text-white text-2xl font-bold flex-shrink-0 shadow-md">
                   {program.universityName?.[0] || "U"}
                 </div>
                 <div className="flex-1">
@@ -199,8 +197,8 @@ export default function ProgramDetailPage() {
                   </span>
                   <h1 className="text-2xl font-bold text-slate-800 mt-1">{program.title}</h1>
                   <div className="flex items-center gap-2 mt-1">
-                    <Building2 className="w-4 h-4 text-[#003f8f]" />
-                    <p className="text-[#003f8f] font-semibold">{program.universityName}</p>
+                    <Building2 className="w-4 h-4 text-[#102B46]" />
+                    <p className="text-[#102B46] font-semibold">{program.universityName}</p>
                   </div>
                   {program.universityCity && (
                     <div className="flex items-center gap-1 mt-1">
@@ -260,7 +258,7 @@ export default function ProgramDetailPage() {
             {/* Fechas clave */}
             <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
               <div className="flex items-center gap-2 mb-4">
-                <Calendar className="w-5 h-5 text-[#003f8f]" />
+                <Calendar className="w-5 h-5 text-[#102B46]" />
                 <h2 className="text-lg font-bold text-slate-800">Fechas clave</h2>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -292,7 +290,7 @@ export default function ProgramDetailPage() {
             {/* Requisitos de elegibilidad */}
             <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
               <div className="flex items-center gap-2 mb-4">
-                <CheckSquare className="w-5 h-5 text-[#003f8f]" />
+                <CheckSquare className="w-5 h-5 text-[#102B46]" />
                 <h2 className="text-lg font-bold text-slate-800">Requisitos de elegibilidad</h2>
               </div>
               <div className="space-y-3">
@@ -345,7 +343,7 @@ export default function ProgramDetailPage() {
             {docs.length > 0 && (
               <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
                 <div className="flex items-center gap-2 mb-4">
-                  <FileText className="w-5 h-5 text-[#003f8f]" />
+                  <FileText className="w-5 h-5 text-[#102B46]" />
                   <h2 className="text-lg font-bold text-slate-800">Documentos requeridos</h2>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -363,7 +361,7 @@ export default function ProgramDetailPage() {
             {(program.selectionProcess || program.hasInterview || program.hasExam) && (
               <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
                 <div className="flex items-center gap-2 mb-4">
-                  <Users className="w-5 h-5 text-[#003f8f]" />
+                  <Users className="w-5 h-5 text-[#102B46]" />
                   <h2 className="text-lg font-bold text-slate-800">Proceso de selección</h2>
                 </div>
                 {program.selectionProcess && (
@@ -390,7 +388,7 @@ export default function ProgramDetailPage() {
           {/* Columna lateral */}
           <div className="space-y-4">
             {/* Tarjeta de postulación */}
-            <div className="bg-white rounded-xl shadow-sm border-2 border-[#003f8f]/20 p-6 sticky top-20">
+            <div className="bg-white rounded-xl shadow-sm border-2 border-[#102B46]/20 p-6 sticky top-20">
               {program.totalCost && (
                 <div className="text-center mb-4 pb-4 border-b border-slate-100">
                   <div className="text-3xl font-bold text-slate-800">
@@ -423,7 +421,7 @@ export default function ProgramDetailPage() {
                 <button
                   onClick={handleApply}
                   disabled={applying}
-                  className="w-full flex items-center justify-center gap-2 bg-[#003f8f] text-white font-semibold py-3 rounded-lg hover:bg-[#002e6b] transition-all disabled:opacity-50 text-base"
+                  className="w-full flex items-center justify-center gap-2 bg-[#102B46] text-white font-semibold py-3 rounded-lg hover:bg-[#0C1D30] transition-all disabled:opacity-50 text-base"
                 >
                   {applying ? (
                     <>
@@ -460,7 +458,7 @@ export default function ProgramDetailPage() {
             {program.paymentMethods && (
               <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-5">
                 <div className="flex items-center gap-2 mb-2">
-                  <CreditCard className="w-4 h-4 text-[#003f8f]" />
+                  <CreditCard className="w-4 h-4 text-[#102B46]" />
                   <h3 className="font-bold text-slate-700">Formas de pago</h3>
                 </div>
                 <p className="text-slate-600 text-sm">{program.paymentMethods}</p>
@@ -470,7 +468,7 @@ export default function ProgramDetailPage() {
             {/* Información de la universidad */}
             <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-5">
               <div className="flex items-center gap-2 mb-3">
-                <Building2 className="w-4 h-4 text-[#003f8f]" />
+                <Building2 className="w-4 h-4 text-[#102B46]" />
                 <h3 className="font-bold text-slate-700">Universidad</h3>
               </div>
               <p className="font-semibold text-slate-800">{program.universityName}</p>
@@ -487,7 +485,7 @@ export default function ProgramDetailPage() {
                   href={program.universityWebsite}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-1 text-[#003f8f] text-sm hover:underline mt-2"
+                  className="flex items-center gap-1 text-[#102B46] text-sm hover:underline mt-2"
                 >
                   Visitar sitio web
                   <ExternalLink className="w-3.5 h-3.5" />
@@ -499,13 +497,13 @@ export default function ProgramDetailPage() {
             {(program.privacyPolicy || program.termsConditions) && (
               <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-5">
                 <div className="flex items-center gap-2 mb-2">
-                  <Shield className="w-4 h-4 text-[#003f8f]" />
+                  <Shield className="w-4 h-4 text-[#102B46]" />
                   <h3 className="font-bold text-slate-700">Información legal</h3>
                 </div>
                 {program.privacyPolicy && (
                   <button
                     onClick={() => alert(program.privacyPolicy)}
-                    className="text-slate-600 text-sm hover:text-[#003f8f] transition-colors block mb-1"
+                    className="text-slate-600 text-sm hover:text-[#102B46] transition-colors block mb-1"
                   >
                     Política de privacidad →
                   </button>
@@ -513,7 +511,7 @@ export default function ProgramDetailPage() {
                 {program.termsConditions && (
                   <button
                     onClick={() => alert(program.termsConditions)}
-                    className="text-slate-600 text-sm hover:text-[#003f8f] transition-colors block"
+                    className="text-slate-600 text-sm hover:text-[#102B46] transition-colors block"
                   >
                     Términos y condiciones →
                   </button>

@@ -1,193 +1,74 @@
 import Link from "next/link";
 import { getSession } from "@/lib/auth";
 import { redirect } from "next/navigation";
-import { Building2, GraduationCap, Gauge, BookOpen, ScrollText, Microscope, GraduationCap as Masters, Trophy, BarChart3, Users, Clock } from "lucide-react";
+import { ArrowUpRight, ArrowRight, BookOpen, Building2, ClipboardCheck, GraduationCap, Search } from "lucide-react";
+import Brand from "@/components/Brand";
+
+const programs = [
+  { name: "Cursos", type: "curso", detail: "Amplía tus conocimientos" },
+  { name: "Diplomados", type: "diplomado", detail: "Profundiza en tu especialidad" },
+  { name: "Especialidades", type: "especializacion", detail: "Desarrolla tu práctica profesional" },
+  { name: "Maestrías", type: "maestria", detail: "Da el siguiente paso" },
+  { name: "Doctorados", type: "doctorado", detail: "Abre caminos en la investigación" },
+];
 
 export default async function HomePage() {
   const session = await getSession();
-
-  if (session) {
-    if (session.role === "super_admin") redirect("/admin");
-    if (session.role === "university") redirect("/university");
-    if (session.role === "aspirant") redirect("/dashboard");
-  }
+  if (session?.role === "super_admin") redirect("/admin");
+  if (session?.role === "university") redirect("/university");
+  if (session?.role === "aspirant") redirect("/dashboard");
 
   return (
-    <div className="min-h-screen">
-      {/* Header */}
-      <header className="bg-white border-b border-slate-200 sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-lg bg-[#003f8f] flex items-center justify-center text-white font-bold text-lg">N</div>
-              <span className="text-xl font-bold text-slate-800">Nexo</span>
-            </div>
-            <nav className="hidden md:flex items-center gap-6">
-              <Link href="/programs" className="text-slate-600 hover:text-[#003f8f] font-medium transition-colors">
-                Programas
-              </Link>
-              <Link href="/login" className="text-slate-600 hover:text-[#003f8f] font-medium transition-colors">
-                Iniciar Sesión
-              </Link>
-              <Link href="/register" className="bg-[#003f8f] text-white font-medium px-5 py-2 rounded-lg hover:bg-[#002e6b] transition-all">
-                Registrarse
-              </Link>
-            </nav>
-          </div>
+    <div className="convoca-home">
+      <header className="public-header">
+        <div className="site-container header-inner">
+          <Link href="/" aria-label="CONVOCA · Inicio"><Brand inverse /></Link>
+          <nav aria-label="Navegación principal">
+            <Link href="/programs">Programas</Link>
+            <Link href="#como-funciona" className="desktop-link">Cómo funciona</Link>
+            <Link href="/login">Iniciar sesión</Link>
+            <Link href="/register" className="nav-register">Crear cuenta <ArrowUpRight size={16} /></Link>
+          </nav>
         </div>
       </header>
-
-      {/* Hero */}
-      <section className="bg-[#003f8f] text-white py-24 px-4">
-        <div className="max-w-4xl mx-auto text-center">
-          <h1 className="text-5xl font-bold mb-6 leading-tight">
-            Programas de posgrado
-          </h1>
-          <p className="text-xl text-blue-100 mb-10 max-w-2xl mx-auto">
-            Gestiona programas de posgrado (cursos, diplomados, maestrías, especialidades, doctorados) y conecta a las universidades con los mejores aspirantes.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/programs" className="bg-white text-[#003f8f] font-bold px-8 py-3 rounded-xl hover:bg-blue-50 transition-colors text-lg shadow-lg">
-              Ver Programas
-            </Link>
-            <Link href="/register?role=university" className="bg-white/20 text-white font-bold px-8 py-3 rounded-xl hover:bg-white/30 transition-colors text-lg border border-white/30">
-              Soy Institución
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* Features */}
-      <section className="py-20 px-4 bg-white">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl font-bold text-center text-slate-800 mb-4">
-            Una plataforma diseñada para la gestión integral de admisiones
-          </h2>
-          <p className="text-center text-slate-500 mb-12 text-lg max-w-2xl mx-auto">
-            Soluciones específicas para cada actor del proceso, con estándares internacionales y flujos automatizados.
-          </p>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              {
-                icon: Building2,
-                title: "Para instituciones",
-                desc: "Diseñe y publique programas con campos estandarizados. Gestione solicitudes, filtre candidatos y administre el flujo de admisión desde un solo lugar.",
-                bg: "bg-[#e6f0ff]",
-                iconColor: "text-[#003f8f]",
-              },
-              {
-                icon: GraduationCap,
-                title: "Para aspirantes",
-                desc: "Descubra programas de posgrado, complete solicitudes con formularios internacionales y monitoree el estado de sus postulaciones en tiempo real.",
-                bg: "bg-[#e6f0ff]",
-                iconColor: "text-[#003f8f]",
-              },
-              {
-                icon: Gauge,
-                title: "Gestión inteligente",
-                desc: "Dashboards analíticos, flujos de estado automatizados, notificaciones configurables y exportación de datos en múltiples formatos.",
-                bg: "bg-[#e6f0ff]",
-                iconColor: "text-[#003f8f]",
-              },
-            ].map((f) => (
-              <div key={f.title} className={`${f.bg} rounded-2xl p-8 transition-all hover:shadow-lg`}>
-                <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center mb-4 shadow-sm">
-                  <f.icon className={`w-6 h-6 ${f.iconColor}`} />
-                </div>
-                <h3 className="text-xl font-bold text-slate-800 mb-3">{f.title}</h3>
-                <p className="text-slate-600 leading-relaxed">{f.desc}</p>
+      <main>
+        <section className="home-hero">
+          <div className="site-container hero-layout">
+            <div className="hero-copy">
+              <p className="eyebrow"><span /> EDUCACIÓN SUPERIOR · CUBA</p>
+              <h1>Tu próxima oportunidad <em>comienza aquí.</em></h1>
+              <p className="hero-description">Descubre cursos, diplomados, especialidades, maestrías y doctorados. Consulta programas, presenta tu solicitud y sigue el proceso de admisión desde un solo lugar.</p>
+              <div className="hero-actions">
+                <Link href="/programs" className="mint-button">Explorar programas <ArrowRight size={18} /></Link>
+                <Link href="/login" className="outline-button">Soy institución <ArrowUpRight size={18} /></Link>
               </div>
-            ))}
+              <p className="hero-signature">Conecta oportunidades. Impulsa trayectorias.</p>
+            </div>
+            <aside className="opportunity-panel" aria-label="Tu trayectoria académica">
+              <div className="panel-heading"><span>EL SIGUIENTE PASO ES TUYO</span><GraduationCap size={24} /></div>
+              <h2>Una oportunidad.<br />Nuevos caminos.</h2>
+              <div className="journey-step"><span>01</span><div><strong>Encuentra tu programa</strong><p>Explora la oferta de las instituciones.</p></div><Search size={20} /></div>
+              <div className="journey-step"><span>02</span><div><strong>Prepara tu postulación</strong><p>Consulta requisitos y fechas.</p></div><BookOpen size={20} /></div>
+              <div className="journey-step"><span>03</span><div><strong>Sigue tu solicitud</strong><p>Acompaña cada etapa del proceso.</p></div><ClipboardCheck size={20} /></div>
+              <div className="panel-footer"><span className="status-dot" /> TU FORMACIÓN, EN UN SOLO LUGAR</div>
+            </aside>
           </div>
-        </div>
-      </section>
-
-      {/* Program Types */}
-      <section className="py-20 px-4 bg-slate-50">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl font-bold text-center text-slate-800 mb-4">
-            Tipos de programas
-          </h2>
-          <p className="text-center text-slate-500 mb-12 text-lg">
-            Ofertas académicas para cada etapa de tu formación profesional
-          </p>
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-            {[
-              { type: "Curso", icon: BookOpen, color: "bg-[#e6f0ff] text-[#003f8f] hover:bg-[#d4e4ff]" },
-              { type: "Diplomado", icon: ScrollText, color: "bg-[#e6f0ff] text-[#003f8f] hover:bg-[#d4e4ff]" },
-              { type: "Especialidad", icon: Microscope, color: "bg-[#e6f0ff] text-[#003f8f] hover:bg-[#d4e4ff]" },
-              { type: "Maestría", icon: Masters, color: "bg-[#e6f0ff] text-[#003f8f] hover:bg-[#d4e4ff]" },
-              { type: "Doctorado", icon: Trophy, color: "bg-[#e6f0ff] text-[#003f8f] hover:bg-[#d4e4ff]" },
-            ].map((p) => (
-              <Link
-                key={p.type}
-                href={`/programs?type=${p.type.toLowerCase()}`}
-                className={`${p.color} rounded-xl p-6 text-center transition-all hover:scale-105`}
-              >
-                <div className="flex justify-center mb-3">
-                  <p.icon className="w-8 h-8" />
-                </div>
-                <div className="font-semibold text-sm">{p.type}</div>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Stats */}
-      <section className="py-20 px-4 bg-[#003f8f] text-white">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-            {[
-              { icon: BarChart3, value: "100%", label: "Estándar internacional" },
-              { icon: Clock, value: "7", label: "Estados de solicitud" },
-              { icon: Users, value: "3", label: "Roles del sistema" },
-            ].map((s) => (
-              <div key={s.label} className="bg-white/10 rounded-2xl p-8 backdrop-blur-sm">
-                <div className="flex justify-center mb-4">
-                  <s.icon className="w-10 h-10 text-blue-200" />
-                </div>
-                <div className="text-5xl font-bold mb-2">{s.value}</div>
-                <div className="text-blue-200 text-lg">{s.label}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* CTA */}
-      <section className="py-20 px-4 bg-white">
-        <div className="max-w-2xl mx-auto text-center">
-          <h2 className="text-3xl font-bold text-slate-800 mb-4">
-            ¿Listo para comenzar?
-          </h2>
-          <p className="text-slate-500 mb-8 text-lg">
-            Únete a Nexo y simplifica tu proceso de admisiones
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/register" className="bg-[#003f8f] text-white font-bold px-8 py-3 rounded-xl hover:bg-[#002e6b] transition-all shadow-md">
-              Crear cuenta gratis
-            </Link>
-            <Link href="/programs" className="border-2 border-slate-200 text-slate-700 font-bold px-8 py-3 rounded-xl hover:border-[#003f8f] hover:text-[#003f8f] transition-all">
-              Explorar programas
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* Footer */}
-      <footer className="bg-slate-800 text-slate-400 py-8 px-4">
-        <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-2">
-            <div className="w-7 h-7 rounded bg-[#003f8f] flex items-center justify-center text-white font-bold text-sm">N</div>
-            <span className="text-white font-semibold">Nexo</span>
-            <span className="text-slate-500">– Plataforma de admisiones de posgrado</span>
-          </div>
-          <div className="text-sm">
-            © 2026 Nexo. Todos los derechos reservados.
-          </div>
-        </div>
-      </footer>
+        </section>
+        <section className="home-programs site-container">
+          <div className="section-heading"><div><p className="section-kicker">ENCUENTRA TU CAMINO</p><h2>Formación para seguir creciendo</h2></div><Link href="/programs">Ver programas <ArrowUpRight size={18} /></Link></div>
+          <div className="program-type-grid">{programs.map((p, i) => <Link key={p.type} href={`/programs?type=${p.type}`} className="program-type"><span className="type-number">0{i + 1}</span><GraduationCap size={28} strokeWidth={1.4} /><h3>{p.name}</h3><p>{p.detail}</p><ArrowUpRight size={19} className="type-arrow" /></Link>)}</div>
+        </section>
+        <section className="home-process" id="como-funciona"><div className="site-container">
+          <div className="section-heading"><div><p className="section-kicker">CLARIDAD EN CADA ETAPA</p><h2>Explora. Postula. Avanza.</h2></div><p>Tu trayectoria académica merece un proceso organizado.</p></div>
+          <div className="process-grid">{[
+            { icon: Search, title: "Explora tus opciones", text: "Encuentra programas y revisa sus requisitos, modalidades y plazos antes de postular." },
+            { icon: ClipboardCheck, title: "Presenta tu solicitud", text: "Crea tu cuenta y completa la información de tu postulación en un espacio organizado." },
+            { icon: GraduationCap, title: "Consulta tu avance", text: "Accede a tus solicitudes y consulta el estado de tu proceso de admisión." },
+          ].map((item, i) => <article key={item.title}><div className="process-icon"><item.icon size={24} /><span>0{i + 1}</span></div><h3>{item.title}</h3><p>{item.text}</p></article>)}</div>
+        </div></section>
+        <section className="site-container institution-section"><div className="institution-card"><Building2 size={44} strokeWidth={1.3} /><div><p className="eyebrow">ESPACIO INSTITUCIONAL</p><h2>Publica programas.<br />Gestiona admisiones.</h2><p>Organiza tu oferta académica, revisa aspirantes y da seguimiento a las solicitudes desde una plataforma centralizada.</p></div><Link href="/login" className="mint-button">Acceso institucional <ArrowUpRight size={18} /></Link></div></section>
+      </main>
+      <footer className="public-footer"><div className="site-container"><Link href="/" aria-label="CONVOCA · Inicio"><Brand /></Link><p>Una plataforma de RedUniv<br /><span>Ministerio de Educación Superior de Cuba</span></p><span>Conecta oportunidades.<br />Impulsa trayectorias.</span></div></footer>
     </div>
   );
 }

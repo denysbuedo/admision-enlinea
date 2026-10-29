@@ -143,7 +143,7 @@ export default function NewProgramPage() {
           <div className="flex items-center justify-between h-16">
             <Link
               href="/university"
-              className="flex items-center gap-2 text-slate-600 hover:text-[#003f8f] transition-colors"
+              className="flex items-center gap-2 text-slate-600 hover:text-[#102B46] transition-colors"
             >
               <ArrowLeft className="w-4 h-4" />
               <span className="text-sm font-medium">Volver al panel</span>
@@ -158,7 +158,7 @@ export default function NewProgramPage() {
               <button
                 onClick={handleSubmit}
                 disabled={saving}
-                className="flex items-center gap-2 bg-[#003f8f] text-white font-medium px-5 py-2 rounded-lg hover:bg-[#002e6b] transition-all disabled:opacity-50"
+                className="flex items-center gap-2 bg-[#102B46] text-white font-medium px-5 py-2 rounded-lg hover:bg-[#0C1D30] transition-all disabled:opacity-50"
               >
                 {saving ? (
                   <>
@@ -194,7 +194,7 @@ export default function NewProgramPage() {
               onClick={() => setActiveSection(i)}
               className={`flex items-center gap-2 flex-shrink-0 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
                 activeSection === i
-                  ? "bg-[#003f8f] text-white shadow-sm"
+                  ? "bg-[#102B46] text-white shadow-sm"
                   : "text-slate-600 hover:bg-slate-100"
               }`}
             >
@@ -208,7 +208,7 @@ export default function NewProgramPage() {
         {activeSection === 0 && (
           <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
             <div className="flex items-center gap-2 mb-5">
-              <FileText className="w-5 h-5 text-[#003f8f]" />
+              <FileText className="w-5 h-5 text-[#102B46]" />
               <h2 className="text-lg font-bold text-slate-800">Información general</h2>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -217,7 +217,7 @@ export default function NewProgramPage() {
                   Título del programa *
                 </label>
                 <input
-                  className="w-full px-3 py-2 rounded-lg border border-slate-300 focus:border-[#003f8f] focus:ring-2 focus:ring-[#003f8f]/20 outline-none transition-all"
+                  className="w-full px-3 py-2 rounded-lg border border-slate-300 focus:border-[#102B46] focus:ring-2 focus:ring-[#102B46]/20 outline-none transition-all"
                   placeholder="Ej: Maestría en Ciencias de Datos"
                   value={form.title}
                   onChange={(e) => setForm({ ...form, title: e.target.value })}
@@ -228,7 +228,7 @@ export default function NewProgramPage() {
                   Tipo de programa *
                 </label>
                 <select
-                  className="w-full px-3 py-2 rounded-lg border border-slate-300 focus:border-[#003f8f] focus:ring-2 focus:ring-[#003f8f]/20 outline-none transition-all"
+                  className="w-full px-3 py-2 rounded-lg border border-slate-300 focus:border-[#102B46] focus:ring-2 focus:ring-[#102B46]/20 outline-none transition-all"
                   value={form.programType}
                   onChange={(e) => setForm({ ...form, programType: e.target.value })}
                 >
@@ -244,7 +244,7 @@ export default function NewProgramPage() {
                   Modalidad *
                 </label>
                 <select
-                  className="w-full px-3 py-2 rounded-lg border border-slate-300 focus:border-[#003f8f] focus:ring-2 focus:ring-[#003f8f]/20 outline-none transition-all"
+                  className="w-full px-3 py-2 rounded-lg border border-slate-300 focus:border-[#102B46] focus:ring-2 focus:ring-[#102B46]/20 outline-none transition-all"
                   value={form.modality}
                   onChange={(e) => setForm({ ...form, modality: e.target.value })}
                 >
@@ -258,7 +258,7 @@ export default function NewProgramPage() {
                   Duración
                 </label>
                 <input
-                  className="w-full px-3 py-2 rounded-lg border border-slate-300 focus:border-[#003f8f] focus:ring-2 focus:ring-[#003f8f]/20 outline-none transition-all"
+                  className="w-full px-3 py-2 rounded-lg border border-slate-300 focus:border-[#102B46] focus:ring-2 focus:ring-[#102B46]/20 outline-none transition-all"
                   placeholder="Ej: 2 años, 4 semestres"
                   value={form.duration}
                   onChange={(e) => setForm({ ...form, duration: e.target.value })}
@@ -271,7 +271,7 @@ export default function NewProgramPage() {
                 <div className="relative">
                   <Globe className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                   <input
-                    className="w-full pl-10 pr-3 py-2 rounded-lg border border-slate-300 focus:border-[#003f8f] focus:ring-2 focus:ring-[#003f8f]/20 outline-none transition-all"
+                    className="w-full pl-10 pr-3 py-2 rounded-lg border border-slate-300 focus:border-[#102B46] focus:ring-2 focus:ring-[#102B46]/20 outline-none transition-all"
                     value={form.language}
                     onChange={(e) => setForm({ ...form, language: e.target.value })}
                   />
@@ -284,7 +284,7 @@ export default function NewProgramPage() {
                 <div className="relative">
                   <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                   <input
-                    className="w-full pl-10 pr-3 py-2 rounded-lg border border-slate-300 focus:border-[#003f8f] focus:ring-2 focus:ring-[#003f8f]/20 outline-none transition-all"
+                    className="w-full pl-10 pr-3 py-2 rounded-lg border border-slate-300 focus:border-[#102B46] focus:ring-2 focus:ring-[#102B46]/20 outline-none transition-all"
                     placeholder="Ej: Bogotá, Colombia"
                     value={form.location}
                     onChange={(e) => setForm({ ...form, location: e.target.value })}
@@ -297,7 +297,7 @@ export default function NewProgramPage() {
                 </label>
                 <input
                   type="number"
-                  className="w-full px-3 py-2 rounded-lg border border-slate-300 focus:border-[#003f8f] focus:ring-2 focus:ring-[#003f8f]/20 outline-none transition-all"
+                  className="w-full px-3 py-2 rounded-lg border border-slate-300 focus:border-[#102B46] focus:ring-2 focus:ring-[#102B46]/20 outline-none transition-all"
                   placeholder="Número de créditos"
                   value={form.credits}
                   onChange={(e) => setForm({ ...form, credits: e.target.value })}
@@ -308,7 +308,7 @@ export default function NewProgramPage() {
                   Descripción
                 </label>
                 <textarea
-                  className="w-full px-3 py-2 rounded-lg border border-slate-300 focus:border-[#003f8f] focus:ring-2 focus:ring-[#003f8f]/20 outline-none transition-all resize-none"
+                  className="w-full px-3 py-2 rounded-lg border border-slate-300 focus:border-[#102B46] focus:ring-2 focus:ring-[#102B46]/20 outline-none transition-all resize-none"
                   rows={4}
                   placeholder="Describa el programa, sus objetivos y perfil del egresado..."
                   value={form.description}
@@ -323,7 +323,7 @@ export default function NewProgramPage() {
         {activeSection === 1 && (
           <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
             <div className="flex items-center gap-2 mb-5">
-              <Calendar className="w-5 h-5 text-[#003f8f]" />
+              <Calendar className="w-5 h-5 text-[#102B46]" />
               <h2 className="text-lg font-bold text-slate-800">Fechas clave</h2>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -333,7 +333,7 @@ export default function NewProgramPage() {
                 </label>
                 <input
                   type="date"
-                  className="w-full px-3 py-2 rounded-lg border border-slate-300 focus:border-[#003f8f] focus:ring-2 focus:ring-[#003f8f]/20 outline-none transition-all"
+                  className="w-full px-3 py-2 rounded-lg border border-slate-300 focus:border-[#102B46] focus:ring-2 focus:ring-[#102B46]/20 outline-none transition-all"
                   value={form.openDate}
                   onChange={(e) => setForm({ ...form, openDate: e.target.value })}
                 />
@@ -344,7 +344,7 @@ export default function NewProgramPage() {
                 </label>
                 <input
                   type="date"
-                  className="w-full px-3 py-2 rounded-lg border border-slate-300 focus:border-[#003f8f] focus:ring-2 focus:ring-[#003f8f]/20 outline-none transition-all"
+                  className="w-full px-3 py-2 rounded-lg border border-slate-300 focus:border-[#102B46] focus:ring-2 focus:ring-[#102B46]/20 outline-none transition-all"
                   value={form.deadlineDate}
                   onChange={(e) => setForm({ ...form, deadlineDate: e.target.value })}
                 />
@@ -355,7 +355,7 @@ export default function NewProgramPage() {
                 </label>
                 <input
                   type="date"
-                  className="w-full px-3 py-2 rounded-lg border border-slate-300 focus:border-[#003f8f] focus:ring-2 focus:ring-[#003f8f]/20 outline-none transition-all"
+                  className="w-full px-3 py-2 rounded-lg border border-slate-300 focus:border-[#102B46] focus:ring-2 focus:ring-[#102B46]/20 outline-none transition-all"
                   value={form.resultsDate}
                   onChange={(e) => setForm({ ...form, resultsDate: e.target.value })}
                 />
@@ -366,7 +366,7 @@ export default function NewProgramPage() {
                 </label>
                 <input
                   type="date"
-                  className="w-full px-3 py-2 rounded-lg border border-slate-300 focus:border-[#003f8f] focus:ring-2 focus:ring-[#003f8f]/20 outline-none transition-all"
+                  className="w-full px-3 py-2 rounded-lg border border-slate-300 focus:border-[#102B46] focus:ring-2 focus:ring-[#102B46]/20 outline-none transition-all"
                   value={form.startDate}
                   onChange={(e) => setForm({ ...form, startDate: e.target.value })}
                 />
@@ -379,7 +379,7 @@ export default function NewProgramPage() {
         {activeSection === 2 && (
           <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
             <div className="flex items-center gap-2 mb-5">
-              <CheckSquare className="w-5 h-5 text-[#003f8f]" />
+              <CheckSquare className="w-5 h-5 text-[#102B46]" />
               <h2 className="text-lg font-bold text-slate-800">Requisitos de elegibilidad</h2>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -390,7 +390,7 @@ export default function NewProgramPage() {
                 <div className="relative">
                   <GraduationCap className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                   <input
-                    className="w-full pl-10 pr-3 py-2 rounded-lg border border-slate-300 focus:border-[#003f8f] focus:ring-2 focus:ring-[#003f8f]/20 outline-none transition-all"
+                    className="w-full pl-10 pr-3 py-2 rounded-lg border border-slate-300 focus:border-[#102B46] focus:ring-2 focus:ring-[#102B46]/20 outline-none transition-all"
                     placeholder="Ej: Título universitario de pregrado"
                     value={form.minDegree}
                     onChange={(e) => setForm({ ...form, minDegree: e.target.value })}
@@ -406,7 +406,7 @@ export default function NewProgramPage() {
                   step="0.1"
                   min="0"
                   max="5"
-                  className="w-full px-3 py-2 rounded-lg border border-slate-300 focus:border-[#003f8f] focus:ring-2 focus:ring-[#003f8f]/20 outline-none transition-all"
+                  className="w-full px-3 py-2 rounded-lg border border-slate-300 focus:border-[#102B46] focus:ring-2 focus:ring-[#102B46]/20 outline-none transition-all"
                   placeholder="Ej: 3.5"
                   value={form.minGpa}
                   onChange={(e) => setForm({ ...form, minGpa: e.target.value })}
@@ -419,7 +419,7 @@ export default function NewProgramPage() {
                 <div className="relative">
                   <Briefcase className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                   <input
-                    className="w-full pl-10 pr-3 py-2 rounded-lg border border-slate-300 focus:border-[#003f8f] focus:ring-2 focus:ring-[#003f8f]/20 outline-none transition-all"
+                    className="w-full pl-10 pr-3 py-2 rounded-lg border border-slate-300 focus:border-[#102B46] focus:ring-2 focus:ring-[#102B46]/20 outline-none transition-all"
                     placeholder="Ej: Mínimo 2 años de experiencia"
                     value={form.professionalExperience}
                     onChange={(e) =>
@@ -435,7 +435,7 @@ export default function NewProgramPage() {
                 <div className="relative">
                   <Languages className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                   <input
-                    className="w-full pl-10 pr-3 py-2 rounded-lg border border-slate-300 focus:border-[#003f8f] focus:ring-2 focus:ring-[#003f8f]/20 outline-none transition-all"
+                    className="w-full pl-10 pr-3 py-2 rounded-lg border border-slate-300 focus:border-[#102B46] focus:ring-2 focus:ring-[#102B46]/20 outline-none transition-all"
                     placeholder="Ej: Inglés B2 (IELTS 6.0)"
                     value={form.languageRequirements}
                     onChange={(e) =>
@@ -449,7 +449,7 @@ export default function NewProgramPage() {
                   Notas adicionales
                 </label>
                 <textarea
-                  className="w-full px-3 py-2 rounded-lg border border-slate-300 focus:border-[#003f8f] focus:ring-2 focus:ring-[#003f8f]/20 outline-none transition-all resize-none"
+                  className="w-full px-3 py-2 rounded-lg border border-slate-300 focus:border-[#102B46] focus:ring-2 focus:ring-[#102B46]/20 outline-none transition-all resize-none"
                   rows={3}
                   placeholder="Información adicional sobre elegibilidad..."
                   value={form.eligibilityNotes}
@@ -469,7 +469,7 @@ export default function NewProgramPage() {
                     key={doc}
                     className={`flex items-center gap-2 p-3 rounded-lg border-2 cursor-pointer transition-all ${
                       selectedDocs.includes(doc)
-                        ? "border-[#003f8f] bg-[#e6f0ff]"
+                        ? "border-[#102B46] bg-[#E9FBF7]"
                         : "border-slate-200 hover:border-slate-300"
                     }`}
                   >
@@ -477,7 +477,7 @@ export default function NewProgramPage() {
                       type="checkbox"
                       checked={selectedDocs.includes(doc)}
                       onChange={() => toggleDoc(doc)}
-                      className="accent-[#003f8f]"
+                      className="accent-[#102B46]"
                     />
                     <span className="text-sm font-medium text-slate-700">{doc}</span>
                   </label>
@@ -491,7 +491,7 @@ export default function NewProgramPage() {
         {activeSection === 3 && (
           <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
             <div className="flex items-center gap-2 mb-5">
-              <DollarSign className="w-5 h-5 text-[#003f8f]" />
+              <DollarSign className="w-5 h-5 text-[#102B46]" />
               <h2 className="text-lg font-bold text-slate-800">Información financiera</h2>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -503,7 +503,7 @@ export default function NewProgramPage() {
                   <DollarSign className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                   <input
                     type="number"
-                    className="w-full pl-10 pr-3 py-2 rounded-lg border border-slate-300 focus:border-[#003f8f] focus:ring-2 focus:ring-[#003f8f]/20 outline-none transition-all"
+                    className="w-full pl-10 pr-3 py-2 rounded-lg border border-slate-300 focus:border-[#102B46] focus:ring-2 focus:ring-[#102B46]/20 outline-none transition-all"
                     placeholder="0.00"
                     value={form.totalCost}
                     onChange={(e) => setForm({ ...form, totalCost: e.target.value })}
@@ -515,7 +515,7 @@ export default function NewProgramPage() {
                   Moneda
                 </label>
                 <select
-                  className="w-full px-3 py-2 rounded-lg border border-slate-300 focus:border-[#003f8f] focus:ring-2 focus:ring-[#003f8f]/20 outline-none transition-all"
+                  className="w-full px-3 py-2 rounded-lg border border-slate-300 focus:border-[#102B46] focus:ring-2 focus:ring-[#102B46]/20 outline-none transition-all"
                   value={form.currency}
                   onChange={(e) => setForm({ ...form, currency: e.target.value })}
                 >
@@ -536,7 +536,7 @@ export default function NewProgramPage() {
                 <div className="relative">
                   <CreditCard className="absolute left-3 top-3 w-4 h-4 text-slate-400" />
                   <textarea
-                    className="w-full pl-10 pr-3 py-2 rounded-lg border border-slate-300 focus:border-[#003f8f] focus:ring-2 focus:ring-[#003f8f]/20 outline-none transition-all resize-none"
+                    className="w-full pl-10 pr-3 py-2 rounded-lg border border-slate-300 focus:border-[#102B46] focus:ring-2 focus:ring-[#102B46]/20 outline-none transition-all resize-none"
                     rows={2}
                     placeholder="Ej: Pago único, cuotas semestrales, financiamiento bancario..."
                     value={form.paymentMethods}
@@ -558,7 +558,7 @@ export default function NewProgramPage() {
                     onChange={(e) =>
                       setForm({ ...form, scholarshipsAvailable: e.target.checked })
                     }
-                    className="accent-[#003f8f]"
+                    className="accent-[#102B46]"
                   />
                   <div className="flex items-center gap-2">
                     <Award className="w-5 h-5 text-amber-600" />
@@ -572,7 +572,7 @@ export default function NewProgramPage() {
                     Información de becas
                   </label>
                   <textarea
-                    className="w-full px-3 py-2 rounded-lg border border-slate-300 focus:border-[#003f8f] focus:ring-2 focus:ring-[#003f8f]/20 outline-none transition-all resize-none"
+                    className="w-full px-3 py-2 rounded-lg border border-slate-300 focus:border-[#102B46] focus:ring-2 focus:ring-[#102B46]/20 outline-none transition-all resize-none"
                     rows={3}
                     placeholder="Describa los tipos de becas, requisitos y montos disponibles..."
                     value={form.scholarshipsInfo}
@@ -585,7 +585,7 @@ export default function NewProgramPage() {
                   Política de reembolso
                 </label>
                 <textarea
-                  className="w-full px-3 py-2 rounded-lg border border-slate-300 focus:border-[#003f8f] focus:ring-2 focus:ring-[#003f8f]/20 outline-none transition-all resize-none"
+                  className="w-full px-3 py-2 rounded-lg border border-slate-300 focus:border-[#102B46] focus:ring-2 focus:ring-[#102B46]/20 outline-none transition-all resize-none"
                   rows={2}
                   placeholder="Condiciones para reembolsos y cancelaciones..."
                   value={form.refundPolicy}
@@ -600,7 +600,7 @@ export default function NewProgramPage() {
         {activeSection === 4 && (
           <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
             <div className="flex items-center gap-2 mb-5">
-              <Search className="w-5 h-5 text-[#003f8f]" />
+              <Search className="w-5 h-5 text-[#102B46]" />
               <h2 className="text-lg font-bold text-slate-800">Proceso de selección</h2>
             </div>
             <div className="space-y-4">
@@ -609,7 +609,7 @@ export default function NewProgramPage() {
                   Descripción del proceso
                 </label>
                 <textarea
-                  className="w-full px-3 py-2 rounded-lg border border-slate-300 focus:border-[#003f8f] focus:ring-2 focus:ring-[#003f8f]/20 outline-none transition-all resize-none"
+                  className="w-full px-3 py-2 rounded-lg border border-slate-300 focus:border-[#102B46] focus:ring-2 focus:ring-[#102B46]/20 outline-none transition-all resize-none"
                   rows={4}
                   placeholder="Describa las etapas del proceso de selección..."
                   value={form.selectionProcess}
@@ -628,7 +628,7 @@ export default function NewProgramPage() {
                     type="checkbox"
                     checked={form.hasInterview}
                     onChange={(e) => setForm({ ...form, hasInterview: e.target.checked })}
-                    className="accent-[#003f8f]"
+                    className="accent-[#102B46]"
                   />
                   <div className="flex items-center gap-2">
                     <Mic className="w-5 h-5 text-purple-600" />
@@ -649,7 +649,7 @@ export default function NewProgramPage() {
                     type="checkbox"
                     checked={form.hasExam}
                     onChange={(e) => setForm({ ...form, hasExam: e.target.checked })}
-                    className="accent-[#003f8f]"
+                    className="accent-[#102B46]"
                   />
                   <div className="flex items-center gap-2">
                     <PenTool className="w-5 h-5 text-orange-600" />
@@ -668,7 +668,7 @@ export default function NewProgramPage() {
         {activeSection === 5 && (
           <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
             <div className="flex items-center gap-2 mb-5">
-              <Scale className="w-5 h-5 text-[#003f8f]" />
+              <Scale className="w-5 h-5 text-[#102B46]" />
               <h2 className="text-lg font-bold text-slate-800">Información legal</h2>
             </div>
             <div className="space-y-4">
@@ -679,7 +679,7 @@ export default function NewProgramPage() {
                 <div className="relative">
                   <Shield className="absolute left-3 top-3 w-4 h-4 text-slate-400" />
                   <textarea
-                    className="w-full pl-10 pr-3 py-2 rounded-lg border border-slate-300 focus:border-[#003f8f] focus:ring-2 focus:ring-[#003f8f]/20 outline-none transition-all resize-none"
+                    className="w-full pl-10 pr-3 py-2 rounded-lg border border-slate-300 focus:border-[#102B46] focus:ring-2 focus:ring-[#102B46]/20 outline-none transition-all resize-none"
                     rows={4}
                     placeholder="Describa cómo se tratarán los datos personales de los aspirantes..."
                     value={form.privacyPolicy}
@@ -694,7 +694,7 @@ export default function NewProgramPage() {
                 <div className="relative">
                   <FileText className="absolute left-3 top-3 w-4 h-4 text-slate-400" />
                   <textarea
-                    className="w-full pl-10 pr-3 py-2 rounded-lg border border-slate-300 focus:border-[#003f8f] focus:ring-2 focus:ring-[#003f8f]/20 outline-none transition-all resize-none"
+                    className="w-full pl-10 pr-3 py-2 rounded-lg border border-slate-300 focus:border-[#102B46] focus:ring-2 focus:ring-[#102B46]/20 outline-none transition-all resize-none"
                     rows={4}
                     placeholder="Términos y condiciones del proceso de admisión..."
                     value={form.termsConditions}
@@ -715,7 +715,7 @@ export default function NewProgramPage() {
               <button
                 onClick={handleSubmit}
                 disabled={saving}
-                className="w-full flex items-center justify-center gap-2 bg-[#003f8f] text-white font-semibold py-3 rounded-lg hover:bg-[#002e6b] transition-all disabled:opacity-50 text-base"
+                className="w-full flex items-center justify-center gap-2 bg-[#102B46] text-white font-semibold py-3 rounded-lg hover:bg-[#0C1D30] transition-all disabled:opacity-50 text-base"
               >
                 {saving ? (
                   <>
@@ -745,7 +745,7 @@ export default function NewProgramPage() {
           {activeSection < SECTIONS.length - 1 && (
             <button
               onClick={() => setActiveSection(activeSection + 1)}
-              className="px-5 py-2 rounded-lg bg-[#003f8f] text-white font-medium hover:bg-[#002e6b] transition-all"
+              className="px-5 py-2 rounded-lg bg-[#102B46] text-white font-medium hover:bg-[#0C1D30] transition-all"
             >
               Siguiente →
             </button>

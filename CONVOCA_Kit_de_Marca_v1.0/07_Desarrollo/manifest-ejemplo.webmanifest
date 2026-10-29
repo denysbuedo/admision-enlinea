@@ -1,0 +1,21 @@
+{
+  "name": "CONVOCA | Convocatorias y admisiones",
+  "short_name": "CONVOCA",
+  "description": "Plataforma de convocatorias y admisiones académicas de la educación superior",
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#0C1D30",
+  "background_color": "#FFFFFF",
+  "icons": [
+    {
+      "src": "/icons/favicon-192px.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/favicon-512px.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+/* CONVOCA · Mismos colores que CONECTA */
+:root {
+  --convoca-primary: #102B46;
+  --convoca-deep: #0C1D30;
+  --convoca-accent: #49DCCB;
+  --convoca-teal: #13B9AA;
+  --convoca-action: #2776C9;
+  --convoca-text: #102B46;
+  --convoca-muted: #4B6278;
+  --convoca-bg: #FFFFFF;
+  --convoca-surface: #F5F9FC;
+  --convoca-border: #D8E5ED;
+  --convoca-accent-bg: #E9FBF7;
+  --convoca-font: Inter, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --convoca-mono: 'IBM Plex Mono', ui-monospace, monospace;
+  --convoca-radius-sm: 8px;
+  --convoca-radius-md: 12px;
+  --convoca-radius-lg: 20px;
+}

@@ -257,7 +257,7 @@ export default function ApplicationPage() {
           <div className="flex items-center justify-between h-16">
             <Link
               href="/dashboard"
-              className="flex items-center gap-2 text-slate-600 hover:text-[#003f8f] transition-colors"
+              className="flex items-center gap-2 text-slate-600 hover:text-[#102B46] transition-colors"
             >
               <ArrowLeft className="w-4 h-4" />
               <span className="text-sm font-medium">Mi Dashboard</span>
@@ -273,7 +273,7 @@ export default function ApplicationPage() {
                   <button
                     onClick={() => handleSave(false)}
                     disabled={saving}
-                    className="flex items-center gap-2 px-4 py-1.5 rounded-lg border-2 border-slate-200 text-slate-600 font-medium hover:border-[#003f8f] hover:text-[#003f8f] transition-all text-sm disabled:opacity-50"
+                    className="flex items-center gap-2 px-4 py-1.5 rounded-lg border-2 border-slate-200 text-slate-600 font-medium hover:border-[#102B46] hover:text-[#102B46] transition-all text-sm disabled:opacity-50"
                   >
                     <Save className="w-4 h-4" />
                     Guardar
@@ -286,7 +286,7 @@ export default function ApplicationPage() {
                       !declaration.dataProcessingAccepted ||
                       !declaration.digitalSignature
                     }
-                    className="flex items-center gap-2 bg-[#003f8f] text-white font-medium px-4 py-1.5 rounded-lg hover:bg-[#002e6b] transition-all text-sm disabled:opacity-50"
+                    className="flex items-center gap-2 bg-[#102B46] text-white font-medium px-4 py-1.5 rounded-lg hover:bg-[#0C1D30] transition-all text-sm disabled:opacity-50"
                   >
                     <Send className="w-4 h-4" />
                     Enviar solicitud
@@ -348,7 +348,7 @@ export default function ApplicationPage() {
               onClick={() => setActiveSection(i)}
               className={`flex items-center gap-2 flex-shrink-0 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
                 activeSection === i
-                  ? "bg-[#003f8f] text-white shadow-sm"
+                  ? "bg-[#102B46] text-white shadow-sm"
                   : "text-slate-600 hover:bg-slate-100"
               }`}
             >
@@ -362,7 +362,7 @@ export default function ApplicationPage() {
         {activeSection === 0 && (
           <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
             <div className="flex items-center gap-2 mb-5">
-              <User className="w-5 h-5 text-[#003f8f]" />
+              <User className="w-5 h-5 text-[#102B46]" />
               <h2 className="text-lg font-bold text-slate-800">Información personal</h2>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -371,7 +371,7 @@ export default function ApplicationPage() {
                   Nombres *
                 </label>
                 <input
-                  className="w-full px-3 py-2 rounded-lg border border-slate-300 focus:border-[#003f8f] focus:ring-2 focus:ring-[#003f8f]/20 outline-none transition-all disabled:bg-slate-50 disabled:text-slate-500"
+                  className="w-full px-3 py-2 rounded-lg border border-slate-300 focus:border-[#102B46] focus:ring-2 focus:ring-[#102B46]/20 outline-none transition-all disabled:bg-slate-50 disabled:text-slate-500"
                   value={personal.firstName}
                   disabled={!isEditable}
                   onChange={(e) => setPersonal({ ...personal, firstName: e.target.value })}
@@ -382,7 +382,7 @@ export default function ApplicationPage() {
                   Apellidos *
                 </label>
                 <input
-                  className="w-full px-3 py-2 rounded-lg border border-slate-300 focus:border-[#003f8f] focus:ring-2 focus:ring-[#003f8f]/20 outline-none transition-all disabled:bg-slate-50 disabled:text-slate-500"
+                  className="w-full px-3 py-2 rounded-lg border border-slate-300 focus:border-[#102B46] focus:ring-2 focus:ring-[#102B46]/20 outline-none transition-all disabled:bg-slate-50 disabled:text-slate-500"
                   value={personal.lastName}
                   disabled={!isEditable}
                   onChange={(e) => setPersonal({ ...personal, lastName: e.target.value })}
@@ -396,7 +396,7 @@ export default function ApplicationPage() {
                   <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                   <input
                     type="date"
-                    className="w-full pl-10 pr-3 py-2 rounded-lg border border-slate-300 focus:border-[#003f8f] focus:ring-2 focus:ring-[#003f8f]/20 outline-none transition-all disabled:bg-slate-50"
+                    className="w-full pl-10 pr-3 py-2 rounded-lg border border-slate-300 focus:border-[#102B46] focus:ring-2 focus:ring-[#102B46]/20 outline-none transition-all disabled:bg-slate-50"
                     value={personal.birthDate}
                     disabled={!isEditable}
                     onChange={(e) => setPersonal({ ...personal, birthDate: e.target.value })}
@@ -410,7 +410,7 @@ export default function ApplicationPage() {
                 <div className="relative">
                   <Globe className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                   <input
-                    className="w-full pl-10 pr-3 py-2 rounded-lg border border-slate-300 focus:border-[#003f8f] focus:ring-2 focus:ring-[#003f8f]/20 outline-none transition-all disabled:bg-slate-50"
+                    className="w-full pl-10 pr-3 py-2 rounded-lg border border-slate-300 focus:border-[#102B46] focus:ring-2 focus:ring-[#102B46]/20 outline-none transition-all disabled:bg-slate-50"
                     value={personal.nationality}
                     disabled={!isEditable}
                     onChange={(e) => setPersonal({ ...personal, nationality: e.target.value })}
@@ -422,7 +422,7 @@ export default function ApplicationPage() {
                   Tipo de documento
                 </label>
                 <select
-                  className="w-full px-3 py-2 rounded-lg border border-slate-300 focus:border-[#003f8f] focus:ring-2 focus:ring-[#003f8f]/20 outline-none transition-all disabled:bg-slate-50"
+                  className="w-full px-3 py-2 rounded-lg border border-slate-300 focus:border-[#102B46] focus:ring-2 focus:ring-[#102B46]/20 outline-none transition-all disabled:bg-slate-50"
                   value={personal.documentType}
                   disabled={!isEditable}
                   onChange={(e) => setPersonal({ ...personal, documentType: e.target.value })}
@@ -438,7 +438,7 @@ export default function ApplicationPage() {
                   Número de documento
                 </label>
                 <input
-                  className="w-full px-3 py-2 rounded-lg border border-slate-300 focus:border-[#003f8f] focus:ring-2 focus:ring-[#003f8f]/20 outline-none transition-all disabled:bg-slate-50"
+                  className="w-full px-3 py-2 rounded-lg border border-slate-300 focus:border-[#102B46] focus:ring-2 focus:ring-[#102B46]/20 outline-none transition-all disabled:bg-slate-50"
                   value={personal.documentNumber}
                   disabled={!isEditable}
                   onChange={(e) => setPersonal({ ...personal, documentNumber: e.target.value })}
@@ -451,7 +451,7 @@ export default function ApplicationPage() {
                 <div className="relative">
                   <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                   <input
-                    className="w-full pl-10 pr-3 py-2 rounded-lg border border-slate-300 focus:border-[#003f8f] focus:ring-2 focus:ring-[#003f8f]/20 outline-none transition-all disabled:bg-slate-50"
+                    className="w-full pl-10 pr-3 py-2 rounded-lg border border-slate-300 focus:border-[#102B46] focus:ring-2 focus:ring-[#102B46]/20 outline-none transition-all disabled:bg-slate-50"
                     value={personal.address}
                     disabled={!isEditable}
                     onChange={(e) => setPersonal({ ...personal, address: e.target.value })}
@@ -463,7 +463,7 @@ export default function ApplicationPage() {
                   Ciudad
                 </label>
                 <input
-                  className="w-full px-3 py-2 rounded-lg border border-slate-300 focus:border-[#003f8f] focus:ring-2 focus:ring-[#003f8f]/20 outline-none transition-all disabled:bg-slate-50"
+                  className="w-full px-3 py-2 rounded-lg border border-slate-300 focus:border-[#102B46] focus:ring-2 focus:ring-[#102B46]/20 outline-none transition-all disabled:bg-slate-50"
                   value={personal.city}
                   disabled={!isEditable}
                   onChange={(e) => setPersonal({ ...personal, city: e.target.value })}
@@ -474,7 +474,7 @@ export default function ApplicationPage() {
                   País
                 </label>
                 <input
-                  className="w-full px-3 py-2 rounded-lg border border-slate-300 focus:border-[#003f8f] focus:ring-2 focus:ring-[#003f8f]/20 outline-none transition-all disabled:bg-slate-50"
+                  className="w-full px-3 py-2 rounded-lg border border-slate-300 focus:border-[#102B46] focus:ring-2 focus:ring-[#102B46]/20 outline-none transition-all disabled:bg-slate-50"
                   value={personal.country}
                   disabled={!isEditable}
                   onChange={(e) => setPersonal({ ...personal, country: e.target.value })}
@@ -487,7 +487,7 @@ export default function ApplicationPage() {
                 <div className="relative">
                   <Phone className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                   <input
-                    className="w-full pl-10 pr-3 py-2 rounded-lg border border-slate-300 focus:border-[#003f8f] focus:ring-2 focus:ring-[#003f8f]/20 outline-none transition-all disabled:bg-slate-50"
+                    className="w-full pl-10 pr-3 py-2 rounded-lg border border-slate-300 focus:border-[#102B46] focus:ring-2 focus:ring-[#102B46]/20 outline-none transition-all disabled:bg-slate-50"
                     value={personal.phone}
                     disabled={!isEditable}
                     onChange={(e) => setPersonal({ ...personal, phone: e.target.value })}
@@ -502,7 +502,7 @@ export default function ApplicationPage() {
                   <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                   <input
                     type="email"
-                    className="w-full pl-10 pr-3 py-2 rounded-lg border border-slate-300 focus:border-[#003f8f] focus:ring-2 focus:ring-[#003f8f]/20 outline-none transition-all disabled:bg-slate-50"
+                    className="w-full pl-10 pr-3 py-2 rounded-lg border border-slate-300 focus:border-[#102B46] focus:ring-2 focus:ring-[#102B46]/20 outline-none transition-all disabled:bg-slate-50"
                     value={personal.email}
                     disabled={!isEditable}
                     onChange={(e) => setPersonal({ ...personal, email: e.target.value })}
@@ -517,7 +517,7 @@ export default function ApplicationPage() {
         {activeSection === 1 && (
           <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
             <div className="flex items-center gap-2 mb-5">
-              <GraduationCap className="w-5 h-5 text-[#003f8f]" />
+              <GraduationCap className="w-5 h-5 text-[#102B46]" />
               <h2 className="text-lg font-bold text-slate-800">Información académica</h2>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -526,7 +526,7 @@ export default function ApplicationPage() {
                   Título universitario
                 </label>
                 <input
-                  className="w-full px-3 py-2 rounded-lg border border-slate-300 focus:border-[#003f8f] focus:ring-2 focus:ring-[#003f8f]/20 outline-none transition-all disabled:bg-slate-50"
+                  className="w-full px-3 py-2 rounded-lg border border-slate-300 focus:border-[#102B46] focus:ring-2 focus:ring-[#102B46]/20 outline-none transition-all disabled:bg-slate-50"
                   value={academic.degree}
                   disabled={!isEditable}
                   onChange={(e) => setAcademic({ ...academic, degree: e.target.value })}
@@ -539,7 +539,7 @@ export default function ApplicationPage() {
                 <div className="relative">
                   <Building2 className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                   <input
-                    className="w-full pl-10 pr-3 py-2 rounded-lg border border-slate-300 focus:border-[#003f8f] focus:ring-2 focus:ring-[#003f8f]/20 outline-none transition-all disabled:bg-slate-50"
+                    className="w-full pl-10 pr-3 py-2 rounded-lg border border-slate-300 focus:border-[#102B46] focus:ring-2 focus:ring-[#102B46]/20 outline-none transition-all disabled:bg-slate-50"
                     value={academic.university}
                     disabled={!isEditable}
                     onChange={(e) => setAcademic({ ...academic, university: e.target.value })}
@@ -553,7 +553,7 @@ export default function ApplicationPage() {
                 <div className="relative">
                   <Globe className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                   <input
-                    className="w-full pl-10 pr-3 py-2 rounded-lg border border-slate-300 focus:border-[#003f8f] focus:ring-2 focus:ring-[#003f8f]/20 outline-none transition-all disabled:bg-slate-50"
+                    className="w-full pl-10 pr-3 py-2 rounded-lg border border-slate-300 focus:border-[#102B46] focus:ring-2 focus:ring-[#102B46]/20 outline-none transition-all disabled:bg-slate-50"
                     value={academic.country}
                     disabled={!isEditable}
                     onChange={(e) => setAcademic({ ...academic, country: e.target.value })}
@@ -566,7 +566,7 @@ export default function ApplicationPage() {
                 </label>
                 <input
                   type="number"
-                  className="w-full px-3 py-2 rounded-lg border border-slate-300 focus:border-[#003f8f] focus:ring-2 focus:ring-[#003f8f]/20 outline-none transition-all disabled:bg-slate-50"
+                  className="w-full px-3 py-2 rounded-lg border border-slate-300 focus:border-[#102B46] focus:ring-2 focus:ring-[#102B46]/20 outline-none transition-all disabled:bg-slate-50"
                   value={academic.graduationYear}
                   disabled={!isEditable}
                   onChange={(e) =>
@@ -583,7 +583,7 @@ export default function ApplicationPage() {
                   <input
                     type="number"
                     step="0.01"
-                    className="w-full pl-10 pr-3 py-2 rounded-lg border border-slate-300 focus:border-[#003f8f] focus:ring-2 focus:ring-[#003f8f]/20 outline-none transition-all disabled:bg-slate-50"
+                    className="w-full pl-10 pr-3 py-2 rounded-lg border border-slate-300 focus:border-[#102B46] focus:ring-2 focus:ring-[#102B46]/20 outline-none transition-all disabled:bg-slate-50"
                     value={academic.gpa}
                     disabled={!isEditable}
                     onChange={(e) => setAcademic({ ...academic, gpa: e.target.value })}
@@ -595,7 +595,7 @@ export default function ApplicationPage() {
                   Otros estudios
                 </label>
                 <textarea
-                  className="w-full px-3 py-2 rounded-lg border border-slate-300 focus:border-[#003f8f] focus:ring-2 focus:ring-[#003f8f]/20 outline-none transition-all resize-none disabled:bg-slate-50"
+                  className="w-full px-3 py-2 rounded-lg border border-slate-300 focus:border-[#102B46] focus:ring-2 focus:ring-[#102B46]/20 outline-none transition-all resize-none disabled:bg-slate-50"
                   rows={3}
                   value={academic.otherStudies}
                   disabled={!isEditable}
@@ -610,14 +610,14 @@ export default function ApplicationPage() {
         {activeSection === 2 && (
           <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
             <div className="flex items-center gap-2 mb-5">
-              <Briefcase className="w-5 h-5 text-[#003f8f]" />
+              <Briefcase className="w-5 h-5 text-[#102B46]" />
               <h2 className="text-lg font-bold text-slate-800">Experiencia profesional</h2>
             </div>
             {experience.map((exp, i) => (
               <div key={i} className="border border-slate-200 rounded-xl p-4 mb-4">
                 <div className="flex items-center justify-between mb-3">
                   <h3 className="font-semibold text-slate-700 flex items-center gap-2">
-                    <Briefcase className="w-4 h-4 text-[#003f8f]" />
+                    <Briefcase className="w-4 h-4 text-[#102B46]" />
                     Experiencia {i + 1}
                   </h3>
                   {isEditable && experience.length > 1 && (
@@ -636,7 +636,7 @@ export default function ApplicationPage() {
                       Empresa
                     </label>
                     <input
-                      className="w-full px-3 py-2 rounded-lg border border-slate-300 focus:border-[#003f8f] focus:ring-2 focus:ring-[#003f8f]/20 outline-none transition-all disabled:bg-slate-50"
+                      className="w-full px-3 py-2 rounded-lg border border-slate-300 focus:border-[#102B46] focus:ring-2 focus:ring-[#102B46]/20 outline-none transition-all disabled:bg-slate-50"
                       value={exp.company}
                       disabled={!isEditable}
                       onChange={(e) =>
@@ -653,7 +653,7 @@ export default function ApplicationPage() {
                       Cargo
                     </label>
                     <input
-                      className="w-full px-3 py-2 rounded-lg border border-slate-300 focus:border-[#003f8f] focus:ring-2 focus:ring-[#003f8f]/20 outline-none transition-all disabled:bg-slate-50"
+                      className="w-full px-3 py-2 rounded-lg border border-slate-300 focus:border-[#102B46] focus:ring-2 focus:ring-[#102B46]/20 outline-none transition-all disabled:bg-slate-50"
                       value={exp.position}
                       disabled={!isEditable}
                       onChange={(e) =>
@@ -671,7 +671,7 @@ export default function ApplicationPage() {
                     </label>
                     <input
                       type="date"
-                      className="w-full px-3 py-2 rounded-lg border border-slate-300 focus:border-[#003f8f] focus:ring-2 focus:ring-[#003f8f]/20 outline-none transition-all disabled:bg-slate-50"
+                      className="w-full px-3 py-2 rounded-lg border border-slate-300 focus:border-[#102B46] focus:ring-2 focus:ring-[#102B46]/20 outline-none transition-all disabled:bg-slate-50"
                       value={exp.startDate}
                       disabled={!isEditable}
                       onChange={(e) =>
@@ -689,7 +689,7 @@ export default function ApplicationPage() {
                     </label>
                     <input
                       type="date"
-                      className="w-full px-3 py-2 rounded-lg border border-slate-300 focus:border-[#003f8f] focus:ring-2 focus:ring-[#003f8f]/20 outline-none transition-all disabled:bg-slate-50"
+                      className="w-full px-3 py-2 rounded-lg border border-slate-300 focus:border-[#102B46] focus:ring-2 focus:ring-[#102B46]/20 outline-none transition-all disabled:bg-slate-50"
                       value={exp.endDate}
                       disabled={!isEditable}
                       onChange={(e) =>
@@ -706,7 +706,7 @@ export default function ApplicationPage() {
                       Descripción
                     </label>
                     <textarea
-                      className="w-full px-3 py-2 rounded-lg border border-slate-300 focus:border-[#003f8f] focus:ring-2 focus:ring-[#003f8f]/20 outline-none transition-all resize-none disabled:bg-slate-50"
+                      className="w-full px-3 py-2 rounded-lg border border-slate-300 focus:border-[#102B46] focus:ring-2 focus:ring-[#102B46]/20 outline-none transition-all resize-none disabled:bg-slate-50"
                       rows={3}
                       value={exp.description}
                       disabled={!isEditable}
@@ -725,7 +725,7 @@ export default function ApplicationPage() {
             {isEditable && (
               <button
                 onClick={addExperience}
-                className="flex items-center gap-2 px-4 py-2 rounded-lg border-2 border-slate-200 text-slate-600 font-medium hover:border-[#003f8f] hover:text-[#003f8f] transition-all text-sm"
+                className="flex items-center gap-2 px-4 py-2 rounded-lg border-2 border-slate-200 text-slate-600 font-medium hover:border-[#102B46] hover:text-[#102B46] transition-all text-sm"
               >
                 <Plus className="w-4 h-4" />
                 Agregar experiencia
@@ -738,7 +738,7 @@ export default function ApplicationPage() {
         {activeSection === 3 && (
           <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
             <div className="flex items-center gap-2 mb-5">
-              <Star className="w-5 h-5 text-[#003f8f]" />
+              <Star className="w-5 h-5 text-[#102B46]" />
               <h2 className="text-lg font-bold text-slate-800">Información complementaria</h2>
             </div>
             <div className="space-y-4">
@@ -749,7 +749,7 @@ export default function ApplicationPage() {
                 <div className="relative">
                   <Languages className="absolute left-3 top-3 w-4 h-4 text-slate-400" />
                   <textarea
-                    className="w-full pl-10 pr-3 py-2 rounded-lg border border-slate-300 focus:border-[#003f8f] focus:ring-2 focus:ring-[#003f8f]/20 outline-none transition-all resize-none disabled:bg-slate-50"
+                    className="w-full pl-10 pr-3 py-2 rounded-lg border border-slate-300 focus:border-[#102B46] focus:ring-2 focus:ring-[#102B46]/20 outline-none transition-all resize-none disabled:bg-slate-50"
                     rows={2}
                     placeholder="Ej: Inglés B2, Francés A1..."
                     value={complementary.languages}
@@ -767,7 +767,7 @@ export default function ApplicationPage() {
                 <div className="relative">
                   <FileCheck className="absolute left-3 top-3 w-4 h-4 text-slate-400" />
                   <textarea
-                    className="w-full pl-10 pr-3 py-2 rounded-lg border border-slate-300 focus:border-[#003f8f] focus:ring-2 focus:ring-[#003f8f]/20 outline-none transition-all resize-none disabled:bg-slate-50"
+                    className="w-full pl-10 pr-3 py-2 rounded-lg border border-slate-300 focus:border-[#102B46] focus:ring-2 focus:ring-[#102B46]/20 outline-none transition-all resize-none disabled:bg-slate-50"
                     rows={2}
                     value={complementary.certifications}
                     disabled={!isEditable}
@@ -782,7 +782,7 @@ export default function ApplicationPage() {
                   Publicaciones
                 </label>
                 <textarea
-                  className="w-full px-3 py-2 rounded-lg border border-slate-300 focus:border-[#003f8f] focus:ring-2 focus:ring-[#003f8f]/20 outline-none transition-all resize-none disabled:bg-slate-50"
+                  className="w-full px-3 py-2 rounded-lg border border-slate-300 focus:border-[#102B46] focus:ring-2 focus:ring-[#102B46]/20 outline-none transition-all resize-none disabled:bg-slate-50"
                   rows={3}
                   value={complementary.publications}
                   disabled={!isEditable}
@@ -796,7 +796,7 @@ export default function ApplicationPage() {
                   Líneas de investigación previa
                 </label>
                 <textarea
-                  className="w-full px-3 py-2 rounded-lg border border-slate-300 focus:border-[#003f8f] focus:ring-2 focus:ring-[#003f8f]/20 outline-none transition-all resize-none disabled:bg-slate-50"
+                  className="w-full px-3 py-2 rounded-lg border border-slate-300 focus:border-[#102B46] focus:ring-2 focus:ring-[#102B46]/20 outline-none transition-all resize-none disabled:bg-slate-50"
                   rows={3}
                   value={complementary.research}
                   disabled={!isEditable}
@@ -813,7 +813,7 @@ export default function ApplicationPage() {
         {activeSection === 4 && (
           <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
             <div className="flex items-center gap-2 mb-5">
-              <FileText className="w-5 h-5 text-[#003f8f]" />
+              <FileText className="w-5 h-5 text-[#102B46]" />
               <h2 className="text-lg font-bold text-slate-800">Documentos requeridos</h2>
             </div>
             <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4 flex items-start gap-3">
@@ -837,7 +837,7 @@ export default function ApplicationPage() {
                   key={doc.name}
                   className="flex items-center gap-3 p-3 bg-slate-50 rounded-lg border border-slate-200"
                 >
-                  <FileText className="w-5 h-5 text-[#003f8f]" />
+                  <FileText className="w-5 h-5 text-[#102B46]" />
                   <span className="flex-1 font-medium text-slate-700">{doc.name}</span>
                   {doc.required && (
                     <span className="text-xs bg-red-100 text-red-600 px-2 py-0.5 rounded-full font-medium">
@@ -854,13 +854,13 @@ export default function ApplicationPage() {
         {activeSection === 5 && (
           <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
             <div className="flex items-center gap-2 mb-5">
-              <CheckSquare className="w-5 h-5 text-[#003f8f]" />
+              <CheckSquare className="w-5 h-5 text-[#102B46]" />
               <h2 className="text-lg font-bold text-slate-800">Declaración y envío</h2>
             </div>
             <div className="space-y-4">
               <div className="bg-slate-50 rounded-xl p-4 text-sm text-slate-600 leading-relaxed border border-slate-200">
                 <div className="flex items-center gap-2 mb-2">
-                  <Shield className="w-4 h-4 text-[#003f8f]" />
+                  <Shield className="w-4 h-4 text-[#102B46]" />
                   <p className="font-semibold text-slate-800">Declaración de veracidad</p>
                 </div>
                 <p>
@@ -873,7 +873,7 @@ export default function ApplicationPage() {
               <label
                 className={`flex items-start gap-3 p-4 rounded-xl border-2 cursor-pointer transition-all ${
                   declaration.declarationAccepted
-                    ? "border-[#003f8f] bg-[#e6f0ff]"
+                    ? "border-[#102B46] bg-[#E9FBF7]"
                     : "border-slate-200 hover:border-slate-300"
                 } ${!isEditable && "cursor-default"}`}
               >
@@ -884,7 +884,7 @@ export default function ApplicationPage() {
                   onChange={(e) =>
                     setDeclaration({ ...declaration, declarationAccepted: e.target.checked })
                   }
-                  className="mt-0.5 accent-[#003f8f]"
+                  className="mt-0.5 accent-[#102B46]"
                 />
                 <span className="text-sm text-slate-700">
                   <strong>Acepto la declaración de veracidad</strong> y confirmo que toda la información es correcta.
@@ -894,7 +894,7 @@ export default function ApplicationPage() {
               <label
                 className={`flex items-start gap-3 p-4 rounded-xl border-2 cursor-pointer transition-all ${
                   declaration.dataProcessingAccepted
-                    ? "border-[#003f8f] bg-[#e6f0ff]"
+                    ? "border-[#102B46] bg-[#E9FBF7]"
                     : "border-slate-200 hover:border-slate-300"
                 } ${!isEditable && "cursor-default"}`}
               >
@@ -905,7 +905,7 @@ export default function ApplicationPage() {
                   onChange={(e) =>
                     setDeclaration({ ...declaration, dataProcessingAccepted: e.target.checked })
                   }
-                  className="mt-0.5 accent-[#003f8f]"
+                  className="mt-0.5 accent-[#102B46]"
                 />
                 <span className="text-sm text-slate-700">
                   <strong>Autorizo el tratamiento de mis datos personales</strong> conforme a la política de
@@ -920,7 +920,7 @@ export default function ApplicationPage() {
                 <div className="relative">
                   <PenTool className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
                   <input
-                    className="w-full pl-10 pr-3 py-2 rounded-lg border border-slate-300 focus:border-[#003f8f] focus:ring-2 focus:ring-[#003f8f]/20 outline-none transition-all disabled:bg-slate-50"
+                    className="w-full pl-10 pr-3 py-2 rounded-lg border border-slate-300 focus:border-[#102B46] focus:ring-2 focus:ring-[#102B46]/20 outline-none transition-all disabled:bg-slate-50"
                     placeholder="Escribe tu nombre completo como firma digital"
                     value={declaration.digitalSignature}
                     disabled={!isEditable}
@@ -940,7 +940,7 @@ export default function ApplicationPage() {
                     !declaration.dataProcessingAccepted ||
                     !declaration.digitalSignature
                   }
-                  className="w-full flex items-center justify-center gap-2 bg-[#003f8f] text-white font-semibold py-3 rounded-lg hover:bg-[#002e6b] transition-all disabled:opacity-50 text-base"
+                  className="w-full flex items-center justify-center gap-2 bg-[#102B46] text-white font-semibold py-3 rounded-lg hover:bg-[#0C1D30] transition-all disabled:opacity-50 text-base"
                 >
                   {saving ? (
                     <>
@@ -963,7 +963,7 @@ export default function ApplicationPage() {
         {app.history && app.history.length > 0 && (
           <div className="mt-6 bg-white rounded-xl shadow-sm border border-slate-200 p-6">
             <div className="flex items-center gap-2 mb-4">
-              <History className="w-5 h-5 text-[#003f8f]" />
+              <History className="w-5 h-5 text-[#102B46]" />
               <h2 className="text-lg font-bold text-slate-800">Historial de cambios</h2>
             </div>
             <div className="space-y-3">
@@ -996,7 +996,7 @@ export default function ApplicationPage() {
           {activeSection < SECTIONS.length - 1 && (
             <button
               onClick={() => setActiveSection(activeSection + 1)}
-              className="flex items-center gap-2 px-5 py-2 rounded-lg bg-[#003f8f] text-white font-medium hover:bg-[#002e6b] transition-all"
+              className="flex items-center gap-2 px-5 py-2 rounded-lg bg-[#102B46] text-white font-medium hover:bg-[#0C1D30] transition-all"
             >
               Siguiente
               <ChevronRight className="w-4 h-4" />

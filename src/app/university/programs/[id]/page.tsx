@@ -1,4 +1,5 @@
 "use client";
+import Brand from "@/components/Brand";
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
@@ -156,16 +157,13 @@ export default function UniversityProgramDetailPage() {
           <div className="flex items-center justify-between h-16">
             <Link
               href="/university"
-              className="flex items-center gap-2 text-slate-600 hover:text-[#003f8f] transition-colors"
+              className="flex items-center gap-2 text-slate-600 hover:text-[#102B46] transition-colors"
             >
               <ArrowLeft className="w-4 h-4" />
               <span className="text-sm font-medium">Volver al panel</span>
             </Link>
             <Link href="/" className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg bg-[#003f8f] flex items-center justify-center text-white font-bold">
-                N
-              </div>
-              <span className="text-lg font-bold text-slate-800">Nexo</span>
+              <Brand />
             </Link>
           </div>
         </div>
@@ -176,7 +174,7 @@ export default function UniversityProgramDetailPage() {
           <div className="lg:col-span-2 space-y-6">
             <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
               <div className="flex items-start gap-4 mb-4">
-                <div className="w-14 h-14 rounded-xl bg-[#003f8f] flex items-center justify-center text-white text-2xl font-bold flex-shrink-0 shadow-md">
+                <div className="w-14 h-14 rounded-xl bg-[#102B46] flex items-center justify-center text-white text-2xl font-bold flex-shrink-0 shadow-md">
                   {program.universityName?.[0] || "U"}
                 </div>
                 <div className="flex-1">
@@ -189,8 +187,8 @@ export default function UniversityProgramDetailPage() {
                   </span>
                   <h1 className="text-2xl font-bold text-slate-800 mt-1">{program.title}</h1>
                   <div className="flex items-center gap-2 mt-1">
-                    <Building2 className="w-4 h-4 text-[#003f8f]" />
-                    <p className="text-[#003f8f] font-semibold">{program.universityName}</p>
+                    <Building2 className="w-4 h-4 text-[#102B46]" />
+                    <p className="text-[#102B46] font-semibold">{program.universityName}</p>
                   </div>
                   {program.universityCity && (
                     <div className="flex items-center gap-1 mt-1">
@@ -305,7 +303,7 @@ export default function UniversityProgramDetailPage() {
           <div className="space-y-4">
             <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
               <h3 className="font-bold text-slate-800 mb-4 flex items-center gap-2">
-                <Users className="w-5 h-5 text-[#003f8f]" />
+                <Users className="w-5 h-5 text-[#102B46]" />
                 Estadísticas de solicitudes
               </h3>
               <div className="grid grid-cols-2 gap-3">
@@ -330,14 +328,14 @@ export default function UniversityProgramDetailPage() {
 
             <Link
               href={`/university/programs/${program.id}/applications`}
-              className="block bg-white rounded-xl shadow-sm border border-slate-200 p-5 hover:border-[#003f8f]/30 transition-all"
+              className="block bg-white rounded-xl shadow-sm border border-slate-200 p-5 hover:border-[#102B46]/30 transition-all"
             >
               <h3 className="font-bold text-slate-800 mb-2 flex items-center gap-2">
-                <ClipboardList className="w-5 h-5 text-[#003f8f]" />
+                <ClipboardList className="w-5 h-5 text-[#102B46]" />
                 Ver solicitudes
               </h3>
               <p className="text-slate-500 text-sm mb-3">Revisar y evaluar postulaciones</p>
-              <span className="inline-flex items-center gap-1 text-[#003f8f] text-sm font-medium">
+              <span className="inline-flex items-center gap-1 text-[#102B46] text-sm font-medium">
                 Ir a solicitudes <ChevronRight className="w-4 h-4" />
               </span>
             </Link>

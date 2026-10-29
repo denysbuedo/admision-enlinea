@@ -1,5 +1,6 @@
 "use client";
 
+import Brand from "@/components/Brand";
 import { useState } from "react";
 import Link from "next/link";
 import {
@@ -44,22 +45,20 @@ export default function SetupPage() {
       <div className="bg-white rounded-2xl shadow-xl max-w-md w-full p-8">
         {/* Logo / Header */}
         <div className="text-center mb-8">
-          <div className="w-16 h-16 bg-[#003f8f] rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-md">
-            <span className="text-white text-2xl font-bold">N</span>
-          </div>
+          <div className="flex justify-center mb-4"><Brand /></div>
           <h1 className="text-2xl font-bold text-slate-800">Configuración inicial</h1>
-          <p className="text-slate-500 mt-1">Preparesu plataforma Nexo</p>
+          <p className="text-slate-500 mt-1">Prepara tu plataforma CONVOCA</p>
         </div>
 
         {/* Steps */}
         <div className="space-y-4 mb-8">
           <div className="flex items-start gap-3">
-            <div className="w-6 h-6 rounded-full bg-[#e6f0ff] text-[#003f8f] flex items-center justify-center text-sm font-bold flex-shrink-0 mt-0.5">
+            <div className="w-6 h-6 rounded-full bg-[#E9FBF7] text-[#102B46] flex items-center justify-center text-sm font-bold flex-shrink-0 mt-0.5">
               1
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <UserPlus className="w-4 h-4 text-[#003f8f]" />
+                <UserPlus className="w-4 h-4 text-[#102B46]" />
                 <p className="font-medium text-slate-700">Crear Super Administrador</p>
               </div>
               <p className="text-sm text-slate-500 mt-0.5">
@@ -69,12 +68,12 @@ export default function SetupPage() {
           </div>
 
           <div className="flex items-start gap-3">
-            <div className="w-6 h-6 rounded-full bg-[#e6f0ff] text-[#003f8f] flex items-center justify-center text-sm font-bold flex-shrink-0 mt-0.5">
+            <div className="w-6 h-6 rounded-full bg-[#E9FBF7] text-[#102B46] flex items-center justify-center text-sm font-bold flex-shrink-0 mt-0.5">
               2
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <LogIn className="w-4 h-4 text-[#003f8f]" />
+                <LogIn className="w-4 h-4 text-[#102B46]" />
                 <p className="font-medium text-slate-700">Iniciar sesión</p>
               </div>
               <p className="text-sm text-slate-500 mt-0.5">
@@ -84,12 +83,12 @@ export default function SetupPage() {
           </div>
 
           <div className="flex items-start gap-3">
-            <div className="w-6 h-6 rounded-full bg-[#e6f0ff] text-[#003f8f] flex items-center justify-center text-sm font-bold flex-shrink-0 mt-0.5">
+            <div className="w-6 h-6 rounded-full bg-[#E9FBF7] text-[#102B46] flex items-center justify-center text-sm font-bold flex-shrink-0 mt-0.5">
               3
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <Settings className="w-4 h-4 text-[#003f8f]" />
+                <Settings className="w-4 h-4 text-[#102B46]" />
                 <p className="font-medium text-slate-700">Gestionar la plataforma</p>
               </div>
               <p className="text-sm text-slate-500 mt-0.5">
@@ -103,7 +102,7 @@ export default function SetupPage() {
         {status === "idle" && (
           <button
             onClick={handleSetup}
-            className="w-full flex items-center justify-center gap-2 bg-[#003f8f] hover:bg-[#002e6b] text-white font-semibold py-3 px-6 rounded-xl transition-all shadow-sm"
+            className="w-full flex items-center justify-center gap-2 bg-[#102B46] hover:bg-[#0C1D30] text-white font-semibold py-3 px-6 rounded-xl transition-all shadow-sm"
           >
             <Database className="w-5 h-5" />
             Inicializar sistema
@@ -112,7 +111,7 @@ export default function SetupPage() {
 
         {/* Action Button - Estado loading */}
         {status === "loading" && (
-          <div className="w-full flex items-center justify-center gap-2 bg-[#e6f0ff] text-[#003f8f] font-semibold py-3 px-6 rounded-xl">
+          <div className="w-full flex items-center justify-center gap-2 bg-[#E9FBF7] text-[#102B46] font-semibold py-3 px-6 rounded-xl">
             <Loader2 className="w-5 h-5 animate-spin" />
             Creando administrador...
           </div>
@@ -145,7 +144,7 @@ export default function SetupPage() {
             {/* Botón ir al login */}
             <Link
               href="/login"
-              className="w-full flex items-center justify-center gap-2 bg-[#003f8f] hover:bg-[#002e6b] text-white font-semibold py-3 px-6 rounded-xl transition-all text-center"
+              className="w-full flex items-center justify-center gap-2 bg-[#102B46] hover:bg-[#0C1D30] text-white font-semibold py-3 px-6 rounded-xl transition-all text-center"
             >
               Ir al inicio de sesión
               <ArrowRight className="w-4 h-4" />
@@ -173,7 +172,7 @@ export default function SetupPage() {
         <div className="mt-6 pt-6 border-t border-slate-100 text-center">
           <p className="text-sm text-slate-400">
             ¿Ya tienes cuenta?{" "}
-            <Link href="/login" className="text-[#003f8f] hover:underline font-medium">
+            <Link href="/login" className="text-[#102B46] hover:underline font-medium">
               Iniciar sesión
             </Link>
           </p>

@@ -1,4 +1,5 @@
 "use client";
+import Brand from "@/components/Brand";
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
@@ -94,16 +95,13 @@ export default function ProgramApplicationsPage() {
           <div className="flex items-center justify-between h-16">
             <Link
               href="/university"
-              className="flex items-center gap-2 text-slate-600 hover:text-[#003f8f] transition-colors"
+              className="flex items-center gap-2 text-slate-600 hover:text-[#102B46] transition-colors"
             >
               <ArrowLeft className="w-4 h-4" />
               <span className="text-sm font-medium">Volver al panel</span>
             </Link>
             <Link href="/" className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg bg-[#003f8f] flex items-center justify-center text-white font-bold">
-                N
-              </div>
-              <span className="text-lg font-bold text-slate-800">Nexo</span>
+              <Brand />
             </Link>
           </div>
         </div>
@@ -111,7 +109,7 @@ export default function ProgramApplicationsPage() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex items-center gap-2 mb-1">
-          <FileText className="w-6 h-6 text-[#003f8f]" />
+          <FileText className="w-6 h-6 text-[#102B46]" />
           <h1 className="text-2xl font-bold text-slate-800">Solicitudes</h1>
         </div>
         <p className="text-slate-500 pl-8 mb-6">
@@ -194,7 +192,7 @@ export default function ProgramApplicationsPage() {
                       <td className="px-6 py-4">
                         <Link
                           href={`/university/applications/${a.id}`}
-                          className="flex items-center gap-1 text-[#003f8f] hover:text-[#002e6b] text-sm font-medium"
+                          className="flex items-center gap-1 text-[#102B46] hover:text-[#0C1D30] text-sm font-medium"
                         >
                           <Eye className="w-3.5 h-3.5" />
                           Revisar

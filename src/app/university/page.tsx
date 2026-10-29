@@ -1,4 +1,5 @@
 "use client";
+import Brand from "@/components/Brand";
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
@@ -131,16 +132,13 @@ export default function UniversityDashboard() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <Link href="/" className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg bg-[#003f8f] flex items-center justify-center text-white font-bold">
-                N
-              </div>
-              <span className="text-lg font-bold text-slate-800">Nexo</span>
+              <Brand />
               <span className="text-slate-400 text-sm hidden sm:inline">/ Universidad</span>
             </Link>
             <div className="flex items-center gap-3">
               <Link
                 href="/university/programs/new"
-                className="flex items-center gap-2 bg-[#003f8f] text-white font-medium px-4 py-2 rounded-lg hover:bg-[#002e6b] transition-all text-sm"
+                className="flex items-center gap-2 bg-[#102B46] text-white font-medium px-4 py-2 rounded-lg hover:bg-[#0C1D30] transition-all text-sm"
               >
                 <Plus className="w-4 h-4" />
                 Crear programa
@@ -161,7 +159,7 @@ export default function UniversityDashboard() {
         {/* Título */}
         <div className="mb-8">
           <div className="flex items-center gap-2 mb-1">
-            <LayoutDashboard className="w-6 h-6 text-[#003f8f]" />
+            <LayoutDashboard className="w-6 h-6 text-[#102B46]" />
             <h1 className="text-2xl font-bold text-slate-800">Panel de control</h1>
           </div>
           <p className="text-slate-500 pl-8">
@@ -173,7 +171,7 @@ export default function UniversityDashboard() {
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-8">
           <div className="bg-white rounded-xl p-4 shadow-sm border border-slate-200">
             <div className="flex items-center justify-between mb-2">
-              <BookOpen className="w-5 h-5 text-[#003f8f]" />
+              <BookOpen className="w-5 h-5 text-[#102B46]" />
               <span className="text-xl font-bold text-slate-800">{stats.total}</span>
             </div>
             <p className="text-xs text-slate-500">Programas</p>
@@ -237,7 +235,7 @@ export default function UniversityDashboard() {
             onClick={() => setActiveTab("programs")}
             className={`flex items-center gap-2 px-5 py-2 rounded-lg text-sm font-medium transition-all ${
               activeTab === "programs"
-                ? "bg-[#003f8f] text-white shadow-sm"
+                ? "bg-[#102B46] text-white shadow-sm"
                 : "text-slate-600 hover:bg-slate-100"
             }`}
           >
@@ -248,7 +246,7 @@ export default function UniversityDashboard() {
             onClick={() => setActiveTab("applications")}
             className={`flex items-center gap-2 px-5 py-2 rounded-lg text-sm font-medium transition-all ${
               activeTab === "applications"
-                ? "bg-[#003f8f] text-white shadow-sm"
+                ? "bg-[#102B46] text-white shadow-sm"
                 : "text-slate-600 hover:bg-slate-100"
             }`}
           >
@@ -273,7 +271,7 @@ export default function UniversityDashboard() {
                 </p>
                 <Link
                   href="/university/programs/new"
-                  className="inline-flex items-center gap-2 bg-[#003f8f] text-white font-medium px-5 py-2 rounded-lg hover:bg-[#002e6b] transition-all"
+                  className="inline-flex items-center gap-2 bg-[#102B46] text-white font-medium px-5 py-2 rounded-lg hover:bg-[#0C1D30] transition-all"
                 >
                   <Plus className="w-4 h-4" />
                   Crear programa
@@ -341,7 +339,7 @@ export default function UniversityDashboard() {
                             <div className="flex gap-3">
                               <Link
                                 href={`/university/programs/${p.id}`}
-                                className="flex items-center gap-1 text-[#003f8f] hover:text-[#002e6b] text-sm font-medium"
+                                className="flex items-center gap-1 text-[#102B46] hover:text-[#0C1D30] text-sm font-medium"
                               >
                                 <Eye className="w-3.5 h-3.5" />
                                 Ver
@@ -438,7 +436,7 @@ export default function UniversityDashboard() {
                           <td className="px-6 py-4">
                             <Link
                               href={`/university/applications/${a.id}`}
-                              className="flex items-center gap-1 text-[#003f8f] hover:text-[#002e6b] text-sm font-medium"
+                              className="flex items-center gap-1 text-[#102B46] hover:text-[#0C1D30] text-sm font-medium"
                             >
                               <Eye className="w-3.5 h-3.5" />
                               Revisar

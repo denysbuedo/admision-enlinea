@@ -1,4 +1,5 @@
 "use client";
+import Brand from "@/components/Brand";
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
@@ -113,16 +114,13 @@ export default function DashboardPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <Link href="/" className="flex items-center gap-2">
-              <div className="w-8 h-8 rounded-lg bg-[#003f8f] flex items-center justify-center text-white font-bold">
-                N
-              </div>
-              <span className="text-lg font-bold text-slate-800">Nexo</span>
+              <Brand />
               <span className="text-slate-400 text-sm hidden sm:inline">/ Aspirante</span>
             </Link>
             <div className="flex items-center gap-4">
               <Link
                 href="/programs"
-                className="hidden sm:flex items-center gap-1 text-slate-600 hover:text-[#003f8f] text-sm font-medium transition-colors"
+                className="hidden sm:flex items-center gap-1 text-slate-600 hover:text-[#102B46] text-sm font-medium transition-colors"
               >
                 <Search className="w-4 h-4" />
                 Ver programas
@@ -151,7 +149,7 @@ export default function DashboardPage() {
         {/* Título */}
         <div className="mb-8">
           <div className="flex items-center gap-2 mb-1">
-            <LayoutDashboard className="w-6 h-6 text-[#003f8f]" />
+            <LayoutDashboard className="w-6 h-6 text-[#102B46]" />
             <h1 className="text-2xl font-bold text-slate-800">Mi Dashboard</h1>
           </div>
           <p className="text-slate-500 pl-8">
@@ -163,7 +161,7 @@ export default function DashboardPage() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
           <div className="bg-white rounded-xl p-4 shadow-sm border border-slate-200">
             <div className="flex items-center justify-between mb-2">
-              <FileText className="w-5 h-5 text-[#003f8f]" />
+              <FileText className="w-5 h-5 text-[#102B46]" />
               <span className="text-2xl font-bold text-slate-800">{stats.total}</span>
             </div>
             <p className="text-xs text-slate-500">Total solicitudes</p>
@@ -199,12 +197,12 @@ export default function DashboardPage() {
           <div className="lg:col-span-2">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-bold text-slate-800 flex items-center gap-2">
-                <FileText className="w-5 h-5 text-[#003f8f]" />
+                <FileText className="w-5 h-5 text-[#102B46]" />
                 Mis solicitudes
               </h2>
               <Link
                 href="/programs"
-                className="flex items-center gap-1 bg-[#003f8f] text-white text-sm font-medium px-3 py-1.5 rounded-lg hover:bg-[#002e6b] transition-all"
+                className="flex items-center gap-1 bg-[#102B46] text-white text-sm font-medium px-3 py-1.5 rounded-lg hover:bg-[#0C1D30] transition-all"
               >
                 <PlusCircle className="w-4 h-4" />
                 Nueva postulación
@@ -224,7 +222,7 @@ export default function DashboardPage() {
                 </p>
                 <Link
                   href="/programs"
-                  className="inline-flex items-center gap-2 bg-[#003f8f] text-white font-medium px-5 py-2 rounded-lg hover:bg-[#002e6b] transition-all"
+                  className="inline-flex items-center gap-2 bg-[#102B46] text-white font-medium px-5 py-2 rounded-lg hover:bg-[#0C1D30] transition-all"
                 >
                   <Search className="w-4 h-4" />
                   Ver programas
@@ -236,7 +234,7 @@ export default function DashboardPage() {
                   <Link
                     key={app.id}
                     href={`/dashboard/applications/${app.id}`}
-                    className="bg-white rounded-xl shadow-sm border border-slate-200 p-4 block hover:shadow-md hover:border-[#003f8f]/30 transition-all"
+                    className="bg-white rounded-xl shadow-sm border border-slate-200 p-4 block hover:shadow-md hover:border-[#102B46]/30 transition-all"
                   >
                     <div className="flex items-start justify-between">
                       <div className="flex-1">
@@ -272,7 +270,7 @@ export default function DashboardPage() {
           {/* Sección de Notificaciones */}
           <div>
             <h2 className="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2">
-              <Bell className="w-5 h-5 text-[#003f8f]" />
+              <Bell className="w-5 h-5 text-[#102B46]" />
               Notificaciones
               {unreadCount > 0 && (
                 <span className="bg-red-500 text-white text-xs rounded-full px-2 py-0.5 font-bold">
@@ -292,13 +290,13 @@ export default function DashboardPage() {
                     key={notif.id}
                     className={`bg-white rounded-xl p-3 shadow-sm border transition-all ${
                       !notif.isRead
-                        ? "border-l-4 border-l-[#003f8f] border-slate-200"
+                        ? "border-l-4 border-l-[#102B46] border-slate-200"
                         : "border-slate-200"
                     }`}
                   >
                     <div className="flex items-start gap-2">
                       {!notif.isRead && (
-                        <div className="w-2 h-2 rounded-full bg-[#003f8f] mt-1.5 flex-shrink-0" />
+                        <div className="w-2 h-2 rounded-full bg-[#102B46] mt-1.5 flex-shrink-0" />
                       )}
                       <div className="flex-1">
                         <div className="font-semibold text-slate-700 text-sm">
