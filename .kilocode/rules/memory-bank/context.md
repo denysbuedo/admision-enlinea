@@ -15,7 +15,7 @@
 
 Nexo is a complete academic admissions platform for managing postgraduate program calls. Built on Next.js 16 with full-stack capabilities.
 
-**Deployment Target**: `https://nexo.mes.gob.cu` behind a remote HAProxy that terminates TLS. The Ubuntu app server should expose Next.js directly on TCP port `3000`; local Nginx is not part of the current deployment guide.
+**Deployment Target**: `https://convocatorias.reduniv.edu.cu` behind a remote HAProxy that terminates TLS. The Ubuntu app server should expose Next.js directly on TCP port `3000`; local Nginx is not part of the current deployment guide.
 
 ## Recently Completed
 
@@ -113,3 +113,6 @@ Nexo is a complete academic admissions platform for managing postgraduate progra
 - Applied CONVOCA v1.0 official logos, colors, local Inter/IBM Plex Mono fonts with licenses, favicon and social preview. Redesigned homepage, updated branding/palette across existing screens, added program-type links and retained API/role identifiers.
 - Restored local Next.js dependency installation; typecheck and build passed. Fixed Vitest setup path and timezone-dependent sample test: 6 tests passed. Browser checks on home, catalog, login and register passed desktop/mobile without horizontal overflow or page errors; inspected homepage screenshots.
 - Added `PLAN-EVOLUCION.md` as a proposal for the next stage, including known authorization flaws, dependency review, functional coverage and operational hardening. These backend changes are deferred, not claimed fixed by the visual refresh.
+
+- Deployment completed: compiled application commit `7844d18` active at `https://convocatorias.reduniv.edu.cu/`. Production build succeeded before activation; service healthy afterward. Browser smoke checks returned HTTP 200 on home/catalog/login/register, loaded Inter locally, verified absolute social image URL, and reported no page errors. No production data writes or full authenticated admission flows were tested.
+- Production DB was byte-identical to the pre-deployment backup after activation. Prior build and backups remain available on the server. Local and remote source trees were clean at application deployment; final documentation is synchronized separately without rebuilding unchanged application code.

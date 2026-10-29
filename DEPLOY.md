@@ -1,10 +1,25 @@
-# Deploy - Admision en Linea (Nexo)
+# Deploy - CONVOCA
+
+
+## Despliegue verificado de CONVOCA — 28 de octubre de 2026
+
+- Sitio activo: `https://convocatorias.reduniv.edu.cu/`.
+- Aplicación: `/opt/admision-enlinea`; servicio `admision-enlinea`; usuario `nexouser`.
+- Ejecutable Bun: `/home/nexouser/.bun/bin/bun`.
+- Código del rediseño compilado: `7844d18`. Las revisiones posteriores exclusivamente documentales no requieren recompilar.
+- Antes de desplegar se verificó la copia `/opt/convoca-backups/pre-convoca-20261028.tar.gz`. El build anterior está en `/opt/convoca-backups/next-pre-convoca` y la copia exacta de la BD previa al cambio en `/opt/convoca-backups/sqlite-pre-deploy.db`.
+- La compilación Linux se preparó en `/opt/convoca-build-20261028` mientras producción seguía activa. Se detuvo el servicio solo para actualizar código y sustituir `.next`, se restauró la misma BD y se verificó HTTP 200 antes de finalizar.
+- `sqlite.db` y `.env.production` son datos/configuración operativa, excluidos de Git. No reemplazarlos con archivos de un checkout ni publicar copias en GitHub. En instalaciones nuevas, ejecutar migraciones; en actualizaciones, conservar los datos existentes.
+- Para consultar la aplicación desde la VM, usar `curl --noproxy '*' http://127.0.0.1:3000/`; el proxy del entorno puede devolver 503 si no se excluye localhost.
+- Se verificaron públicamente `/`, `/programs`, `/login` y `/register`, además del logotipo, fuente local y metadatos sociales. No se ejecutaron escrituras ni flujos completos de admisión sobre producción.
+
+La guía siguiente describe la instalación base. Para futuras actualizaciones se recomienda repetir la preparación en un directorio separado y conservar una versión recuperable antes de reiniciar.
 
 Guia paso a paso para desplegar en Ubuntu 22.04.
 
 Escenario de produccion:
 
-- URL publica: `https://nexo.mes.gob.cu`
+- URL publica: `https://convocatorias.reduniv.edu.cu`
 - El certificado TLS lo termina un HAProxy remoto.
 - Este servidor solo expone la aplicacion Next.js por un puerto TCP.
 - Puerto recomendado de la app: `3000`.
@@ -233,9 +248,9 @@ ufw status
 
 El HAProxy remoto debe:
 
-- Terminar TLS para `nexo.mes.gob.cu`.
+- Terminar TLS para `convocatorias.reduniv.edu.cu`.
 - Enviar el trafico hacia `http://<IP_DEL_SERVIDOR>:3000`.
-- Preservar el encabezado `Host: nexo.mes.gob.cu`.
+- Preservar el encabezado `Host: convocatorias.reduniv.edu.cu`.
 - Enviar `X-Forwarded-Proto: https`.
 - Enviar `X-Forwarded-For` con la IP real del cliente.
 
@@ -263,13 +278,13 @@ curl -I http://127.0.0.1:3000
 Desde el servidor HAProxy o desde una maquina con acceso al puerto:
 
 ```bash
-curl -I http://<IP_DEL_SERVIDOR>:3000 -H "Host: nexo.mes.gob.cu" -H "X-Forwarded-Proto: https"
+curl -I http://<IP_DEL_SERVIDOR>:3000 -H "Host: convocatorias.reduniv.edu.cu" -H "X-Forwarded-Proto: https"
 ```
 
 Cuando el HAProxy este apuntando al servidor, abrir:
 
 ```text
-https://nexo.mes.gob.cu
+https://convocatorias.reduniv.edu.cu
 ```
 
 ---
@@ -317,7 +332,7 @@ Si el usuario `nexouser` no tiene `sudo`, reinicia el servicio como `root`.
 | Ver logs ultimas 100 lineas | `journalctl -u admision-enlinea -n 100` |
 | Ver puertos abiertos | `ss -tlnp` |
 | Probar app local | `curl -I http://127.0.0.1:3000` |
-| Probar app como HAProxy | `curl -I http://<IP_DEL_SERVIDOR>:3000 -H "Host: nexo.mes.gob.cu" -H "X-Forwarded-Proto: https"` |
+| Probar app como HAProxy | `curl -I http://<IP_DEL_SERVIDOR>:3000 -H "Host: convocatorias.reduniv.edu.cu" -H "X-Forwarded-Proto: https"` |
 
 ---
 
@@ -342,7 +357,7 @@ Si el usuario `nexouser` no tiene `sudo`, reinicia el servicio como `root`.
 
 | URL | Descripcion |
 |-----|-------------|
-| `https://nexo.mes.gob.cu` | URL publica via HAProxy remoto |
+| `https://convocatorias.reduniv.edu.cu` | URL publica via HAProxy remoto |
 | `http://<IP_DEL_SERVIDOR>:3000` | App expuesta para el HAProxy |
 | `http://127.0.0.1:3000` | App local en el servidor |
 | `http://127.0.0.1:3000/api/admin/seed` | POST para crear admin inicial |
