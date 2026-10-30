@@ -142,3 +142,6 @@ Nexo is a complete academic admissions platform for managing postgraduate progra
 - Corrected useful container width to 1280 px excluding external gutters, yielding visible start/end X=80/1360 at 1440 px and X=16/374 at 390 px. Header stays 72/64 px.
 - Added tightly framed navigation-only SVG retaining original paths/colors, and optical logo sizing 36/32 px. Original shared logo and content unaffected.
 - Browser measurements at zoom 100% passed; compared all three public headers at identical viewport widths. Other portals still differ; see `docs/HEADER-GEOMETRY.md` for exact results and scope. Production backup verified under `/opt/convoca-backups/header-geometry-20261030/`.
+
+- Compiled/deployed `2ce626b` successfully; Linux build, TypeScript and scoped lint passed. Repeated public-site comparison at 1440/390, zoom 100%, confirmed CONVOCA X=80/16, right edge 1360/374, logo box height 36/32 and header 72/64. No overflow; menu Escape passed. Database comparison verified unchanged. Previous build retained in `/opt/convoca-backups/header-geometry-20261030/next-before`.
+

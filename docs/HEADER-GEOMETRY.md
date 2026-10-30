@@ -26,3 +26,6 @@ Playwright/Chromium, viewport 1440 y 390 px, deviceScaleFactor=1, visualViewport
 En CONVOCA, el extremo derecho de los controles queda en X=1360/374 respectivamente. Sin desbordamiento horizontal; menú y Escape comprobados. Las otras plataformas no cumplen aún la geometría objetivo; esta tarea no afirma uniformidad final entre las tres.
 
 Capturas y métricas locales en `.deploy/header-geometry/`, excluidas de Git. Copia previa de producción verificada en `/opt/convoca-backups/header-geometry-20261030/pre-deploy.tar.gz`.
+
+Resultado: código `2ce626b` desplegado y mediciones repetidas en producción con los mismos resultados. Compilación Linux, TypeScript y lint correctos; base de datos preservada. Las revisiones documentales posteriores no alteran el build.
+
