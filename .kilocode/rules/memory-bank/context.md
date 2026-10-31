@@ -4,6 +4,7 @@
 
 - On dev, application detail/update now checks the stored program's institution before reads/writes; export enforces the same boundary. Admin and applicant ownership behavior retained; no schema changes.
 - 13 isolated integration tests added (8 reproduced unauthorized access before correction); all 31 tests, typecheck, scoped lint and local build pass. See docs/STABILITY-02.md for release evidence and limits. Institutional registration approval and other roadmap permissions remain pending.
+- Deployed main merge `507b933` (dev `fe0bdf5`) after Linux tests/typecheck/build and synthetic authenticated HTTP validation with two institutions. Temporary validation service stopped. Backup/restore integrity and counts verified under `/opt/convoca-backups/security-02-20261031/`; DB byte-identical to stopped-service predeployment copy. Public pages 200 without JS errors; anonymous detail/export 401. SEG-002 complete for H02/H03; program editing permissions next. Documentation closure follows dev → main; finish on clean dev.
 
 ## Current State
 
