@@ -166,3 +166,11 @@ Estas decisiones no bloquean corregir accesos indebidos evidentes. Cada entrega 
 ## Fuera de esta estabilización
 
 Pagos, SSO, IA, analítica avanzada, aplicaciones móviles, importación masiva y una reescritura completa quedan en backlog. Primero corregir permisos, asegurar datos y medir la operación. La evaluación de necesidades nuevas se retoma después del hito de versión estable.
+
+## Progreso — primera entrega de estabilización (2026-10-31)
+
+- Flujo acordado: todo desarrollo en `dev`, merge validado a `main`, despliegue únicamente desde `main`. Ver [procedimiento](docs/RELEASE-WORKFLOW.md).
+- SEG-001, parcial: bloqueo de super_admin en registro público implementado con pruebas aisladas; pendiente aprobación institucional y revisión de cuentas existentes. Ver [evidencia](docs/STABILITY-01.md).
+- EST-001/002/003, avance parcial: inventario básico, copia consistente y restauración de SQLite con integridad/conteos verificados. Falta ejercicio completo de servicio, operador independiente y staging permanente.
+- Incidencia para DAT-008: tablas de producción existentes con registro de migraciones vacío. No ejecutar migraciones sin reconciliar la línea base.
+- Las demás tareas conservan su estado pendiente; esta entrega no certifica la estabilidad general.

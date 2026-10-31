@@ -1,3 +1,10 @@
+## Branch and deployment workflow
+
+- Develop and commit changes on `dev`, including documentation and fixes. Start from the latest `main` without rewriting shared history.
+- Validate each small change before merging `dev` into `main`. Production is deployed only from `main`, never directly from `dev`.
+- Preserve other contributors' changes. Verify remote state, back up production and validate recovery before deploying; never overwrite runtime data with repository files.
+- Follow `docs/RELEASE-WORKFLOW.md`. Leave the local checkout on `dev` after completing a release.
+
 ## Optional Feature Guides
 
 When users request features beyond the base template, check for available recipes in `.kilocode/recipes/`.

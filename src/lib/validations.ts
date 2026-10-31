@@ -5,7 +5,8 @@ export const userRegisterSchema = z.object({
   name: z.string().min(2, "El nombre debe tener al menos 2 caracteres"),
   email: z.string().email("Email inválido"),
   password: z.string().min(6, "La contraseña debe tener al menos 6 caracteres"),
-  role: z.enum(['super_admin', 'university', 'aspirant']).optional().default('aspirant'),
+  // Public registration must never grant administrative privileges.
+  role: z.enum(['university', 'aspirant']).optional().default('aspirant'),
   // Cambiado de universityName (string) a universityId (número o string numérico)
   universityId: z.union([z.string(), z.number()]).transform((val) => Number(val)).optional().or(z.literal('').transform(() => undefined)),
 });
