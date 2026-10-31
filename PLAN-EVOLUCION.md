@@ -1,5 +1,7 @@
 # CONVOCA: propuesta para la siguiente etapa
 
+> Actualización 2026-10-31: el plan vigente y priorizado de estabilidad está en [ROADMAP.md](ROADMAP.md). Este documento se conserva como antecedente del rediseño.
+
 ## Punto de partida
 
 La referencia funcional es el servidor Ubuntu, commit original `7418f7c`. Su única diferencia de dependencias era una suma de integridad adicional en `bun.lock`, adoptada en el repositorio. La base de datos de producción se conserva separada del código; no se distribuye a GitHub ni se sustituye por la base local. El rediseño aplica el kit CONVOCA v1.0 sobre la arquitectura existente.

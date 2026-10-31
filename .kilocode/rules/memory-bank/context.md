@@ -11,9 +11,9 @@
 - `sqlite.db` is tracked in Git. No database contents or production environment were inspected. Code equality does not establish identical ignored environment files, installed dependencies, or deployed behavior.
 - Only this memory-bank entry was intentionally changed; no application fixes or deployment were performed.
 
-**Project Status**: ✅ Nexo platform fully implemented
+**Project Status**: CONVOCA visual baseline deployed; functional/security stabilization pending under ROADMAP.md.
 
-Nexo is a complete academic admissions platform for managing postgraduate program calls. Built on Next.js 16 with full-stack capabilities.
+CONVOCA is an academic admissions platform for managing postgraduate program calls; completion of critical workflows and security controls must be validated against ROADMAP.md. Built on Next.js 16 with full-stack capabilities.
 
 **Deployment Target**: `https://convocatorias.reduniv.edu.cu` behind a remote HAProxy that terminates TLS. The Ubuntu app server should expose Next.js directly on TCP port `3000`; local Nginx is not part of the current deployment guide.
 
@@ -145,3 +145,9 @@ Nexo is a complete academic admissions platform for managing postgraduate progra
 
 - Compiled/deployed `2ce626b` successfully; Linux build, TypeScript and scoped lint passed. Repeated public-site comparison at 1440/390, zoom 100%, confirmed CONVOCA X=80/16, right edge 1360/374, logo box height 36/32 and header 72/64. No overflow; menu Escape passed. Database comparison verified unchanged. Previous build retained in `/opt/convoca-backups/header-geometry-20261030/next-before`.
 
+
+### Stability roadmap — 2026-10-31
+
+- Replaced the outdated feature-oriented ROADMAP.md with a stability plan grounded in a focused static review of `2a2931d`: phases 0–6, task IDs, ownership by role, dependencies, estimates, acceptance gates, proposed recovery/service objectives and deferred feature scope. Preserved prior roadmap in `docs/ROADMAP-LEGADO.md` and marked PLAN-EVOLUCION.md as historical.
+- Newly documented findings include missing institution checks on application detail/update/export, insufficient role/status checks in program PATCH, public exposure of unpublished programs and SSE cookie mismatch. Existing registration privilege and JWT fallback issues remain open; no backend fixes were made in this planning task.
+- The roadmap distinguishes verified code findings from operational checks still required. Proposed RPO/RTO, load targets and timing are planning assumptions, not measured guarantees. No production testing, data mutation or application deployment performed for this documentation work.
