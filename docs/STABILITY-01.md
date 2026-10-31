@@ -26,3 +26,11 @@ Respaldo consistente mediante API de SQLite en conexión de solo lectura, restau
 Incidencia nueva: `__drizzle_migrations` no contiene filas aunque las tablas existen. No ejecutar migraciones automáticas hasta reconciliar la línea base (DAT-008). Esta entrega no tiene migraciones.
 
 Reversión: build anterior y código preservados. Volver a la versión anterior también reabriría la vulnerabilidad; ante una regresión limitada al registro se prefiere contener ese endpoint y corregir hacia adelante, con una decisión operativa explícita.
+
+## Resultado de publicación
+
+Código de desarrollo `abbbd9c`, merge de aplicación `a90fa36` en `main`. Pasaron 18 tests también en Linux y la compilación del candidato de main. Validación HTTP en servicio temporal de loopback con `validation.db` y secreto propios: rechazo de administrador, registro de aspirante/institución, login y duplicado correctos. Se detuvo ese servicio antes de activar producción.
+
+Producción desplegada desde `main`; base de datos preservada y build anterior en `/opt/convoca-backups/security-01-20261031/next-before`. GET de portada, programas, login y registro respondieron 200, sin errores JS. La prueba pública negativa envió solo el campo role, sin nombre/email/password, de modo que no podía crear una cuenta incluso ante una versión anterior; se verificó el error específico del rol administrativo.
+
+La documentación final se integra por dev → main y no requiere reconstruir ni reiniciar. Siguiente entrega propuesta: SEG-002, autorización por institución en detalle/edición/exportación de solicitudes, con dos universidades de prueba antes de tocar producción.
