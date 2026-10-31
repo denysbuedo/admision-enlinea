@@ -174,3 +174,6 @@ Pagos, SSO, IA, analítica avanzada, aplicaciones móviles, importación masiva 
 - EST-001/002/003, avance parcial: inventario básico, copia consistente y restauración de SQLite con integridad/conteos verificados. Falta ejercicio completo de servicio, operador independiente y staging permanente.
 - Incidencia para DAT-008: tablas de producción existentes con registro de migraciones vacío. No ejecutar migraciones sin reconciliar la línea base.
 - Las demás tareas conservan su estado pendiente; esta entrega no certifica la estabilidad general.
+
+- Publicación de esta primera entrega verificada: merge de aplicación `a90fa36` desde dev a main, 18 tests correctos en Linux, validación HTTP en BD sintética y comprobaciones públicas sin crear cuentas. El bloqueo de super_admin ya está activo; SEG-001 sigue parcial por las decisiones y revisiones pendientes. Próximo lote: SEG-002 (aislamiento institucional en solicitudes/exportaciones).
+
