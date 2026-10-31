@@ -1,75 +1,11 @@
-import NextAuth, { NextAuthOptions, getServerSession } from "next-auth";
-import CredentialsProvider from "next-auth/providers/credentials";
 import { db } from "@/db";
 import { users } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { cookies } from "next/headers";
-
-export const authOptions: NextAuthOptions = {
-  providers: [
-    CredentialsProvider({
-      name: "credentials",
-      credentials: {
-        email: { label: "Email", type: "email" },
-        password: { label: "Password", type: "password" },
-      },
-      async authorize(credentials) {
-        if (!credentials?.email || !credentials?.password) {
-          throw new Error("Datos inválidos");
-        }
-
-        const userList = await db.select().from(users).where(eq(users.email, credentials.email)).limit(1);
-        
-        if (userList.length === 0) {
-          throw new Error("Usuario no encontrado");
-        }
-
-        const user = userList[0];
-
-        const isPasswordValid = await bcrypt.compare(credentials.password, user.password);
-
-        if (!isPasswordValid) {
-          throw new Error("Contraseña incorrecta");
-        }
-
-        return {
-          id: user.id.toString(),
-          email: user.email,
-          name: user.name,
-          role: user.role,
-          universityId: user.universityId,
-        };
-      },
-    }),
-  ],
-  session: {
-    strategy: "jwt",
-  },
-  callbacks: {
-    async jwt({ token, user }) {
-      if (user) {
-        token.role = user.role;
-        token.universityId = user.universityId;
-        token.id = user.id;
-      }
-      return token;
-    },
-    async session({ session, token }) {
-      if (session.user) {
-        session.user.role = token.role as string;
-        session.user.universityId = token.universityId as number;
-        session.user.id = token.id as string;
-      }
-      return session;
-    },
-  },
-  pages: {
-    signIn: "/login",
-  },
-  secret: process.env.JWT_SECRET,
-};
+import { createHmac, timingSafeEqual } from "node:crypto";
+import { z } from "zod";
 
 export interface CustomSession {
   userId: number;
@@ -84,68 +20,85 @@ export interface CustomSession {
   };
 }
 
+const tokenClaims = z.object({
+  userId: z.number().int().positive().safe(),
+  email: z.string().email(),
+  role: z.enum(['super_admin', 'university', 'aspirant']),
+  universityId: z.number().int().positive().safe().nullable(),
+  sessionVersion: z.string().regex(/^[a-f0-9]{64}$/),
+  iat: z.number().int().nonnegative(),
+  exp: z.number().int().positive(),
+});
+type VerifiedToken = z.infer<typeof tokenClaims>;
+type Account = Pick<typeof users.$inferSelect, 'id' | 'email' | 'role' | 'universityId' | 'password' | 'isActive' | 'updatedAt'>;
+const lifetime = 7 * 24 * 60 * 60;
+
+function signingSecret(): string {
+  const secret = process.env.JWT_SECRET;
+  if (!secret || secret.trim() !== secret || Buffer.byteLength(secret) < 32 || new Set(secret).size < 8) {
+    throw new Error('JWT_SECRET must be configured with a strong random secret of at least 32 bytes');
+  }
+  return secret;
+}
+
+// Keyed fingerprint: never put a password or its hash in the readable JWT payload.
+// No schema migration needed; compare current security state on every request.
+function sessionVersion(user: Account, secret: string): string {
+  return createHmac('sha256', secret).update(JSON.stringify([
+    'convoca-session-v1', user.id, user.email, user.role, user.universityId,
+    user.password, user.isActive, user.updatedAt?.getTime() ?? null,
+  ])).digest('hex');
+}
+
 export async function hashPassword(password: string): Promise<string> {
-  return await bcrypt.hash(password, 10);
+  return bcrypt.hash(password, 10);
 }
-
 export async function verifyPassword(password: string, hash: string): Promise<boolean> {
-  return await bcrypt.compare(password, hash);
+  return bcrypt.compare(password, hash);
 }
 
-export function signToken(payload: { userId: number; email: string; role: string; universityId: number | null }): string {
-  const secret = process.env.JWT_SECRET || "default_secret";
-  return jwt.sign(payload, secret, { expiresIn: "7d" });
+export function signToken(user: Account): string {
+  const secret = signingSecret();
+  if (!user.isActive) throw new Error('Inactive account');
+  const payload = {
+    userId: user.id, email: user.email, role: user.role, universityId: user.universityId,
+    sessionVersion: sessionVersion(user, secret),
+  };
+  const now = Math.floor(Date.now() / 1000);
+  tokenClaims.parse({ ...payload, iat: now, exp: now + lifetime });
+  return jwt.sign(payload, secret, { algorithm: 'HS256', expiresIn: lifetime });
 }
 
-export async function verifyToken(token: string): Promise<any> {
-  const secret = process.env.JWT_SECRET || "default_secret";
+export async function verifyToken(token: string): Promise<VerifiedToken | null> {
   try {
-    return jwt.verify(token, secret);
+    const secret = signingSecret();
+    const decoded = tokenClaims.safeParse(jwt.verify(token, secret, { algorithms: ['HS256'], maxAge: lifetime }));
+    if (!decoded.success) return null;
+    const claims = decoded.data;
+    const now = Math.floor(Date.now() / 1000);
+    if (claims.iat > now || claims.exp <= claims.iat || claims.exp - claims.iat > lifetime) return null;
+    const [user] = await db.select().from(users).where(eq(users.id, claims.userId));
+    if (!user?.isActive || user.role !== claims.role || user.universityId !== claims.universityId || user.email !== claims.email) return null;
+    const current = Buffer.from(sessionVersion(user, secret), 'hex');
+    if (!timingSafeEqual(current, Buffer.from(claims.sessionVersion, 'hex'))) return null;
+    return claims;
   } catch {
+    // Malformed tokens, invalid configuration and unavailable DB all fail closed.
     return null;
   }
 }
 
-// Función helper para obtener la sesión en servidores (Route Handlers)
 export async function getSession(): Promise<CustomSession | null> {
   try {
-    const cookieStore = await cookies();
-    const token = cookieStore.get("auth_token")?.value;
+    const token = (await cookies()).get('auth_token')?.value;
     if (!token) return null;
-
     const decoded = await verifyToken(token);
-    if (!decoded || !decoded.userId) return null;
-
+    if (!decoded) return null;
     return {
-      userId: decoded.userId,
-      role: decoded.role,
-      universityId: decoded.universityId,
-      email: decoded.email,
-      user: {
-        id: decoded.userId.toString(),
-        email: decoded.email || "",
-        role: decoded.role,
-        universityId: decoded.universityId,
-      },
+      userId: decoded.userId, role: decoded.role, universityId: decoded.universityId, email: decoded.email,
+      user: { id: String(decoded.userId), email: decoded.email, role: decoded.role, universityId: decoded.universityId },
     };
-  } catch (error) {
-    console.error("getSession error:", error);
+  } catch {
     return null;
-  }
-}
-
-export default NextAuth(authOptions);
-
-declare module "next-auth" {
-  interface User {
-    id: string;
-    role: string;
-    universityId: number | null;
-  }
-  interface Session {
-    user: User;
-    role?: string;
-    userId?: number;
-    universityId?: number | null;
   }
 }

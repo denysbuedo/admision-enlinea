@@ -10,13 +10,13 @@ export async function POST(request: NextRequest) {
     const { email, password } = body;
 
     if (!email || !password) {
-      return NextResponse.json({ error: "Email y contraseña son requeridos" }, { status: 400 });
+      return NextResponse.json({ error: "Email y contraseÃ±a son requeridos" }, { status: 400 });
     }
 
     const [user] = await db.select().from(users).where(eq(users.email, email));
 
     if (!user) {
-      return NextResponse.json({ error: "Credenciales inválidas" }, { status: 401 });
+      return NextResponse.json({ error: "Credenciales invÃ¡lidas" }, { status: 401 });
     }
 
     if (!user.isActive) {
@@ -25,19 +25,14 @@ export async function POST(request: NextRequest) {
 
     const isValid = await verifyPassword(password, user.password);
     if (!isValid) {
-      return NextResponse.json({ error: "Credenciales inválidas" }, { status: 401 });
+      return NextResponse.json({ error: "Credenciales invÃ¡lidas" }, { status: 401 });
     }
 
-    const token = signToken({
-      userId: user.id,
-      email: user.email,
-      role: user.role,
-      universityId: user.universityId,
-    });
+    const token = signToken(user);
 
     const response = NextResponse.json({
       user: { id: user.id, name: user.name, email: user.email, role: user.role, universityId: user.universityId },
-      message: "Inicio de sesión exitoso",
+      message: "Inicio de sesiÃ³n exitoso",
     });
 
     response.cookies.set("auth_token", token, {
