@@ -1,5 +1,11 @@
 # Active Context: Nexo – Academic Admissions Cloud
 
+### Stabilization iteration 04 — 2026-10-31
+
+- On dev: JWT fallback removed; HS256/claims/expiration checked and each verification validates active current DB user plus keyed account-state fingerprint. Password/hash never included in issued token. Existing sessions require fresh login after activation; no password/data changes or migration. Unused NextAuth configuration removed.
+- Stream uses auth_token, validates per event and every 30 seconds, cleans up on cancel/abort. Trigger restricted to current admin to avoid exposing anonymous delivery through the corrected stream cookie. 37 new isolated tests, 98 total. Production secret passes non-disclosing preflight; unchanged.
+- SEG-004 partial: irreversible revocation across exact account-state restoration needs persistent session version/ledger; updatedAt currently has second precision. SEG-005 partial: trigger protected, public seed still pending. See docs/STABILITY-04.md.
+
 ### Stabilization iteration 03 — 2026-10-31
 
 - SEG-003 implemented on dev: public/applicant program access restricted to published; private detail restricted to owner/admin. Only admin or owning institution may edit; institution cannot publish/reject/close or alter published/closed content. Invalid states rejected. Closed programs remain private to management; public archive deferred.
