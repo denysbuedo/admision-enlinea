@@ -1,5 +1,10 @@
 # Active Context: Nexo – Academic Admissions Cloud
 
+### Stabilization iteration 02 — 2026-10-31
+
+- On dev, application detail/update now checks the stored program's institution before reads/writes; export enforces the same boundary. Admin and applicant ownership behavior retained; no schema changes.
+- 13 isolated integration tests added (8 reproduced unauthorized access before correction); all 31 tests, typecheck, scoped lint and local build pass. See docs/STABILITY-02.md for release evidence and limits. Institutional registration approval and other roadmap permissions remain pending.
+
 ## Current State
 
 ### Repository review — 2026-10-28
