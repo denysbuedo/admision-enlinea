@@ -5,6 +5,7 @@
 - On dev: JWT fallback removed; HS256/claims/expiration checked and each verification validates active current DB user plus keyed account-state fingerprint. Password/hash never included in issued token. Existing sessions require fresh login after activation; no password/data changes or migration. Unused NextAuth configuration removed.
 - Stream uses auth_token, validates per event and every 30 seconds, cleans up on cancel/abort. Trigger restricted to current admin to avoid exposing anonymous delivery through the corrected stream cookie. 37 new isolated tests, 98 total. Production secret passes non-disclosing preflight; unchanged.
 - SEG-004 partial: irreversible revocation across exact account-state restoration needs persistent session version/ledger; updatedAt currently has second precision. SEG-005 partial: trigger protected, public seed still pending. See docs/STABILITY-04.md.
+- Deployed main `7e42aac`; 98 tests, typecheck and build passed in Linux; synthetic HTTP login/revocation/legacy-token/trigger checks passed. Protected backup/restore under `/opt/convoca-backups/security-04-20261031/`, DB byte-preserved, production secret/passwords unchanged. Public smoke and negative authorization checks passed. Legacy sessions need login again. Next proposed block: remove public seed with operational recovery preserved. Documentation follows dev → main; finish clean dev.
 
 ### Stabilization iteration 03 — 2026-10-31
 

@@ -23,3 +23,13 @@ Ejecutar typecheck, lint y build; validar main en Linux y HTTP con BD/secreto si
 SEG-004 queda **parcial**, no cerrado: se requiere contador persistente de versión de sesión o registro de revocación para impedir definitivamente la reactivación de tokens si se restaura exactamente el estado anterior de cuenta (incluido updatedAt). Los procedimientos que cambien actividad/permisos deben actualizar updatedAt; el reseteo de contraseña existente ya lo hace. La precisión temporal actual es de segundos. No afirmar revocación irreversible con esta huella sin estado adicional.
 
 SEG-005 parcial: trigger protegido; seed público sigue pendiente. Alta institucional, rate limiting y demás riesgos del roadmap no se consideran resueltos. La rotación de secreto se ensaya en pruebas, no se realiza en producción: preparar nuevo secreto fuera de logs, actualizar entorno protegido y reiniciar con backup; todos deben autenticarse de nuevo. Revertir a código anterior puede volver a aceptar tokens antiguos, por lo que no es una reversión de seguridad neutra; preferir corrección hacia adelante y planificar rotación si fuese inevitable.
+
+## Resultado de publicación
+
+Desplegado desde main `7e42aac` (implementación dev `056a48f`, corrección de codificación de textos en dev `4b072ea`). Pasaron 98 pruebas, typecheck, lint del cambio y build local; el candidato definitivo pasó de nuevo 98 pruebas, typecheck y build en Linux. Ensayo HTTP con login real sobre SQLite sintético: rechazo tras desactivación, cambio de rol/institución/contraseña y eliminación; login de cuenta inactiva denegado, tokens antiguos denegados y trigger restringido. Servicio temporal detenido antes de activar.
+
+Respaldo consistente/restauración de SQLite con integridad y conteos correctos en `/opt/convoca-backups/security-04-20261031/restore-drill/`; archivo de código/configuración/build verificado y build anterior preservado en `next-before`. Base de datos byte a byte idéntica a la copia tomada con el servicio detenido antes del despliegue. Secreto y contraseñas de producción sin cambios. No se hicieron migraciones ni logins con cuentas reales.
+
+Comprobación pública: portada/catálogo/login/registro HTTP 200, sin errores JS; catálogo solo published, detalle inexistente gestionado, sesión/stream con token inválido 401 y trigger anónimo 401. Las pruebas negativas enviaron cuerpos incompletos que no podían crear usuarios ni notificaciones incluso en una versión anterior.
+
+Próximo bloque propuesto: cerrar SEG-005 retirando el seed público y manteniendo inicialización/recuperación operativa; después reconciliar la línea base de migraciones antes de incorporar revocación persistente.
