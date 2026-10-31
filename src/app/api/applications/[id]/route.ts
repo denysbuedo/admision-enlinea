@@ -2,7 +2,17 @@ import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/db";
 import { applications, programs, notifications, statusHistory } from "@/db/schema";
 import { eq } from "drizzle-orm";
-import { getSession } from "@/lib/auth";
+import { getSession, type CustomSession } from "@/lib/auth";
+
+async function canAccessApplication(session: CustomSession, application: typeof applications.$inferSelect) {
+  if (session.role === "super_admin") return true;
+  if (session.role === "aspirant") return application.userId === session.userId;
+  if (session.role !== "university" || !session.universityId) return false;
+
+  const [program] = await db.select({ universityId: programs.universityId })
+    .from(programs).where(eq(programs.id, application.programId));
+  return program?.universityId === session.universityId;
+}
 
 export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
@@ -22,7 +32,7 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
     }
 
     // Check access
-    if (session.role === "aspirant" && application.userId !== session.userId) {
+    if (!await canAccessApplication(session, application)) {
       return NextResponse.json({ error: "No autorizado" }, { status: 403 });
     }
 
@@ -55,7 +65,7 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
     }
 
     // Check access
-    if (session.role === "aspirant" && existing.userId !== session.userId) {
+    if (!await canAccessApplication(session, existing)) {
       return NextResponse.json({ error: "No autorizado" }, { status: 403 });
     }
 

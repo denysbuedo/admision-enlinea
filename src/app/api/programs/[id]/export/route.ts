@@ -21,7 +21,11 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
       return NextResponse.json({ error: "Programa no encontrado" }, { status: 404 });
     }
 
-    let appQuery = db.select().from(applications).where(eq(applications.programId, parseInt(id)));
+    if (session.role === "university" && (!session.universityId || program.universityId !== session.universityId)) {
+      return NextResponse.json({ error: "No autorizado" }, { status: 403 });
+    }
+
+    const appQuery = db.select().from(applications).where(eq(applications.programId, parseInt(id)));
     const allApps = await appQuery;
 
     const filtered = statusFilter ? allApps.filter(a => a.status === statusFilter) : allApps;

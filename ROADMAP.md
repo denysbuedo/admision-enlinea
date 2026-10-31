@@ -66,7 +66,7 @@ Responsables: desarrollo + operaciones. Un único responsable de cada despliegue
 Responsable: desarrollo; revisión de QA con datos sintéticos y dos instituciones.
 
 - [ ] **SEG-001** Corregir H01: registro público solo de roles permitidos; definir aprobación de cuentas institucionales y evitar que un usuario se asigne representación de cualquier universidad. Crear administradores exclusivamente por flujo autorizado.
-- [ ] **SEG-002** Corregir H02/H03: comprobar pertenencia institucional en lectura, escritura y exportación; impedir acceso cruzado por ID, parámetros, filtros o cambio del cuerpo de la petición.
+- [ ] **SEG-002** Corregir H02/H03: comprobar pertenencia institucional en lectura, escritura y exportación; impedir acceso cruzado por ID, parámetros, filtros o cambio del cuerpo de la petición. Implementado y validado localmente; publicación en curso, ver [evidencia](docs/STABILITY-02.md).
 - [ ] **SEG-003** Corregir H04/H05: aspirantes no editan programas; publicar/rechazar requiere administrador; catálogo y detalle anónimos solo muestran estados autorizados. Definir si programas cerrados permanecen consultables.
 - [ ] **SEG-004** Corregir H06: exigir JWT_SECRET seguro; validar algoritmo, firma, expiración y estructura de claims. Revisar usuario activo, rol e institución vigentes; invalidar sesiones al desactivar cuenta, cambiar contraseña o privilegios. Planificar rotación sin registrar secretos.
 - [ ] **SEG-005** Corregir H07: retirar o proteger trigger; convertir seed en comando operativo o inicialización controlada, nunca una mutación por GET público. Conservar una forma documentada de recuperación administrativa.
