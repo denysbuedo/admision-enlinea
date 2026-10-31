@@ -98,7 +98,7 @@ export default function ProgramDetailPage() {
 
   useEffect(() => {
     fetch(`/api/programs/${params.id}`)
-      .then((r) => r.json())
+      .then((r) => r.ok ? r.json() : null)
       .then((data) => {
         setProgram(data);
         setLoading(false);

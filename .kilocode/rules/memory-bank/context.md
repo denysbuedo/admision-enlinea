@@ -1,5 +1,10 @@
 # Active Context: Nexo – Academic Admissions Cloud
 
+### Stabilization iteration 03 — 2026-10-31
+
+- SEG-003 implemented on dev: public/applicant program access restricted to published; private detail restricted to owner/admin. Only admin or owning institution may edit; institution cannot publish/reject/close or alter published/closed content. Invalid states rejected. Closed programs remain private to management; public archive deferred.
+- 30 new in-memory integration tests (17 reproduced failures before fix); 61 total pass. Public detail handles unsuccessful responses as unavailable. See docs/STABILITY-03.md for policy, release evidence and limitations. No schema changes.
+
 ### Stabilization iteration 02 — 2026-10-31
 
 - On dev, application detail/update now checks the stored program's institution before reads/writes; export enforces the same boundary. Admin and applicant ownership behavior retained; no schema changes.
