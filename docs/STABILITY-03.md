@@ -20,3 +20,13 @@ El candidato de main se valida en Linux y con HTTP autenticado sobre datos sint�
 ## Límites
 
 Pendientes: aprobación de altas institucionales, autorización basada en usuario vigente, validación completa de todos los campos, reglas adicionales de transición y auditoría de cambios. No implica que el sistema esté completamente asegurado. Revertir esta entrega reabre H04/H05; preferir corregir hacia adelante si la regresión permite contener el flujo afectado.
+
+## Resultado de publicación
+
+Implementación en dev `8e0f9a5`, merge/build de main `a4cd816`. Pasaron las 61 pruebas, TypeScript, lint del cambio y build local; en Linux pasaron de nuevo las 61 pruebas, TypeScript y build. Ensayo HTTP aislado con dos instituciones, aspirante, anónimo y administrador: visibilidad por estado, pertenencia, rechazo sin escrituras, reenvío a aprobación, publicación/cierre administrativo y estado inválido correctos. Solo datos sintéticos y secreto independiente. El servicio temporal se detuvo antes de activar producción.
+
+Respaldo consistente y restauración con integridad/conteos verificados en `/opt/convoca-backups/security-03-20261031/restore-drill/`; archivo de código/configuración/build verificado y build previo conservado en `next-before`. Tras activar, SQLite coincide byte a byte con la copia tomada con el servicio detenido inmediatamente antes del despliegue. No hubo migraciones ni usuarios de prueba en producción.
+
+Portada, catálogo, login y registro públicos: HTTP 200 y sin errores JavaScript. Catálogo público devuelve exclusivamente published incluso solicitando status=draft; detalle inexistente muestra «Programa no encontrado». Se mantienen rechazo de detalle/exportación de solicitudes sin sesión y bloqueo de registro administrativo. Las escrituras autenticadas se probaron exclusivamente en la instancia sintética.
+
+SEG-003 completado con política explícita de closed privado. Siguiente bloque propuesto: SEG-004, sesiones y secreto JWT, con revisión de compatibilidad y revocación antes de desplegar.

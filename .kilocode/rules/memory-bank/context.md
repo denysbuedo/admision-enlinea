@@ -4,6 +4,7 @@
 
 - SEG-003 implemented on dev: public/applicant program access restricted to published; private detail restricted to owner/admin. Only admin or owning institution may edit; institution cannot publish/reject/close or alter published/closed content. Invalid states rejected. Closed programs remain private to management; public archive deferred.
 - 30 new in-memory integration tests (17 reproduced failures before fix); 61 total pass. Public detail handles unsuccessful responses as unavailable. See docs/STABILITY-03.md for policy, release evidence and limitations. No schema changes.
+- Deployed main merge `a4cd816` (dev `8e0f9a5`) after Linux tests/typecheck/build and synthetic HTTP with two institutions, applicant, anonymous and admin. Production pages/catalog/unavailable-detail checks passed without JS errors. Backup restore verified under `/opt/convoca-backups/security-03-20261031/`; DB unchanged against stopped-service predeployment copy. SEG-003 complete; next proposed SEG-004 session/JWT hardening. Finish documentation through dev → main and leave clean dev.
 
 ### Stabilization iteration 02 — 2026-10-31
 
