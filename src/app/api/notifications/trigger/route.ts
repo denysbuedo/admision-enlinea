@@ -11,7 +11,7 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const { userId, title, message, type = 'info' } = body;
 
-    // ValidaciÃ³n bÃ¡sica
+    // Validación básica
     if (!title || !message) {
       return NextResponse.json(
         { error: 'Title and message are required' }, 
@@ -19,14 +19,14 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // 3. Enviar notificaciÃ³n
-    // Si userId existe, envÃ­a solo a ese usuario. Si no, podrÃ­as broadcastear a todos (requiere modificar el store)
+    // 3. Enviar notificación
+    // Si userId existe, envía solo a ese usuario. Si no, podrías broadcastear a todos (requiere modificar el store)
     if (userId) {
       notificationStore.notify(userId, { title, message, type });
       return NextResponse.json({ success: true, message: `Notification sent to ${userId}` });
     } else {
-      // Para pruebas simples, si no hay userId, podrÃ­amos enviar a un usuario "test" o lanzar error
-      // AquÃ­ asumimos que si no hay userId, es un error a menos que implementes broadcast
+      // Para pruebas simples, si no hay userId, podríamos enviar a un usuario "test" o lanzar error
+      // Aquí asumimos que si no hay userId, es un error a menos que implementes broadcast
       return NextResponse.json(
         { error: 'userId is required for targeted notification' }, 
         { status: 400 }
