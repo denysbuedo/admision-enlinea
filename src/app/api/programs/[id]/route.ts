@@ -6,6 +6,7 @@ import { getSession } from "@/lib/auth";
 
 export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
+    const session = await getSession();
     const { id } = await params;
     const [program] = await db
       .select({
@@ -51,7 +52,9 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
       .leftJoin(universities, eq(programs.universityId, universities.id))
       .where(eq(programs.id, parseInt(id)));
 
-    if (!program) {
+    const canViewPrivate = session?.role === "super_admin" ||
+      (session?.role === "university" && !!session.universityId && session.universityId === program?.universityId);
+    if (!program || (program.status !== "published" && !canViewPrivate)) {
       return NextResponse.json({ error: "Programa no encontrado" }, { status: 404 });
     }
 
@@ -69,6 +72,10 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
       return NextResponse.json({ error: "No autorizado" }, { status: 401 });
     }
 
+    if (session.role !== "super_admin" && session.role !== "university") {
+      return NextResponse.json({ error: "No autorizado" }, { status: 403 });
+    }
+
     const { id } = await params;
     const body = await request.json();
 
@@ -78,11 +85,23 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
       return NextResponse.json({ error: "Programa no encontrado" }, { status: 404 });
     }
 
-    if (session.role === "university" && existing.universityId !== session.universityId) {
+    if (session.role === "university" && (!session.universityId || existing.universityId !== session.universityId)) {
       return NextResponse.json({ error: "No autorizado" }, { status: 403 });
     }
 
-    // Super admin can approve/reject
+    if (!body || typeof body !== "object" || Array.isArray(body) ||
+        (body.status !== undefined && !["draft", "pending_approval", "published", "closed", "rejected"].includes(body.status))) {
+      return NextResponse.json({ error: "Estado o petición inválidos" }, { status: 400 });
+    }
+
+    // Published content requires administrator review; institutions cannot bypass approval.
+    if (session.role === "university" && (
+      !["draft", "pending_approval", "rejected"].includes(existing.status) ||
+      (body.status !== undefined && !["draft", "pending_approval"].includes(body.status))
+    )) {
+      return NextResponse.json({ error: "Este cambio requiere un administrador" }, { status: 403 });
+    }
+
     const updateData: Record<string, unknown> = {
       updatedAt: new Date(),
     };

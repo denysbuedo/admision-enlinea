@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/db";
 import { programs, universities } from "@/db/schema";
-import { eq, desc, and } from "drizzle-orm";
+import { eq, desc, sql } from "drizzle-orm";
 import { getSession } from "@/lib/auth";
 
 export async function GET(request: NextRequest) {
@@ -9,7 +9,10 @@ export async function GET(request: NextRequest) {
     const session = await getSession();
 
     // Construir consulta base con join
-    let query = db
+    const visibility = session?.role === 'super_admin' ? undefined
+      : session?.role === 'university' ? (session.universityId ? eq(programs.universityId, session.universityId) : sql`0 = 1`)
+      : eq(programs.status, 'published');
+    const query = db
       .select({
         id: programs.id,
         title: programs.title,
@@ -49,22 +52,12 @@ export async function GET(request: NextRequest) {
       })
       .from(programs)
       .leftJoin(universities, eq(programs.universityId, universities.id))
+      .where(visibility)
       .orderBy(desc(programs.createdAt));
 
     const results = await query;
 
-    // Filtrado por roles si es necesario (ejemplo básico)
-    let filtered = results;
-
-    if (session?.user.role === 'university') {
-      filtered = results.filter(p => p.universityId === session.user.universityId);
-    } else if (session?.user.role === 'aspirant') {
-      // Aspirantes solo ven programas publicados
-      filtered = results.filter(p => p.status === 'published');
-    }
-    // Super admin ve todo
-
-    return NextResponse.json(filtered);
+    return NextResponse.json(results);
   } catch (error) {
     console.error("Get programs error:", error);
     return NextResponse.json({ error: "Failed to fetch programs" }, { status: 500 });
