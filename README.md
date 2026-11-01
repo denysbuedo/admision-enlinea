@@ -193,11 +193,9 @@ bun run db:generate
 bun run db:migrate
 ```
 
-5. **Crear usuario administrador**
-```bash
-ADMIN_INITIAL_PASSWORD='<CONTRASENA_SEGURA>' bun dev
-curl --noproxy '*' -X POST http://127.0.0.1:3000/api/admin/seed
-```
+5. **Crear el primer administrador desde el servidor**
+
+Seguir [Inicialización y recuperación administrativa](docs/ADMIN-OPERATIONS.md). Usar `bun run db:admin-init` sobre una BD existente con DB_URL absoluto y contraseña introducida sin historial. No existe inicialización por HTTP.
 
 ---
 
@@ -213,13 +211,7 @@ El servidor se ejecutará en `http://localhost:3000`
 
 ### Administrador Inicial
 
-El usuario inicial es `admin@nexo.com`. La contrasena se toma de `ADMIN_INITIAL_PASSWORD` al ejecutar `/api/admin/seed`.
-
-Para cambiarla posteriormente:
-
-```bash
-ADMIN_PASSWORD='<NUEVA_CONTRASENA_SEGURA>' bun run db:admin-password
-```
+El correo predeterminado es `admin@nexo.com`; se puede seleccionar con ADMIN_EMAIL. La creación inicial y la recuperación (`db:admin-password`) son operaciones de servidor, no rutas web. Consultar [el procedimiento operativo](docs/ADMIN-OPERATIONS.md) para preparar la BD y suministrar la contraseña sin exponerla.
 
 ### Rutas Principales
 

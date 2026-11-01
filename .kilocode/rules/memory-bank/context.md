@@ -1,5 +1,10 @@
 # Active Context: Nexo – Academic Admissions Cloud
 
+### Stabilization iteration 05 — 2026-11-01
+
+- On dev: HTTP seed retired (410) with no DB access; setup redirects to login. Added server-only initial admin CLI with transaction and no overwrite/promotion; password recovery restricted to existing super_admin and preserves disabled state. Both require explicit existing absolute SQLite path, no schema changes.
+- 21 new tests; 119 total pass. Real transactional tests use disposable SQLite files, other tests remain isolated. README/DEPLOY and docs/ADMIN-OPERATIONS.md updated; see docs/STABILITY-05.md for release evidence. No production administrator commands or account changes authorized as test operations.
+
 ### Stabilization iteration 04 — 2026-10-31
 
 - On dev: JWT fallback removed; HS256/claims/expiration checked and each verification validates active current DB user plus keyed account-state fingerprint. Password/hash never included in issued token. Existing sessions require fresh login after activation; no password/data changes or migration. Unused NextAuth configuration removed.
@@ -107,11 +112,11 @@ CONVOCA is an academic admissions platform for managing postgraduate program cal
 - `/university/programs/new` - Create program
 - `/university/applications/[id]` - Review application
 - `/admin` - Super Admin dashboard
-- `/api/admin/seed` - Create initial super admin (POST)
+- `/api/admin/seed` - Retired HTTP endpoint (410); operator CLI documented in docs/ADMIN-OPERATIONS.md
 
 ### Initial Setup
-1. Visit `/api/admin/seed` (POST) to create super admin
-2. Login with `admin@nexo.com` and the password configured in `ADMIN_INITIAL_PASSWORD`
+1. Follow docs/ADMIN-OPERATIONS.md: explicit existing SQLite file, server-only db:admin-init command.
+2. Login with the selected administrator email and operator-supplied password.
 
 ## Session History
 

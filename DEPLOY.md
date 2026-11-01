@@ -113,7 +113,6 @@ PORT=3000
 HOSTNAME=0.0.0.0
 DB_URL=file:sqlite.db
 JWT_SECRET=<CAMBIAR_POR_UN_SECRETO_REAL>
-ADMIN_INITIAL_PASSWORD=<CAMBIAR_POR_UNA_CONTRASENA_INICIAL_SEGURA>
 ```
 
 Para generar secretos seguros:
@@ -122,32 +121,17 @@ Para generar secretos seguros:
 openssl rand -hex 32
 ```
 
-Copia valores distintos para `JWT_SECRET` y `ADMIN_INITIAL_PASSWORD`.
+Configura JWT_SECRET con el secreto aleatorio generado. Las contraseñas administrativas se suministran solo al comando operativo, no al servidor web.
 
 ---
 
-## 8. Ejecutar migraciones y seed inicial
+## 8. Esquema e inicialización administrativa
 
-Si es la primera vez que despliegas:
+Solo en una instalación nueva, preparar el esquema con `bun run db:migrate`. En producción existente, no aplicar migraciones sin revisar y reconciliar primero el ledger; actualmente se ha observado vacío pese a existir tablas.
 
-```bash
-bun run db:migrate
-```
+La creación del primer administrador se realiza por `bun run db:admin-init`, exclusivamente desde el servidor, sobre el archivo SQLite existente identificado por DB_URL absoluto. La recuperación conserva `bun run db:admin-password` y no modifica roles ni reactiva cuentas.
 
-Despues de levantar la app, crea el super admin inicial:
-
-```bash
-curl --noproxy '*' -X POST http://127.0.0.1:3000/api/admin/seed
-```
-
-El correo del admin inicial es `admin@nexo.com`. La contrasena sera el valor configurado en `ADMIN_INITIAL_PASSWORD`.
-
-Para cambiar la contrasena del admin existente desde el servidor:
-
-```bash
-cd /opt/admision-enlinea
-ADMIN_PASSWORD='<NUEVA_CONTRASENA_SEGURA>' bun run db:admin-password
-```
+Seguir [ADMIN-OPERATIONS.md](docs/ADMIN-OPERATIONS.md) para respaldar, seleccionar el correo y leer la contraseña sin historial. No ejecutar estos comandos en cada despliegue. `/api/admin/seed` está retirado (410) y `/setup` lleva a login.
 
 ---
 
@@ -360,4 +344,4 @@ Si el usuario `nexouser` no tiene `sudo`, reinicia el servicio como `root`.
 | `https://convocatorias.reduniv.edu.cu` | URL publica via HAProxy remoto |
 | `http://<IP_DEL_SERVIDOR>:3000` | App expuesta para el HAProxy |
 | `http://127.0.0.1:3000` | App local en el servidor |
-| `http://127.0.0.1:3000/api/admin/seed` | POST para crear admin inicial |
+| `bun run db:admin-init` | Inicialización local según docs/ADMIN-OPERATIONS.md |
