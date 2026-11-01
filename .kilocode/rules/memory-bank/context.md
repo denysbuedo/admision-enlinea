@@ -4,6 +4,7 @@
 
 - On dev: HTTP seed retired (410) with no DB access; setup redirects to login. Added server-only initial admin CLI with transaction and no overwrite/promotion; password recovery restricted to existing super_admin and preserves disabled state. Both require explicit existing absolute SQLite path, no schema changes.
 - 21 new tests; 119 total pass. Real transactional tests use disposable SQLite files, other tests remain isolated. README/DEPLOY and docs/ADMIN-OPERATIONS.md updated; see docs/STABILITY-05.md for release evidence. No production administrator commands or account changes authorized as test operations.
+- Deployed main `2e663bb` (dev `9cf338f`) after Linux tests/typecheck/build and real CLI/HTTP recovery checks as nexouser with synthetic data. Production GET/POST seed 410 and setup → login verified; public smoke passed. Backup/restore under `/opt/convoca-backups/security-05-20261101/`, SQLite byte-preserved, no production account/password/secret changes. SEG-005 closed; next DAT-008 read-only schema comparison and isolated baseline reconciliation before persistent session revocation. Final docs follow dev → main; leave clean dev.
 
 ### Stabilization iteration 04 — 2026-10-31
 
