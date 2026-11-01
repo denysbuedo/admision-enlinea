@@ -6,6 +6,7 @@
 - Added scripts/db/audit-baseline.py and sandbox-only migrate-rehearsal.ts. Five synthetic integration tests passed in Linux. On real protected snapshot: initial migration correctly rejected with no changes; baseline recorded only on a second copy; two real migrator reruns preserve schema/business data/sequences; restore verified. Source main file unchanged; no orphans in ten logical relationships, zero declared FKs.
 - Artifacts remain on server under /opt/convoca-migration-audit-20261101/rehearsal (protected, non-anonymized, never served/downloaded). Details, timings, hash and limitations in docs/MIGRATION-BASELINE-REHEARSAL.md. DAT-008 partial; next a separately guarded production metadata reconciliation, then persistent session revocation migration.
 - Aligned drizzle.config.ts with the actual migrator (drizzle/ and DB_URL). No runtime app changes; tooling/docs follow dev → main, source synchronization needs no rebuild/restart. Production db:migrate remains blocked operationally until its baseline is reconciled.
+- Candidate archive guard caught Windows Git export converting migration SQL LF to CRLF and changing its hash. Added targeted .gitattributes LF rules for migrations/audit tooling; canonical historical SQL remains unchanged. Revalidate archive hash and Linux tests before publishing candidate.
 
 ### Stabilization iteration 05 — 2026-11-01
 

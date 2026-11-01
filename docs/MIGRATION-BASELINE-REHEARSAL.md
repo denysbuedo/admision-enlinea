@@ -26,6 +26,8 @@ Esto acredita equivalencia de esquema, no la fecha ni el método con que se crea
 
 El hash coincide entre Git, el archivo local revisado y la referencia creada en Linux. El migrador instalado decide qué ejecutar por la marca del journal; no basta con confiar en ese mecanismo para detectar cambios en SQL histórico. La herramienta comprueba además el hash real y el esquema. No editar la migración inicial ni fabricar una fecha nueva para hacerla pasar por una migración ejecutada hoy.
 
+La validación del primer paquete exportado desde Windows detectó conversión de LF a CRLF por Git: el SQL exportado tenía hash distinto, aunque el blob del repositorio no había cambiado. Las guardas rechazaron ese candidato por diferencia de esquema textual. Se fija `eol=lf` en `.gitattributes` para `drizzle/**` y las herramientas; el archivo SQL de Git permanece intacto. Comprobar también los bytes del paquete exportado antes de registrar una línea base.
+
 Volumen comprobado: 9 usuarios, 1 universidad, 3 programas, 3 solicitudes, 7 notificaciones, 7 entradas de historial y 0 documentos. Snapshot consistente: 0,0033 s; referencia limpia: 0,1173 s; rechazo sobre copia sin registro: 0,1151 s; repeticiones reconciliadas: 0,1154 y 0,1076 s. Incluyen arranque del proceso migrador; no representan capacidad bajo carga ni una prueba de futuras migraciones.
 
 ## Herramientas y reproducción
