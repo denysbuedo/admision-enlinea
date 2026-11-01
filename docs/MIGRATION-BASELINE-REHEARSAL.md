@@ -68,3 +68,7 @@ BUN_BIN=/home/nexouser/.bun/bin/bun python3 -m unittest discover \
 5. Después de validar esa línea base productiva, preparar por separado la migración del contador persistente de revocación de sesiones.
 
 DAT-008 permanece parcial: este ensayo no aplica la línea base productiva ni prueba cambios futuros de esquema, carga o un archivo anonimizado. `foreign_key_check` no sustituye comprobaciones lógicas cuando no hay restricciones declaradas. El hash del archivo principal por sí solo no audita actividad WAL; la garantía de no escribir desde esta herramienta se basa en la apertura de solo lectura y en que todas las escrituras apuntan a archivos nuevos del sandbox.
+
+## Cierre de la revisión
+
+Candidato de main `6b4d364` validado en Linux después de fijar LF: cinco pruebas de integración correctas, typecheck correcto, drizzle-kit sin diferencias y hash del SQL exportado idéntico al registrado en este informe. Implementación en dev `4a7b883` y corrección de exportación `6163052`. La documentación de cierre sigue dev → main. Se sincronizan únicamente fuentes/configuración de herramientas y documentos, sin reconstruir `.next`, reiniciar el servicio ni modificar SQLite; el runtime publicado sigue siendo el de la entrega de seguridad 05.

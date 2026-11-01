@@ -7,6 +7,7 @@
 - Artifacts remain on server under /opt/convoca-migration-audit-20261101/rehearsal (protected, non-anonymized, never served/downloaded). Details, timings, hash and limitations in docs/MIGRATION-BASELINE-REHEARSAL.md. DAT-008 partial; next a separately guarded production metadata reconciliation, then persistent session revocation migration.
 - Aligned drizzle.config.ts with the actual migrator (drizzle/ and DB_URL). No runtime app changes; tooling/docs follow dev → main, source synchronization needs no rebuild/restart. Production db:migrate remains blocked operationally until its baseline is reconciled.
 - Candidate archive guard caught Windows Git export converting migration SQL LF to CRLF and changing its hash. Added targeted .gitattributes LF rules for migrations/audit tooling; canonical historical SQL remains unchanged. Revalidate archive hash and Linux tests before publishing candidate.
+- Corrected main candidate `6b4d364` passed all five Linux integration tests, typecheck and generation with no schema changes; exported SQL hash matches canonical/production. Tooling/docs source synchronization only; compiled security-05 app unchanged, no restart or SQLite writes. Production ledger still empty; metadata reconciliation remains the next separate step. Finish on clean dev after documentation merge.
 
 ### Stabilization iteration 05 — 2026-11-01
 
