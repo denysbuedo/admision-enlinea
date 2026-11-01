@@ -20,4 +20,5 @@ Regla acordada el 31 de octubre de 2026: desarrollar en `dev`, integrar cambios 
 - Las verificaciones de API que escriben datos se ejecutan con BD temporal/in-memory, no con el archivo de producción. No imprimir credenciales ni datos personales en informes.
 - La restauración de un archivo SQLite no equivale a un simulacro completo de recuperación del servicio. Ambos deben registrarse por separado.
 - Producción tiene tablas existentes, pero se observó `__drizzle_migrations` vacío el 31/10/2026. Reconciliar esquema y línea base de migraciones antes de usar `db:migrate` allí.
+- Ensayo del 01/11/2026: esquema productivo equivalente a migración inicial, registro todavía vacío; línea base registrada únicamente en copias aisladas, con dos repeticiones y restauración correctas. Ver docs/MIGRATION-BASELINE-REHEARSAL.md. Esto no autoriza ni sustituye la operación específica de reconciliación productiva.
 - Los scripts operativos temporales requieren todavía consolidación/revisión en CAL-005. No son un pipeline permanente.
