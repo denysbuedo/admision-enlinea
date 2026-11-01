@@ -1,0 +1,5 @@
+# Migration hashes and rehearsal schema comparisons must be identical across OSes.
+drizzle/** text eol=lf
+scripts/db/** text eol=lf
+drizzle.config.ts text eol=lf
+.gitattributes text eol=lf
