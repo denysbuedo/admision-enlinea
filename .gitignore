@@ -47,3 +47,6 @@ next-env.d.ts
 /.deploy/
 /playwright-report/
 /test-results/
+
+# Python audit tooling
+__pycache__/
