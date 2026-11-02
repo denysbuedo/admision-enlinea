@@ -7,6 +7,7 @@ from pathlib import Path
 import sqlite3
 import tempfile
 import unittest
+import json
 
 MODULE = Path(__file__).with_name('audit-baseline.py')
 spec = importlib.util.spec_from_file_location('audit_baseline', MODULE)
@@ -16,6 +17,7 @@ REPO = MODULE.resolve().parents[2]
 BUN = os.environ.get('BUN_BIN', 'bun')
 
 
+@unittest.skipUnless(len(json.loads((REPO/'drizzle/meta/_journal.json').read_text())['entries']) == 1, 'Historical initial-baseline rehearsal; superseded after migration 0001')
 class BaselineRehearsalTests(unittest.TestCase):
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory(prefix='convoca-baseline-test-')

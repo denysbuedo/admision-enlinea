@@ -43,6 +43,18 @@ async function requestLogin(password = 'test-password') {
   return login(new NextRequest('http://localhost/api/auth/login', { method: 'POST', body: JSON.stringify({ email: user.email, password }) }));
 }
 describe('JWT validation and live session authorization', () => {
+  it.each([
+    { isActive: false }, { role: 'aspirant' as const }, { universityId: 2 },
+    { password: 'changed-hash' }, { email: 'changed@example.invalid' },
+  ])('does not revive an old token after restoring account security fields %j', async change => {
+    const token = issue();
+    await db.update(users).set(change).where(eq(users.id, 1));
+    await db.update(users).set({ isActive: user.isActive, role: user.role, universityId: user.universityId,
+      password: user.password, email: user.email, updatedAt: user.updatedAt }).where(eq(users.id, 1));
+    expect(await verifyToken(token)).toBeNull();
+    const [current] = await db.select().from(users);
+    expect(await verifyToken(signToken(current))).not.toBeNull();
+  });
   it('validates the issued token and produces a live session without exposing password', async () => {
     isolated.token = issue();
     const verified = await verifyToken(isolated.token);
@@ -55,6 +67,15 @@ describe('JWT validation and live session authorization', () => {
     vi.stubEnv('JWT_SECRET', value);
     expect(() => issue()).toThrow();
     expect(await verifyToken(token)).toBeNull();
+  });
+  it('does not increment on ordinary edits, but prevents decreasing the revision', async () => {
+    const token = issue();
+    await db.update(users).set({ name: 'Renamed' }).where(eq(users.id, 1));
+    expect(await verifyToken(token)).not.toBeNull();
+    await db.update(users).set({ isActive: false }).where(eq(users.id, 1));
+    await expect(db.update(users).set({ sessionRevision: 0 }).where(eq(users.id, 1))).rejects.toThrow();
+    const [current] = await db.select().from(users);
+    expect(current.sessionRevision).toBe(1);
   });
   it('rejects absent configuration without falling back', async () => {
     const token = jwt.sign({ userId: 1 }, 'default_secret');
@@ -70,7 +91,7 @@ describe('JWT validation and live session authorization', () => {
     { universityId: '1' }, { universityId: 0 }, { email: null },
     { exp: undefined }, { iat: undefined }, { iat: Math.floor(Date.now()/1000)+3600 },
     { exp: Math.floor(Date.now()/1000)-1 }, { sessionVersion: undefined },
-    { sessionVersion: 'a'.repeat(64) },
+    { sessionVersion: 'a'.repeat(64) }, { revision: undefined }, { revision: -1 }, { revision: '0' }, { revision: 99 },
   ])('rejects malformed/expired claims %j', async claims => {
     expect(await verifyToken(altered(claims))).toBeNull();
   });
@@ -160,7 +181,8 @@ describe('Notification trigger authorization', () => {
       isolated.token = issue();
       expect((await trigger(request())).status).toBe(403);
       expect(send).not.toHaveBeenCalled();
-      [user] = await db.update(users).set({ role: 'super_admin' }).where(eq(users.id, 1)).returning();
+      await db.update(users).set({ role: 'super_admin' }).where(eq(users.id, 1));
+      [user] = await db.select().from(users);
       isolated.token = issue();
       expect((await trigger(request())).status).toBe(200);
       expect(send).toHaveBeenCalledTimes(1);

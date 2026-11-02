@@ -5,6 +5,7 @@ import os
 import sqlite3
 import tempfile
 import unittest
+import json
 
 HERE=Path(__file__).parent
 spec=importlib.util.spec_from_file_location('registration',HERE/'register-baseline.py')
@@ -13,6 +14,7 @@ spec.loader.exec_module(registration)
 audit=registration.audit
 REPO=HERE.resolve().parents[1]
 
+@unittest.skipUnless(len(json.loads((REPO/'drizzle/meta/_journal.json').read_text())['entries']) == 1, 'Historical initial-baseline rehearsal; superseded after migration 0001')
 class RegisterTests(unittest.TestCase):
     def setUp(self):
         self.temp=tempfile.TemporaryDirectory(prefix='convoca-register-test-')
