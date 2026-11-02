@@ -15,6 +15,14 @@ export default function PublicHeader() {
 
 function PublicNavigation({ pathname }: { pathname: string }) {
   const [open, setOpen] = useState(false);
+  const [panel, setPanel] = useState<string | null>(null);
+  useEffect(() => {
+    const controller = new AbortController();
+    fetch('/api/auth/me', { signal: controller.signal }).then(response => response.ok ? response.json() : null)
+      .then(user => { if (!controller.signal.aborted) setPanel(user?.role === 'super_admin' ? '/admin' : user?.role === 'university' ? '/university' : user?.role === 'aspirant' ? '/dashboard' : null); })
+      .catch(() => {});
+    return () => controller.abort();
+  }, []);
   const header = useRef<HTMLElement>(null);
   const toggle = useRef<HTMLButtonElement>(null);
 
@@ -56,7 +64,7 @@ function PublicNavigation({ pathname }: { pathname: string }) {
         <nav id="public-navigation" className="ru-header__nav" aria-label="Navegación principal" onClick={() => setOpen(false)}>
           <Link className="ru-header__link" href="/programs" aria-current={pathname.startsWith("/programs") ? "page" : undefined}>Programas</Link>
           <Link className="ru-header__link" href="/#como-funciona">Cómo funciona</Link>
-          <Link className="ru-header__link" href="/login" aria-current={pathname === "/login" ? "page" : undefined}>Iniciar sesión</Link>
+          <Link className="ru-header__link" href={panel || "/login"} aria-current={pathname === "/login" ? "page" : undefined}>{panel ? "Mi panel" : "Iniciar sesión"}</Link>
           <Link className="ru-header__cta" href="/register" aria-current={pathname === "/register" ? "page" : undefined}>Crear cuenta</Link>
         </nav>
       </div>

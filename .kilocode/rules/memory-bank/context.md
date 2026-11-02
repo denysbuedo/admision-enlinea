@@ -1,5 +1,10 @@
 # Active Context: Nexo – Academic Admissions Cloud
 
+### Catalog cleanup and home navigation — iteration 08
+
+- User requests remove three existing example programs, add admin delete control, fix authenticated home redirect and explain next priorities. On dev: home renders for all roles; public header offers Mi panel, admin deletion has confirmation and API blocks programs with applications atomically.
+- 152 tests/typecheck/lint/build and mocked desktop/mobile navigation/deletion UI pass. Planned data cleanup limited to IDs 1/2/3 with exact titles, no applications, preserving admin/university and all other tables; backup/restore required. See docs/MAINTENANCE-08.md.
+
 ### Definitive account reset authorization — 2026-11-02
 
 - APPLIED from main 75bfb7f: sole active super_admin dinfo@mes.gob.cu ID 10, nine original users removed plus 3 applications/7 notifications/7 history entries. Catalog preserved, integrity/no-orphan checks passed, backup/restore under /opt/convoca-account-reset-20261102/production-before.db verified, real new-admin login/auth-me successful, service healthy. No password in Git/docs. SEG-001 closed by explicit designation and elimination of all legacy accounts; SEG-007 historical exposure remains partial. Earlier pending-choice notes are historical and superseded.

@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/db";
-import { programs, universities } from "@/db/schema";
-import { eq } from "drizzle-orm";
+import { programs, universities, applications } from "@/db/schema";
+import { eq, and, notExists } from "drizzle-orm";
 import { getSession } from "@/lib/auth";
 
 export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
@@ -139,7 +139,14 @@ export async function DELETE(request: NextRequest, { params }: { params: Promise
     }
 
     const { id } = await params;
-    await db.delete(programs).where(eq(programs.id, parseInt(id)));
+    if (!/^[1-9]\d*$/.test(id) || !Number.isSafeInteger(Number(id))) {
+      return NextResponse.json({ error: "Identificador inválido" }, { status: 400 });
+    }
+    const [existing] = await db.select({ id: programs.id }).from(programs).where(eq(programs.id, Number(id)));
+    if (!existing) return NextResponse.json({ error: "Programa no encontrado" }, { status: 404 });
+    const deleted = await db.delete(programs).where(and(eq(programs.id, Number(id)),
+      notExists(db.select({ id: applications.id }).from(applications).where(eq(applications.programId, Number(id)))))).returning({ id: programs.id });
+    if (!deleted.length) return NextResponse.json({ error: "El programa tiene solicitudes. Ciérrelo para conservar sus expedientes" }, { status: 409 });
 
     return NextResponse.json({ message: "Programa eliminado" });
   } catch (error) {
