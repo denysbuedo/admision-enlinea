@@ -1,5 +1,9 @@
 # Active Context: Nexo – Academic Admissions Cloud
 
+### Production baseline registration — 2026-11-01
+
+- User authorized the next step: register the reviewed baseline in production. Added guarded register-baseline.py and three synthetic Linux tests; only the expected ledger row is inserted, with verified backup and exclusive transaction preserving schema/business data/sequences. See docs/BASELINE-REGISTRATION.md. No new schema migration in this block.
+
 ### Migration baseline audit and rehearsal — 2026-11-01
 
 - Scope: read-only production DB review and rehearsal on protected copies, no production schema/ledger mutation or service restart. Baseline server source ec9ce31 clean. Exact schema match against fresh DB created by installed Drizzle migrator; TypeScript model generates no migration diff. Ledger remains empty.
