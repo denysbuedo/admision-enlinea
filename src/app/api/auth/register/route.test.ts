@@ -66,7 +66,7 @@ describe('Public registration permissions', () => {
     const [university] = await db.insert(universities).values({ name: 'Test university' }).returning();
     const response = await register({ role: 'university', universityId: university.id });
     expect(response.status).toBe(201);
-    expect(await response.json()).toMatchObject({ role: 'university', universityId: university.id });
+    expect(await response.json()).toMatchObject({ role: 'university', universityId: university.id, isActive: false, institutionalStatus: 'pending' });
   });
 
   it('rejects a nonexistent university without creating a user', async () => {

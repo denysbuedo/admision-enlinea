@@ -19,13 +19,17 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Credenciales inválidas" }, { status: 401 });
     }
 
-    if (!user.isActive) {
-      return NextResponse.json({ error: "Cuenta desactivada" }, { status: 401 });
-    }
-
     const isValid = await verifyPassword(password, user.password);
     if (!isValid) {
       return NextResponse.json({ error: "Credenciales inválidas" }, { status: 401 });
+    }
+
+    if (user.role === 'university' && user.institutionalStatus !== 'approved') {
+      return NextResponse.json({ error: user.institutionalStatus === 'rejected' ? 'La solicitud institucional fue rechazada. Contacta con la administración' : 'Tu cuenta institucional está pendiente de aprobación administrativa' }, { status: 403 });
+    }
+
+    if (!user.isActive) {
+      return NextResponse.json({ error: "Cuenta desactivada" }, { status: 401 });
     }
 
     const token = signToken(user);

@@ -15,6 +15,13 @@
       "when": 1793591409645,
       "tag": "0001_session_revision",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1793596170477,
+      "tag": "0002_institutional_approval",
+      "breakpoints": true
     }
   ]
 }

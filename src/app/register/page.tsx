@@ -15,6 +15,7 @@ export default function RegisterPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [pending, setPending] = useState(false);
   const [universities, setUniversities] = useState<University[]>([]);
   
   const [formData, setFormData] = useState({
@@ -64,6 +65,7 @@ export default function RegisterPage() {
         throw new Error(data.error || 'Error en el registro');
       }
 
+      if (data.institutionalStatus === 'pending') { setPending(true); return; }
       // Éxito: Redirigir al login o dashboard según el rol
       router.push('/login?registered=true');
     } catch (err: any) {
@@ -89,7 +91,11 @@ export default function RegisterPage() {
           </p>
         </div>
         
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+        {pending ? <div role="status" className="mt-8 space-y-4">
+          <h3 className="font-semibold">Solicitud institucional recibida</h3>
+          <p>Un administrador verificará tu representación de la universidad antes de habilitar el acceso. La cuenta todavía no puede iniciar sesión.</p>
+          <Link href="/login" className="text-blue-700 underline">Ir a iniciar sesión</Link>
+        </div> : <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           {error && (
             <div className="bg-red-50 border-l-4 border-red-400 p-4">
               <div className="flex">
@@ -200,7 +206,7 @@ export default function RegisterPage() {
               {loading ? 'Registrando...' : 'Registrarse'}
             </button>
           </div>
-        </form>
+        </form>}
       </div>
     </div>
   );

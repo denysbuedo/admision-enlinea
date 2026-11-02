@@ -31,7 +31,7 @@ const tokenClaims = z.object({
   exp: z.number().int().positive(),
 });
 type VerifiedToken = z.infer<typeof tokenClaims>;
-type Account = Pick<typeof users.$inferSelect, 'id' | 'email' | 'role' | 'universityId' | 'password' | 'isActive' | 'updatedAt' | 'sessionRevision'>;
+type Account = Pick<typeof users.$inferSelect, 'id' | 'email' | 'role' | 'universityId' | 'password' | 'isActive' | 'updatedAt' | 'sessionRevision' | 'institutionalStatus'>;
 const lifetime = 7 * 24 * 60 * 60;
 
 function signingSecret(): string {
@@ -61,6 +61,7 @@ export async function verifyPassword(password: string, hash: string): Promise<bo
 export function signToken(user: Account): string {
   const secret = signingSecret();
   if (!user.isActive) throw new Error('Inactive account');
+  if (user.role === 'university' && user.institutionalStatus !== 'approved') throw new Error('Institutional approval required');
   const payload = {
     userId: user.id, email: user.email, role: user.role, universityId: user.universityId,
     sessionVersion: sessionVersion(user, secret),
@@ -82,6 +83,7 @@ export async function verifyToken(token: string): Promise<VerifiedToken | null> 
     const [user] = await db.select().from(users).where(eq(users.id, claims.userId));
     if (!user?.isActive || user.role !== claims.role || user.universityId !== claims.universityId || user.email !== claims.email) return null;
     if (user.sessionRevision !== claims.revision) return null;
+    if (user.role === 'university' && user.institutionalStatus !== 'approved') return null;
     const current = Buffer.from(sessionVersion(user, secret), 'hex');
     if (!timingSafeEqual(current, Buffer.from(claims.sessionVersion, 'hex'))) return null;
     return claims;

@@ -43,7 +43,7 @@ export async function POST(request: Request) {
       }
       // Verificar que la universidad exista
       const uni = await db.select().from(universities).where(eq(universities.id, Number(universityId))).limit(1);
-      if (uni.length === 0) {
+      if (uni.length === 0 || !uni[0].isActive) {
         return NextResponse.json(
           { error: 'La universidad seleccionada no existe' },
           { status: 400 }
@@ -62,6 +62,8 @@ export async function POST(request: Request) {
       password: hashedPassword,
       role: role || 'aspirant',
       universityId: finalUniversityId,
+      isActive: role !== 'university',
+      institutionalStatus: role === 'university' ? 'pending' : 'approved',
     }).returning();
 
     // 6. Responder sin enviar la contraseña

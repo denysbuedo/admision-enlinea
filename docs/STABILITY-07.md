@@ -1,0 +1,15 @@
+# Estabilización 07 — Aprobación de cuentas institucionales
+
+El registro institucional conserva la selección de universidad, pero guarda institutional_status=pending e is_active=false definidos por el servidor. Campos enviados para autoaprobar o activar se ignoran. Universidades inexistentes/inactivas se rechazan y el selector público solo ofrece activas. Aspirantes mantienen el registro habitual; super_admin sigue prohibido en registro público.
+
+El panel administrativo permite aprobar/rechazar únicamente solicitudes pendientes. Exige justificación de 10–1000 caracteres, verificando representación por un canal institucional antes de aprobar. La decisión y la auditoría (usuario, universidad, administrador, nota y fecha) se guardan en una transacción. Se rechazan decisiones duplicadas, cambios arbitrarios de rol/institución/actividad y actores no administradores. Una cuenta existente aprobada/desactivada no puede reactivarse por este endpoint. Rechazados deben contactar administración; no se incorpora reapertura automática ni envío de correo en esta entrega.
+
+Login y verificación de sesión comprueban aprobación además de actividad. El contador de revocación también avanza al cambiar institutional_status; retirar/restaurar aprobación no revive un token anterior. El formulario confirma solicitud recibida sin enviarlo inmediatamente al login. No se presume que un registro o un email demuestre representación institucional.
+
+Migración 0002: nueva columna de estado (default approved para conservar las cuentas previas), tabla de auditoría y ampliación del trigger de seguridad. No cambia roles, instituciones, actividad, contraseñas, contadores ni valores anteriores de cuentas existentes. No invalida por sí sola las sesiones existentes aprobadas. El estado heredado approved conserva compatibilidad; no acredita una verificación documental histórica.
+
+142 pruebas pasan, incluidas 13 nuevas de flujo institucional con BD temporal real y un test de registro actualizado que fallaba antes del cambio. Typecheck, lint y build locales correctos. Playwright con API simulada validó confirmación de pendiente, nota/acción de aprobación y ausencia de acciones pendientes sobre cuentas previas, sin errores JS. La API real y la migración se ensayan aparte con SQLite aislado y datos sintéticos.
+
+Antes de aplicar: ensayar snapshot consistente, comparar todas las columnas antiguas/secuencias, esquema con referencia limpia, tres entradas de ledger, estado heredado approved y auditoría vacía; comprobar restauración y repeticiones. Conservar backup y build anterior. Un rollback al runtime previo permitiría nuevamente registro institucional activo: corregir hacia adelante o contener el registro antes de revertir. No restaurar una BD completa sobre escrituras posteriores.
+
+SEG-001 queda parcial: el acceso automático de nuevas cuentas se corrige, pero revisar legitimidad de administradores y representantes existentes requiere responsables institucionales; no se desactivan ni validan automáticamente en este bloque. SEG-007 incluye esa revisión pendiente. No se afirma que toda la seguridad del sistema esté cerrada.

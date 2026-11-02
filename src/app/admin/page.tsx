@@ -44,6 +44,7 @@ interface User {
   isActive: boolean;
   universityName: string;
   createdAt: string;
+  institutionalStatus: "approved" | "pending" | "rejected";
 }
 
 interface Application {
@@ -95,6 +96,21 @@ export default function AdminDashboard() {
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<"programs" | "users" | "applications" | "universities">("programs");
   const [message, setMessage] = useState({ type: "", text: "" });
+
+  const [reviewNotes, setReviewNotes] = useState<Record<number, string>>({});
+  const [reviewBusy, setReviewBusy] = useState<number | null>(null);
+  async function reviewInstitution(user: User, decision: 'approved' | 'rejected') {
+    setReviewBusy(user.id);
+    try {
+      const response = await fetch('/api/admin/users', { method: 'PATCH', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId: user.id, decision, note: reviewNotes[user.id] || '' }) });
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.error);
+      setUsers(previous => previous.map(item => item.id === user.id ? { ...item, institutionalStatus: decision, isActive: decision === 'approved' } : item));
+      setMessage({ type: 'success', text: 'Revisión institucional guardada' });
+    } catch (error) { setMessage({ type: 'error', text: error instanceof Error ? error.message : 'No se pudo guardar la revisión' }); }
+    finally { setReviewBusy(null); }
+  }
 
   // University modal state
   const [showUnivModal, setShowUnivModal] = useState(false);
@@ -729,11 +745,21 @@ export default function AdminDashboard() {
                                 : "bg-red-100 text-red-700"
                             }`}
                           >
-                            {u.isActive ? "Activo" : "Inactivo"}
+                            {u.role === "university" && u.institutionalStatus === "pending" ? "Pendiente de aprobación" : u.role === "university" && u.institutionalStatus === "rejected" ? "Solicitud rechazada" : u.isActive ? "Activo" : "Inactivo"}
                           </span>
                         </td>
                         <td className="px-6 py-4 text-slate-400 text-sm">
                           {u.createdAt ? new Date(u.createdAt).toLocaleDateString("es-ES") : "—"}
+                          {u.role === 'university' && u.institutionalStatus === 'pending' && <div className="mt-3 min-w-64 space-y-2">
+                            <p>Verifique la representación de {u.universityName} por un canal institucional antes de aprobar.</p>
+                            <textarea aria-label={`Justificación para ${u.email}`} className="input-field" minLength={10} maxLength={1000}
+                              value={reviewNotes[u.id] || ''} onChange={event => setReviewNotes(previous => ({ ...previous, [u.id]: event.target.value }))}
+                              placeholder="Anote la verificación realizada o el motivo del rechazo" />
+                            <div className="flex gap-2">
+                              <button className="btn-primary" disabled={reviewBusy !== null || (reviewNotes[u.id] || '').trim().length < 10} onClick={() => reviewInstitution(u, 'approved')}>Aprobar cuenta</button>
+                              <button className="btn-secondary" disabled={reviewBusy !== null || (reviewNotes[u.id] || '').trim().length < 10} onClick={() => reviewInstitution(u, 'rejected')}>Rechazar cuenta</button>
+                            </div>
+                          </div>}
                         </td>
                       </tr>
                     ))
