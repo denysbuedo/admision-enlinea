@@ -1,5 +1,10 @@
 # Active Context: Nexo – Academic Admissions Cloud
 
+### Definitive account reset authorization — 2026-11-02
+
+- User superseded the pending keeper questions: create dinfo@mes.gob.cu as the sole admin, delete all others, generate and deliver password. Authorized dependent cleanup previously explained: 9 original users, 3 applications, 7 notifications, 7 history rows; preserve 3 programs/1 university.
+- Atomic create/prune implementation and six synthetic tests pass; real-copy trial succeeds. Password generated only on server in protected /opt/convoca-account-reset-20261102/credentials.json, not in Git/docs. Administrative CLI default updated to dinfo@mes.gob.cu. Production execution still pending at this entry; do not print password except to deliver to requesting user.
+
 ### Access review and requested cleanup — 2026-11-02 (pending user decisions)
 
 - Read-only inventory: 9 accounts, 2 active admins, 2 active institutional accounts, both inherited without review; one missing valid institution. Protected report /opt/convoca-access-review-20261102-final. Git history has 5 SQLite blobs; 8 current password hashes match history, 3 privileged; no hash/password values printed/downloaded. See docs/ACCESS-REVIEW.md.

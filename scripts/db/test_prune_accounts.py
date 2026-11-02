@@ -25,4 +25,20 @@ class PruneTests(unittest.TestCase):
         for id,email in [(2,'remove@example.invalid'),(1,'wrong@example.invalid'),(99,'missing@example.invalid')]:
             with self.assertRaises(ValueError):module.prune(self.db,id,email,True)
         self.assertEqual(list(self.db.iterdump()),before)
+    def test_replace_creates_only_new_admin_atomically(self):
+        password_hash='$2b$12$'+'a'*53
+        result=module.replace_with_admin(self.db,'dinfo@example.invalid',password_hash,True)
+        self.assertEqual(result['deleted']['users'],2)
+        self.assertEqual(self.db.execute('select email,password,role,is_active from users').fetchall(),[('dinfo@example.invalid',password_hash,'super_admin',1)])
+    def test_failure_rolls_back_new_admin_and_all_deletions(self):
+        self.db.executescript("CREATE TRIGGER block_delete BEFORE DELETE ON users WHEN OLD.id=2 BEGIN SELECT RAISE(ABORT,'synthetic failure'); END;")
+        before=list(self.db.iterdump())
+        with self.assertRaises(sqlite3.IntegrityError):module.replace_with_admin(self.db,'dinfo@example.invalid','$2b$12$'+'a'*53,True)
+        self.assertEqual(list(self.db.iterdump()),before)
+    def test_new_admin_dryrun_and_duplicate_email_do_not_modify_data(self):
+        before=list(self.db.iterdump())
+        module.replace_with_admin(self.db,'dinfo@example.invalid','$2b$12$'+'a'*53)
+        self.assertEqual(list(self.db.iterdump()),before)
+        with self.assertRaises(ValueError):module.replace_with_admin(self.db,'keep@example.invalid','$2b$12$'+'a'*53,True)
+        self.assertEqual(list(self.db.iterdump()),before)
 if __name__=='__main__':unittest.main()

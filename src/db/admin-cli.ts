@@ -17,7 +17,7 @@ export async function runAdminCommand(operation: 'initialize' | 'reset') {
   let client: ReturnType<typeof createClient> | undefined;
   try {
     const url = validateOperatorDatabase(process.env.DB_URL);
-    const email = process.env.ADMIN_EMAIL || 'admin@nexo.com';
+    const email = process.env.ADMIN_EMAIL || 'dinfo@mes.gob.cu';
     const password = process.env[operation === 'initialize' ? 'ADMIN_INITIAL_PASSWORD' : 'ADMIN_PASSWORD'];
     if (!password) throw new AdminOperationError('Falta la contraseña operativa en el entorno');
     client = createClient({ url });

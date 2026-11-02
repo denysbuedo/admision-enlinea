@@ -12,7 +12,7 @@ En una instalación nueva, preparar primero una BD con el esquema del repositori
 
 ## Crear el primer administrador
 
-Solo para instalaciones sin ningún super_admin, incluso desactivado. No sobrescribe contraseñas ni promueve cuentas que ocupen el correo. Una segunda ejecución falla sin cambiar usuarios. ADMIN_EMAIL es opcional; conserva `admin@nexo.com` como predeterminado para compatibilidad.
+Solo para instalaciones sin ningún super_admin, incluso desactivado. No sobrescribe contraseñas ni promueve cuentas que ocupen el correo. Una segunda ejecución falla sin cambiar usuarios. ADMIN_EMAIL es opcional; conserva `dinfo@mes.gob.cu` como predeterminado para compatibilidad.
 
 Ejemplo Bash, en una sesión del usuario del servicio. Introducir una contraseña aleatoria de al menos 12 caracteres y como máximo 72 bytes UTF-8, sin ponerla en el historial ni en argumentos:
 
@@ -20,7 +20,7 @@ Ejemplo Bash, en una sesión del usuario del servicio. Introducir una contraseñ
 cd /opt/admision-enlinea
 export PATH="/home/nexouser/.bun/bin:$PATH"
 export DB_URL='file:/opt/admision-enlinea/sqlite.db'
-export ADMIN_EMAIL='admin@nexo.com'
+export ADMIN_EMAIL='dinfo@mes.gob.cu'
 read -r -s -p 'Contraseña inicial: ' ADMIN_INITIAL_PASSWORD
 printf '\n'
 export ADMIN_INITIAL_PASSWORD
@@ -38,7 +38,7 @@ Primero verificar el correo de la cuenta autorizada. El comando solo actualiza u
 cd /opt/admision-enlinea
 export PATH="/home/nexouser/.bun/bin:$PATH"
 export DB_URL='file:/opt/admision-enlinea/sqlite.db'
-export ADMIN_EMAIL='admin@nexo.com'
+export ADMIN_EMAIL='dinfo@mes.gob.cu'
 read -r -s -p 'Nueva contraseña: ' ADMIN_PASSWORD
 printf '\n'
 export ADMIN_PASSWORD

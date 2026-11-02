@@ -3,9 +3,15 @@ import argparse,json,sqlite3
 from contextlib import closing
 from pathlib import Path
 
-def prune(connection,keep_id,expected_email,apply=False):
+def prune(connection,keep_id,expected_email,apply=False,_new_admin_hash=None):
     connection.execute('begin immediate')
     try:
+        if _new_admin_hash is not None:
+            if keep_id is not None or not _new_admin_hash.startswith(('$2a$', '$2b$', '$2y$')) or len(_new_admin_hash)!=60:
+                raise ValueError('Expected a new administrator and bcrypt hash')
+            if connection.execute('select 1 from users where email=?',(expected_email,)).fetchone():
+                raise ValueError('New administrator email already exists')
+            keep_id=connection.execute("insert into users(name,email,password,role,is_active,institutional_status,created_at,updated_at) values (?,?,?,'super_admin',1,'approved',CAST(strftime('%s','now') AS INTEGER),CAST(strftime('%s','now') AS INTEGER))",('Administración DINFO',expected_email,_new_admin_hash)).lastrowid
         keeper=connection.execute('select id,email,role,is_active from users where id=?',(keep_id,)).fetchone()
         if keeper!=(keep_id,expected_email,'super_admin',1): raise ValueError('Selected account must be the expected active administrator')
         kept=connection.execute('select * from users where id=?',(keep_id,)).fetchone()
@@ -34,6 +40,9 @@ def prune(connection,keep_id,expected_email,apply=False):
         return result
     except BaseException:
         connection.rollback();raise
+
+def replace_with_admin(connection,email,password_hash,apply=False):
+    return prune(connection,None,email,apply,_new_admin_hash=password_hash)
 
 if __name__=='__main__':
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('--database',type=Path,required=True);p.add_argument('--keep-id',type=int,required=True);p.add_argument('--expected-email',required=True);p.add_argument('--apply',action='store_true');a=p.parse_args()
