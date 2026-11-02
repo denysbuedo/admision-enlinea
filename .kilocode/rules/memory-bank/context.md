@@ -1,5 +1,11 @@
 # Active Context: Nexo – Academic Admissions Cloud
 
+### Access review and requested cleanup — 2026-11-02 (pending user decisions)
+
+- Read-only inventory: 9 accounts, 2 active admins, 2 active institutional accounts, both inherited without review; one missing valid institution. Protected report /opt/convoca-access-review-20261102-final. Git history has 5 SQLite blobs; 8 current password hashes match history, 3 privileged; no hash/password values printed/downloaded. See docs/ACCESS-REVIEW.md.
+- User explicitly requested deleting all accounts except one admin. Two required async questions pending: retain admin@nexo.com ID 9 or admin@gradcall.com ID 2; authorize removal of 3 applications/7 notifications/7 history entries. Do NOT apply until answers arrive. Production still unchanged on e0bd014; no account or credential modifications.
+- Prepared prune-accounts.py, 3 synthetic tests passed; both keeper choices tested on protected production copies under /opt/convoca-account-cleanup-20261102. Each removes 8 users and dependencies, retains keeper credentials and 3 programs/1 university, no orphans. docs/ACCOUNT-CLEANUP.md records guarded next steps. Work on dev; cleanup not executed.
+
 ### Institutional account approval — iteration 07
 
 - On dev: institutional self-registration is pending/inactive; admin-only pending review with required note and atomic audit. Login/session enforce approved status. Migration 0002 adds status/audit and extends revision trigger, grandfathering existing accounts without changing prior values or asserting historic verification.
