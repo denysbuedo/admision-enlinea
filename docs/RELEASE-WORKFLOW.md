@@ -22,3 +22,5 @@ Regla acordada el 31 de octubre de 2026: desarrollar en `dev`, integrar cambios 
 - Producción tiene tablas existentes, pero se observó `__drizzle_migrations` vacío el 31/10/2026. Reconciliar esquema y línea base de migraciones antes de usar `db:migrate` allí.
 - Ensayo del 01/11/2026: esquema productivo equivalente a migración inicial, registro todavía vacío; línea base registrada únicamente en copias aisladas, con dos repeticiones y restauración correctas. Ver docs/MIGRATION-BASELINE-REHEARSAL.md. Esto no autoriza ni sustituye la operación específica de reconciliación productiva.
 - Los scripts operativos temporales requieren todavía consolidación/revisión en CAL-005. No son un pipeline permanente.
+
+Actualización 01/11/2026: línea base productiva reconciliada desde main `13ba53c`, con una única entrada y sin cambios de esquema/datos. Ver docs/BASELINE-REGISTRATION.md. Las observaciones anteriores de ledger vacío son históricas; no volver a insertar esa entrada. Toda nueva migración requiere ensayo y respaldo específicos.

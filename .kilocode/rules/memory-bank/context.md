@@ -2,6 +2,7 @@
 
 ### Production baseline registration — 2026-11-01
 
+- Applied production baseline from main 13ba53c after eight Linux tests and a fresh rehearsal. Exactly one expected ledger entry; schema/business data/sequences unchanged, backup verified under /opt/convoca-baseline-registration-20261101/production-backup. Two post-registration copy migrator reruns were no-ops. Service/public smoke healthy, operation 1.755 seconds; no account/password/build changes. Earlier empty-ledger notes below are historical. Next: persistent session revocation migration, separately tested.
 - User authorized the next step: register the reviewed baseline in production. Added guarded register-baseline.py and three synthetic Linux tests; only the expected ledger row is inserted, with verified backup and exclusive transaction preserving schema/business data/sequences. See docs/BASELINE-REGISTRATION.md. No new schema migration in this block.
 
 ### Migration baseline audit and rehearsal — 2026-11-01
