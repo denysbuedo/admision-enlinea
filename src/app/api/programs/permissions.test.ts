@@ -14,8 +14,8 @@ vi.mock('@/db', async () => {
 });
 vi.mock('@/lib/auth', () => ({ getSession: async () => isolated.session }));
 import { db } from '@/db';
-import { programs, universities } from '@/db/schema';
-import { GET, PATCH } from './[id]/route';
+import { programs, universities, applications } from '@/db/schema';
+import { GET, PATCH, DELETE } from './[id]/route';
 import { GET as list, POST } from './route';
 
 const states = ['draft', 'pending_approval', 'published', 'closed', 'rejected'] as const;
@@ -31,7 +31,7 @@ beforeAll(async () => { await migrate(db, { migrationsFolder: './drizzle' }); })
 afterAll(() => { isolated.client?.close(); });
 beforeEach(async () => {
   isolated.session = null;
-  await db.delete(programs); await db.delete(universities);
+  await db.delete(applications); await db.delete(programs); await db.delete(universities);
   await db.insert(universities).values([{ id: 1, name: 'A' }, { id: 2, name: 'B' }]);
   for (const universityId of [1, 2]) {
     await db.insert(programs).values(states.map((status, index) => ({ id: (universityId - 1) * 5 + index + 1, universityId, title: `${universityId}-${status}`, status, programType: 'maestria' as const, modality: 'virtual' as const })));
@@ -110,4 +110,28 @@ describe('Program write permissions', () => {
     expect(response.status).toBe(201);
     expect(await response.json()).toMatchObject({ universityId: 1, status: 'pending_approval' });
   });
+});
+
+describe('Safe program deletion', () => {
+  function remove(id = '1') { return DELETE(new NextRequest(`http://localhost/api/programs/${id}`, { method: 'DELETE' }), { params: Promise.resolve({ id }) }); }
+  it('allows an administrator to remove a program without applications', async () => {
+    login('super_admin'); expect((await remove()).status).toBe(200);
+    expect((await detail(1)).status).toBe(404);
+    expect(await db.select().from(programs)).toHaveLength(9);
+  });
+  it.each(['anonymous','aspirant','university'])('blocks %s without deleting', async role => {
+    if (role !== 'anonymous') login(role as CustomSession['role'], 1);
+    expect((await remove()).status).toBe(401);
+    expect(await db.select().from(programs)).toHaveLength(10);
+  });
+  it('preserves a program and its applications when deleting would orphan them', async () => {
+    login('super_admin'); await db.insert(applications).values({ programId: 1, userId: 99 });
+    expect((await remove()).status).toBe(409);
+    expect(await db.select().from(programs)).toHaveLength(10);
+    expect(await db.select().from(applications)).toHaveLength(1);
+  });
+  it.each(['0','1abc','-1','9007199254740992'])('rejects invalid ID %s', async id => {
+    login('super_admin'); expect((await remove(id)).status).toBe(400);
+  });
+  it('returns 404 for missing program', async () => { login('super_admin'); expect((await remove('999')).status).toBe(404); });
 });

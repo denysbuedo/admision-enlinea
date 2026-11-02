@@ -1,7 +1,5 @@
 import Link from "next/link";
 import Image from "next/image";
-import { getSession } from "@/lib/auth";
-import { redirect } from "next/navigation";
 import { ArrowUpRight, ArrowRight, BookOpen, Building2, ClipboardCheck, GraduationCap, Search } from "lucide-react";
 import Brand from "@/components/Brand";
 
@@ -16,11 +14,6 @@ const programs = [
 ];
 
 export default async function HomePage() {
-  const session = await getSession();
-  if (session?.role === "super_admin") redirect("/admin");
-  if (session?.role === "university") redirect("/university");
-  if (session?.role === "aspirant") redirect("/dashboard");
-
   return (
     <div className="convoca-home">
       <main>

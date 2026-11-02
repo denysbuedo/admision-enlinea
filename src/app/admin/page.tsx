@@ -147,6 +147,20 @@ export default function AdminDashboard() {
       .catch(() => setLoading(false));
   }, [router]);
 
+  const [deletingProgram, setDeletingProgram] = useState<number | null>(null);
+  async function deleteProgram(program: Program) {
+    if (!window.confirm(`¿Eliminar definitivamente el programa «${program.title}»?`)) return;
+    setDeletingProgram(program.id);
+    try {
+      const response = await fetch(`/api/programs/${program.id}`, { method: 'DELETE' });
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.error);
+      setPrograms(previous => previous.filter(item => item.id !== program.id));
+      setMessage({ type: 'success', text: 'Programa eliminado' });
+    } catch (error) { setMessage({ type: 'error', text: error instanceof Error ? error.message : 'No se pudo eliminar el programa' }); }
+    finally { setDeletingProgram(null); }
+  }
+
   const handleCreateUniversity = async (e: React.FormEvent) => {
     e.preventDefault();
     setUnivLoading(true);
@@ -669,6 +683,9 @@ export default function AdminDashboard() {
                               <Download className="w-3.5 h-3.5" />
                               CSV
                             </a>
+                            <button disabled={deletingProgram !== null} onClick={() => deleteProgram(p)} className="text-red-700 hover:text-red-900 text-sm font-medium">
+                              {deletingProgram === p.id ? 'Eliminando…' : 'Eliminar'}
+                            </button>
                           </div>
                         </td>
                       </tr>
