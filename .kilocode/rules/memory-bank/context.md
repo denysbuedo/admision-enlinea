@@ -3,6 +3,7 @@
 ### Institutional account approval — iteration 07
 
 - On dev: institutional self-registration is pending/inactive; admin-only pending review with required note and atomic audit. Login/session enforce approved status. Migration 0002 adds status/audit and extends revision trigger, grandfathering existing accounts without changing prior values or asserting historic verification.
+- Deployed main 474696e (dev 2ba9d22) after 142 Linux tests/typecheck/build, synthetic HTTP registration/review/login/program flow and protected copy migration/repeat/DML/restore trial. Production prior-column data/sequences preserved, inherited approved state and empty audit, three ledger entries; protected backup /opt/convoca-backups/security-07/production-before.db. Service/public smoke healthy and anonymous review PATCH 401. No real account/password/secret changes; legacy sessions remain compatible.
 - 142 tests, local typecheck/lint/build and mocked UI flow pass. See docs/STABILITY-07.md. SEG-001 remains partial pending legitimacy review of existing privileged accounts; no automatic deactivation or production user tests.
 
 ### Persistent session revocation — iteration 06
