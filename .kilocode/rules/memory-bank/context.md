@@ -2,6 +2,7 @@
 
 ### Definitive account reset authorization — 2026-11-02
 
+- APPLIED from main 75bfb7f: sole active super_admin dinfo@mes.gob.cu ID 10, nine original users removed plus 3 applications/7 notifications/7 history entries. Catalog preserved, integrity/no-orphan checks passed, backup/restore under /opt/convoca-account-reset-20261102/production-before.db verified, real new-admin login/auth-me successful, service healthy. No password in Git/docs. SEG-001 closed by explicit designation and elimination of all legacy accounts; SEG-007 historical exposure remains partial. Earlier pending-choice notes are historical and superseded.
 - User superseded the pending keeper questions: create dinfo@mes.gob.cu as the sole admin, delete all others, generate and deliver password. Authorized dependent cleanup previously explained: 9 original users, 3 applications, 7 notifications, 7 history rows; preserve 3 programs/1 university.
 - Atomic create/prune implementation and six synthetic tests pass; real-copy trial succeeds. Password generated only on server in protected /opt/convoca-account-reset-20261102/credentials.json, not in Git/docs. Administrative CLI default updated to dinfo@mes.gob.cu. Production execution still pending at this entry; do not print password except to deliver to requesting user.
 
