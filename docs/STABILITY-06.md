@@ -9,3 +9,13 @@ Cinco casos reprodujeron el fallo antes de corregir; 129 pruebas pasan tras agre
 El esquema es aditivo y permite lecturas/escrituras antiguas, pero volver al runtime previo pierde la garantía de revocación por contador. Ante un fallo de activación, mantener servicio detenido hasta corregir hacia adelante; no restaurar datos por encima de escrituras nuevas. Restaurar toda la BD también restaura contadores: esa operación requiere rotar JWT_SECRET para invalidar tokens previos. No cubre manipulación privilegiada que deshabilite triggers o reconstruya cuentas/BD.
 
 Las utilidades de registro/auditoría de la única migración inicial son históricas y rechazan el nuevo journal. Sus pruebas específicas se omiten al existir más de una migración. La nueva migración tiene ensayos propios, sin reinsertar la línea base.
+
+## Resultado
+
+Desplegado main `1c21b95` (dev `6f4f67e`). Linux: 129 pruebas, typecheck y build correctos; HTTP sintético comprobó login, rechazo tras cambios/restauración, cuenta inactiva, tokens antiguos y trigger protegido. No se hicieron logins reales en producción.
+
+Migración 0001 aplicada con servicio detenido: todos los valores de columnas previas y secuencias idénticos, contadores iniciales cero, esquema idéntico a referencia, integridad correcta y dos entradas esperadas en ledger. Operación y activación con salud local: 2,075 s (no equivale a indisponibilidad externa medida). Páginas públicas 200 sin errores JS y controles anteriores correctos.
+
+Respaldo protegido `/opt/convoca-backups/security-06/production-before.db`, archivo de código/configuración/build verificado, build anterior en next-before. Ensayo sobre copia real protegida preservó datos, repitió migración dos veces sin cambios, comprobó DML con columnas antiguas y restauración. Las copias reales permanecen sin anonimizar en el servidor; no fueron servidas como app. Las pruebas HTTP usaron otra BD sintética y secreto propio; servicio temporal detenido.
+
+SEG-004 cerrado para la revocación por cambios de cuenta y validación de JWT. Restaurar toda la BD exige rotar JWT_SECRET, y un rollback al runtime anterior pierde la garantía por contador. SEG-001 (aprobación institucional) y demás riesgos permanecen abiertos; no implica estabilidad completa.

@@ -24,3 +24,5 @@ Regla acordada el 31 de octubre de 2026: desarrollar en `dev`, integrar cambios 
 - Los scripts operativos temporales requieren todavía consolidación/revisión en CAL-005. No son un pipeline permanente.
 
 Actualización 01/11/2026: línea base productiva reconciliada desde main `13ba53c`, con una única entrada y sin cambios de esquema/datos. Ver docs/BASELINE-REGISTRATION.md. Las observaciones anteriores de ledger vacío son históricas; no volver a insertar esa entrada. Toda nueva migración requiere ensayo y respaldo específicos.
+
+Entrega 06: migración 0001_session_revision aplicada desde main `1c21b95`; ledger productivo contiene dos entradas. El esquema nuevo es aditivo, pero el runtime antiguo no garantiza revocación persistente. Ver docs/STABILITY-06.md para respaldo, validaciones y límites de reversión. Las utilidades de baseline inicial quedan históricas y no se reutilizan sobre el journal actual.

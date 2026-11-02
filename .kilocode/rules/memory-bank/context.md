@@ -3,6 +3,7 @@
 ### Persistent session revocation — iteration 06
 
 - On dev: migration 0001 adds session_revision and atomic SQLite triggers on user security fields, with monotonic guard. JWT v2 requires the current revision. Five restored-state exploit tests reproduced the old issue; 129 tests pass with new claims/counter checks. Legacy sessions need login again. See docs/STABILITY-06.md.
+- Deployed main 1c21b95 after Linux 129 tests/typecheck/build, synthetic HTTP and protected real-copy migration/repeat/old-column-DML/restore trial. Production old-column values and sequences preserved, revisions zero, two ledger entries and integrity/schema verified; public smoke healthy. Protected backup /opt/convoca-backups/security-06/production-before.db and prior build retained. Operation 2.075 seconds; users must login again, passwords/JWT secret unchanged. SEG-004 closed for account-state revocation; full DB restore requires secret rotation.
 - Planned guarded additive migration: backup, snapshot trial, preserve all old column values/sequences, reference schema and two ledger entries. Historical one-migration audit tests now explicitly skipped after the new journal.
 
 ### Production baseline registration — 2026-11-01
