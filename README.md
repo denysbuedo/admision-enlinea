@@ -211,7 +211,7 @@ El servidor se ejecutará en `http://localhost:3000`
 
 ### Administrador Inicial
 
-El correo predeterminado es `admin@nexo.com`; se puede seleccionar con ADMIN_EMAIL. La creación inicial y la recuperación (`db:admin-password`) son operaciones de servidor, no rutas web. Consultar [el procedimiento operativo](docs/ADMIN-OPERATIONS.md) para preparar la BD y suministrar la contraseña sin exponerla.
+El correo predeterminado es `dinfo@mes.gob.cu`; se puede seleccionar con ADMIN_EMAIL. La creación inicial y la recuperación (`db:admin-password`) son operaciones de servidor, no rutas web. Consultar [el procedimiento operativo](docs/ADMIN-OPERATIONS.md) para preparar la BD y suministrar la contraseña sin exponerla.
 
 ### Rutas Principales
 
