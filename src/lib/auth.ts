@@ -26,11 +26,12 @@ const tokenClaims = z.object({
   role: z.enum(['super_admin', 'university', 'aspirant']),
   universityId: z.number().int().positive().safe().nullable(),
   sessionVersion: z.string().regex(/^[a-f0-9]{64}$/),
+  revision: z.number().int().nonnegative().safe(),
   iat: z.number().int().nonnegative(),
   exp: z.number().int().positive(),
 });
 type VerifiedToken = z.infer<typeof tokenClaims>;
-type Account = Pick<typeof users.$inferSelect, 'id' | 'email' | 'role' | 'universityId' | 'password' | 'isActive' | 'updatedAt'>;
+type Account = Pick<typeof users.$inferSelect, 'id' | 'email' | 'role' | 'universityId' | 'password' | 'isActive' | 'updatedAt' | 'sessionRevision'>;
 const lifetime = 7 * 24 * 60 * 60;
 
 function signingSecret(): string {
@@ -42,10 +43,10 @@ function signingSecret(): string {
 }
 
 // Keyed fingerprint: never put a password or its hash in the readable JWT payload.
-// No schema migration needed; compare current security state on every request.
+// Database triggers monotonically advance the revision on security-field changes.
 function sessionVersion(user: Account, secret: string): string {
   return createHmac('sha256', secret).update(JSON.stringify([
-    'convoca-session-v1', user.id, user.email, user.role, user.universityId,
+    'convoca-session-v2', user.id, user.email, user.role, user.universityId, user.sessionRevision,
     user.password, user.isActive, user.updatedAt?.getTime() ?? null,
   ])).digest('hex');
 }
@@ -63,6 +64,7 @@ export function signToken(user: Account): string {
   const payload = {
     userId: user.id, email: user.email, role: user.role, universityId: user.universityId,
     sessionVersion: sessionVersion(user, secret),
+    revision: user.sessionRevision,
   };
   const now = Math.floor(Date.now() / 1000);
   tokenClaims.parse({ ...payload, iat: now, exp: now + lifetime });
@@ -79,6 +81,7 @@ export async function verifyToken(token: string): Promise<VerifiedToken | null> 
     if (claims.iat > now || claims.exp <= claims.iat || claims.exp - claims.iat > lifetime) return null;
     const [user] = await db.select().from(users).where(eq(users.id, claims.userId));
     if (!user?.isActive || user.role !== claims.role || user.universityId !== claims.universityId || user.email !== claims.email) return null;
+    if (user.sessionRevision !== claims.revision) return null;
     const current = Buffer.from(sessionVersion(user, secret), 'hex');
     if (!timingSafeEqual(current, Buffer.from(claims.sessionVersion, 'hex'))) return null;
     return claims;

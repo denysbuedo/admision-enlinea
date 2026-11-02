@@ -9,6 +9,7 @@ export const users = sqliteTable("users", {
   role: text("role", { enum: ["super_admin", "university", "aspirant"] }).notNull().default("aspirant"),
   universityId: integer("university_id"),
   isActive: integer("is_active", { mode: "boolean" }).notNull().default(true),
+  sessionRevision: integer("session_revision").notNull().default(0),
   createdAt: integer("created_at", { mode: "timestamp" }).$defaultFn(() => new Date()),
   updatedAt: integer("updated_at", { mode: "timestamp" }).$defaultFn(() => new Date()),
 });
