@@ -1,5 +1,10 @@
 # Active Context: Nexo – Academic Admissions Cloud
 
+### Administrative CRUD and authenticated navigation — iteration 09
+
+- User requested authenticated header without signup and with logout, user/university editing/deletion and role management. Added shared transactional safeguards and dedicated admin endpoints/edit dialogs; pending review preserved, institutional reassignment audited, self-admin destructive changes blocked and linked deletions rejected. University deactivation revokes mapped sessions and login/session reject inactive/missing institutions. Legacy university routes unified.
+- 170 tests, typecheck/lint/build and mocked desktop/mobile UI pass. No schema changes. See docs/MANAGEMENT-09.md for scope/limitations; do not mutate real accounts/institutions to test this delivery.
+
 ### Catalog cleanup and home navigation — iteration 08
 
 - User requests remove three existing example programs, add admin delete control, fix authenticated home redirect and explain next priorities. On dev: home renders for all roles; public header offers Mi panel, admin deletion has confirmation and API blocks programs with applications atomically.

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/db";
-import { users } from "@/db/schema";
+import { users, universities } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { verifyPassword, signToken } from "@/lib/auth";
 
@@ -32,6 +32,10 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Cuenta desactivada" }, { status: 401 });
     }
 
+    if (user.role === 'university') {
+      const [institution] = user.universityId ? await db.select().from(universities).where(eq(universities.id, user.universityId)) : [];
+      if (!institution?.isActive) return NextResponse.json({ error: 'La universidad no está habilitada' }, { status: 403 });
+    }
     const token = signToken(user);
 
     const response = NextResponse.json({

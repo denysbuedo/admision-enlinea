@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { Menu, X } from "lucide-react";
 import Brand from "./Brand";
@@ -14,13 +14,26 @@ export default function PublicHeader() {
 }
 
 function PublicNavigation({ pathname }: { pathname: string }) {
+  const router = useRouter();
+  const [loggingOut, setLoggingOut] = useState(false);
+  const [authReady, setAuthReady] = useState(false);
+  const [logoutError, setLogoutError] = useState("");
+  async function logout() {
+    setLoggingOut(true); setLogoutError("");
+    try {
+      const response = await fetch("/api/auth/logout", { method: "POST" });
+      if (!response.ok) throw new Error();
+      setPanel(null); setOpen(false); router.refresh();
+    } catch { setLogoutError("No se pudo cerrar la sesión. Inténtalo de nuevo"); }
+    finally { setLoggingOut(false); }
+  }
   const [open, setOpen] = useState(false);
   const [panel, setPanel] = useState<string | null>(null);
   useEffect(() => {
     const controller = new AbortController();
     fetch('/api/auth/me', { signal: controller.signal }).then(response => response.ok ? response.json() : null)
       .then(user => { if (!controller.signal.aborted) setPanel(user?.role === 'super_admin' ? '/admin' : user?.role === 'university' ? '/university' : user?.role === 'aspirant' ? '/dashboard' : null); })
-      .catch(() => {});
+      .catch(() => {}).finally(() => { if (!controller.signal.aborted) setAuthReady(true); });
     return () => controller.abort();
   }, []);
   const header = useRef<HTMLElement>(null);
@@ -65,7 +78,9 @@ function PublicNavigation({ pathname }: { pathname: string }) {
           <Link className="ru-header__link" href="/programs" aria-current={pathname.startsWith("/programs") ? "page" : undefined}>Programas</Link>
           <Link className="ru-header__link" href="/#como-funciona">Cómo funciona</Link>
           <Link className="ru-header__link" href={panel || "/login"} aria-current={pathname === "/login" ? "page" : undefined}>{panel ? "Mi panel" : "Iniciar sesión"}</Link>
-          <Link className="ru-header__cta" href="/register" aria-current={pathname === "/register" ? "page" : undefined}>Crear cuenta</Link>
+          {panel ? <button type="button" className="ru-header__cta" disabled={loggingOut} onClick={logout}>{loggingOut ? "Cerrando sesión…" : "Cerrar sesión"}</button>
+            : authReady ? <Link className="ru-header__cta" href="/register" aria-current={pathname === "/register" ? "page" : undefined}>Crear cuenta</Link> : null}
+          {logoutError && <span role="alert">{logoutError}</span>}
         </nav>
       </div>
     </header>

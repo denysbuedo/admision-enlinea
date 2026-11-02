@@ -2,7 +2,9 @@ import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/db';
 import { universities } from '@/db/schema';
 import { getSession } from '@/lib/auth';
-import { desc, eq } from 'drizzle-orm';
+import { desc } from 'drizzle-orm';
+import { universityEdit } from '@/lib/admin-management';
+import { manage } from '@/lib/admin-management-route';
 
 export async function GET() {
   try {
@@ -30,8 +32,9 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'No autorizado' }, { status: 403 });
     }
 
-    const body = await req.json();
-    const { name, country, city, faculty, website, description } = body;
+    const parsed = universityEdit.safeParse(await req.json().catch(() => null));
+    if (!parsed.success || !parsed.data.name) return NextResponse.json({ error: 'Revisa los datos de la universidad' }, { status: 400 });
+    const { name, country, city, faculty, website, description } = parsed.data;
 
     if (!name || !name.trim()) {
       return NextResponse.json({ error: 'El nombre de la universidad es requerido' }, { status: 400 });
@@ -58,27 +61,9 @@ export async function POST(req: NextRequest) {
 }
 
 export async function PATCH(req: NextRequest) {
-  try {
-    const session = await getSession();
-    if (!session || session.user.role !== 'super_admin') {
-      return NextResponse.json({ error: 'No autorizado' }, { status: 403 });
-    }
-
-    const body = await req.json();
-    const { id, isActive } = body;
-
-    if (!id) {
-      return NextResponse.json({ error: 'ID requerido' }, { status: 400 });
-    }
-
-    await db
-      .update(universities)
-      .set({ isActive, updatedAt: new Date() })
-      .where(eq(universities.id, id));
-
-    return NextResponse.json({ success: true });
-  } catch (error) {
-    console.error('Error updating university:', error);
-    return NextResponse.json({ error: 'Error interno del servidor' }, { status: 500 });
-  }
+  const body = await req.json().catch(() => null);
+  const id = body?.id;
+  if (!Number.isSafeInteger(id) || id <= 0) return NextResponse.json({ error: 'ID inválido' }, { status: 400 });
+  const { id: _id, ...input } = body;
+  return manage(new Request(req.url, { method: 'PATCH', headers: req.headers, body: JSON.stringify(input) }), Promise.resolve({ id: String(id) }), 'universities', 'PATCH');
 }
