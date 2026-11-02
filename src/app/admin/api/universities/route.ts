@@ -1,7 +1,7 @@
-import { NextResponse } from 'next/server';
+import { NextResponse, NextRequest } from 'next/server';
+import { POST as createUniversity } from '@/app/api/admin/universities/route';
 import { db } from '@/db';
 import { universities } from '@/db/schema';
-import { getSession } from '@/lib/auth';
 import { eq } from 'drizzle-orm';
 
 // GET: Listar universidades (Público para el formulario de registro, o protegido si prefieres)
@@ -31,36 +31,9 @@ export async function GET() {
 
 // POST: Crear universidad (Solo Super Admin)
 export async function POST(request: Request) {
-  try {
-    const session = await getSession();
-    
-    if (!session || session.user.role !== 'super_admin') {
-      return NextResponse.json({ error: 'No autorizado. Solo Super Admin.' }, { status: 403 });
-    }
-
-    const body = await request.json();
-    const { name, country, acronym, website } = body;
-
-    if (!name) {
-      return NextResponse.json({ error: 'El nombre es obligatorio' }, { status: 400 });
-    }
-
-    // Verificar duplicados
-    const existing = await db.select().from(universities).where(eq(universities.name, name)).limit(1);
-    if (existing.length > 0) {
-      return NextResponse.json({ error: 'Ya existe una universidad con ese nombre' }, { status: 409 });
-    }
-
-        const [newUni] = await db.insert(universities).values({
-      name,
-      country: country || 'Cuba',
-      faculty: acronym,
-      website,
-    }).returning();
-
-    return NextResponse.json(newUni, { status: 201 });
-  } catch (error) {
-    console.error('Error creating university:', error);
-    return NextResponse.json({ error: 'Error interno del servidor' }, { status: 500 });
-  }
+  const body = await request.json().catch(() => null);
+  if (!body || typeof body !== 'object') return NextResponse.json({ error: 'Datos inválidos' }, { status: 400 });
+  return createUniversity(new NextRequest(request.url, { method: 'POST', headers: request.headers,
+    body: JSON.stringify({ name: body.name, country: body.country, city: body.city, faculty: body.faculty ?? body.acronym,
+      website: body.website, description: body.description }) }));
 }

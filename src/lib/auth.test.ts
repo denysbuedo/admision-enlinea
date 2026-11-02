@@ -13,7 +13,7 @@ vi.mock('@/db', async () => {
 });
 vi.mock('next/headers', () => ({ cookies: async () => ({ get: (name: string) => name === 'auth_token' && isolated.token ? { value: isolated.token } : undefined }) }));
 import { db } from '@/db';
-import { users } from '@/db/schema';
+import { users, universities } from '@/db/schema';
 import { eq } from 'drizzle-orm';
 import jwt from 'jsonwebtoken';
 import { signToken, verifyToken, getSession } from './auth';
@@ -30,6 +30,8 @@ beforeEach(async () => {
   vi.stubEnv('JWT_SECRET', secret);
   isolated.token = undefined;
   await db.delete(users);
+  await db.delete(universities);
+  await db.insert(universities).values({ id: 1, name: 'Synthetic university' });
   [user] = await db.insert(users).values({ id: 1, name: 'Test', email: 'test@example.invalid', password: await bcrypt.hash('test-password', 4), role: 'university', universityId: 1 }).returning();
 });
 function issue() { return signToken(user); }

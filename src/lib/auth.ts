@@ -1,5 +1,5 @@
 import { db } from "@/db";
-import { users } from "@/db/schema";
+import { users, universities } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
@@ -84,6 +84,11 @@ export async function verifyToken(token: string): Promise<VerifiedToken | null> 
     if (!user?.isActive || user.role !== claims.role || user.universityId !== claims.universityId || user.email !== claims.email) return null;
     if (user.sessionRevision !== claims.revision) return null;
     if (user.role === 'university' && user.institutionalStatus !== 'approved') return null;
+    if (user.role === 'university') {
+      if (!user.universityId) return null;
+      const [institution] = await db.select({ isActive: universities.isActive }).from(universities).where(eq(universities.id, user.universityId));
+      if (!institution?.isActive) return null;
+    }
     const current = Buffer.from(sessionVersion(user, secret), 'hex');
     if (!timingSafeEqual(current, Buffer.from(claims.sessionVersion, 'hex'))) return null;
     return claims;

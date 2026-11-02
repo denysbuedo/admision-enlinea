@@ -1,4 +1,6 @@
 "use client";
+
+import AdminEntityActions from "@/components/AdminEntityActions";
 import Brand from "@/components/Brand";
 
 import { useState, useEffect } from "react";
@@ -45,6 +47,7 @@ interface User {
   universityName: string;
   createdAt: string;
   institutionalStatus: "approved" | "pending" | "rejected";
+  universityId: number | null;
 }
 
 interface Application {
@@ -118,6 +121,13 @@ export default function AdminDashboard() {
   const [univLoading, setUnivLoading] = useState(false);
   const [univMsg, setUnivMsg] = useState<{ type: "success" | "error"; text: string } | null>(null);
 
+  async function refreshManagement() {
+    const responses = await Promise.all([fetch('/api/admin/users'), fetch('/api/admin/universities')]);
+    if (responses.some(response => response.status === 401 || response.status === 403)) { window.location.assign('/login'); return; }
+    if (responses.some(response => !response.ok)) throw new Error('No se pudo actualizar el listado');
+    setUsers(await responses[0].json()); setUnivList(await responses[1].json());
+  }
+
   const fetchUniversities = async () => {
     const res = await fetch("/api/admin/universities");
     if (res.ok) {
@@ -127,6 +137,7 @@ export default function AdminDashboard() {
   };
 
   useEffect(() => {
+    if (new URLSearchParams(window.location.search).get('tab') === 'universities') setActiveTab('universities');
     Promise.all([
       fetch("/api/programs").then((r) => r.json()),
       fetch("/api/admin/users").then((r) => r.json()),
@@ -419,13 +430,13 @@ export default function AdminDashboard() {
                     <th className="text-left px-6 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Facultad</th>
                     <th className="text-left px-6 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">País / Ciudad</th>
                     <th className="text-left px-6 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Web</th>
-                    <th className="text-left px-6 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Estado</th>
+                    <th className="text-left px-6 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Estado</th><th className="text-left px-6 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Acciones</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-200">
                   {univList.length === 0 ? (
                     <tr>
-                      <td colSpan={5} className="text-center text-slate-400 py-12">
+                      <td colSpan={6} className="text-center text-slate-400 py-12">
                         No hay universidades registradas. ¡Crea la primera!
                       </td>
                     </tr>
@@ -458,6 +469,7 @@ export default function AdminDashboard() {
                             {u.isActive ? "Activa" : "Inactiva"}
                           </span>
                         </td>
+                        <td className="px-6 py-4"><AdminEntityActions kind="universities" record={u} onSaved={refreshManagement} /></td>
                       </tr>
                     ))
                   )}
@@ -722,12 +734,13 @@ export default function AdminDashboard() {
                     <th className="text-left px-6 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">
                       Registrado
                     </th>
+                    <th className="text-left px-6 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider">Acciones</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-200">
                   {users.length === 0 ? (
                     <tr>
-                      <td colSpan={6} className="text-center text-slate-400 py-12">
+                      <td colSpan={7} className="text-center text-slate-400 py-12">
                         No hay usuarios registrados
                       </td>
                     </tr>
@@ -778,6 +791,7 @@ export default function AdminDashboard() {
                             </div>
                           </div>}
                         </td>
+                        <td className="px-6 py-4"><AdminEntityActions kind="users" record={u} institutions={univList} onSaved={refreshManagement} /></td>
                       </tr>
                     ))
                   )}
