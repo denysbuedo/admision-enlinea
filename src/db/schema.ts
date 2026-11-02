@@ -10,8 +10,19 @@ export const users = sqliteTable("users", {
   universityId: integer("university_id"),
   isActive: integer("is_active", { mode: "boolean" }).notNull().default(true),
   sessionRevision: integer("session_revision").notNull().default(0),
+  institutionalStatus: text("institutional_status", { enum: ["approved", "pending", "rejected"] }).notNull().default("approved"),
   createdAt: integer("created_at", { mode: "timestamp" }).$defaultFn(() => new Date()),
   updatedAt: integer("updated_at", { mode: "timestamp" }).$defaultFn(() => new Date()),
+});
+
+export const institutionalReviews = sqliteTable("institutional_reviews", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  userId: integer("user_id").notNull(),
+  reviewerId: integer("reviewer_id").notNull(),
+  universityId: integer("university_id").notNull(),
+  decision: text("decision", { enum: ["approved", "rejected"] }).notNull(),
+  note: text("note").notNull(),
+  createdAt: integer("created_at", { mode: "timestamp" }).$defaultFn(() => new Date()),
 });
 
 // Universities table

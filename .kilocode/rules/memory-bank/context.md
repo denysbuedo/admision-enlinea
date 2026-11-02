@@ -1,5 +1,10 @@
 # Active Context: Nexo – Academic Admissions Cloud
 
+### Institutional account approval — iteration 07
+
+- On dev: institutional self-registration is pending/inactive; admin-only pending review with required note and atomic audit. Login/session enforce approved status. Migration 0002 adds status/audit and extends revision trigger, grandfathering existing accounts without changing prior values or asserting historic verification.
+- 142 tests, local typecheck/lint/build and mocked UI flow pass. See docs/STABILITY-07.md. SEG-001 remains partial pending legitimacy review of existing privileged accounts; no automatic deactivation or production user tests.
+
 ### Persistent session revocation — iteration 06
 
 - On dev: migration 0001 adds session_revision and atomic SQLite triggers on user security fields, with monotonic guard. JWT v2 requires the current revision. Five restored-state exploit tests reproduced the old issue; 129 tests pass with new claims/counter checks. Legacy sessions need login again. See docs/STABILITY-06.md.

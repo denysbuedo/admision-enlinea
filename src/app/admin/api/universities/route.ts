@@ -20,6 +20,7 @@ export async function GET() {
         website: universities.website,
       })
       .from(universities)
+      .where(eq(universities.isActive, true))
       .orderBy(universities.name);
     return NextResponse.json(list);
   } catch (error) {
