@@ -3,6 +3,7 @@
 ### Catalog cleanup and home navigation — iteration 08
 
 - User requests remove three existing example programs, add admin delete control, fix authenticated home redirect and explain next priorities. On dev: home renders for all roles; public header offers Mi panel, admin deletion has confirmation and API blocks programs with applications atomically.
+- Deployed main 5500501 (dev 0ad03a4): 152 Linux tests/typecheck/build, synthetic authenticated HTTP and mocked desktop/mobile UI passed. Three sample programs deleted after exact-title/no-applications guards; all other tables/sequences unchanged, integrity and restore trial verified. Backup /opt/convoca-backups/maintenance-08/production-before.db; prior build retained. Service/public smoke healthy, admin credentials/university preserved. Refresh browser for new panel. Next priorities: full admissions staging flow/concurrency integrity, SEG-006 and CI/reproducible releases.
 - 152 tests/typecheck/lint/build and mocked desktop/mobile navigation/deletion UI pass. Planned data cleanup limited to IDs 1/2/3 with exact titles, no applications, preserving admin/university and all other tables; backup/restore required. See docs/MAINTENANCE-08.md.
 
 ### Definitive account reset authorization — 2026-11-02
