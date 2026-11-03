@@ -236,3 +236,12 @@ CONVOCA is an academic admissions platform for managing postgraduate program cal
 
 - Iteration 01 deployed from main merge `a90fa36` (dev code `abbbd9c`). Linux tests/build passed; temporary loopback validation used synthetic DB and independent secret, validating registration/login without production writes; service stopped afterward. Production public pages and an intentionally incomplete administrative registration request verified the new role rejection without creating an account. DB file unchanged.
 - Documentation closure also follows dev → main; local work returns to dev. Next bounded release: institution ownership checks on application read/update/export (SEG-002). Branch protection/CI and full persistent staging remain pending.
+
+### Aprobación institucional, overflow de acceso y despliegue — 2026-11-03
+
+- En Admin, la justificación de al menos 10 caracteres ahora se explica con contador junto a las acciones. La acción “Aprobar cuenta” se habilita al alcanzar el mínimo; el endpoint y sus controles de autorización permanecen iguales.
+- `body` limita el desbordamiento horizontal para evitar scroll lateral en páginas de acceso.
+- Validación local: 170 pruebas, typecheck y build correctos. Desplegado desde `main` `a1c7af1` tras build Linux separado y respaldo consistente de SQLite verificado. Respaldo del código/configuración y build anterior en `/opt/convoca-backups/a1c7af1-20261103/`; base previa al despliegue en `sqlite-deploy.db`; build anterior en `next-before`.
+- Smoke browser en producción: login/registro sin overflow a 390 y 1440 px; acceso admin validado; la solicitud institucional pendiente muestra el botón deshabilitado inicialmente y habilitado tras escribir la justificación. No se envió decisión de aprobación/rechazo. Se cerró la sesión de prueba.
+- Recuperación de contraseña completada para el administrador existente `dinfo@mes.gob.cu` con el valor indicado por el propietario, usando `db:admin-password`; no se guardó el secreto en el repositorio. Respaldo previo en `sqlite-before-admin-reset.db`. Integridad SQLite correcta y conteos de admin/solicitud pendiente preservados.
+- Causa del falso bloqueo de SSH documentada: el túnel y contraseña eran correctos; el helper anterior no pasaba la contraseña al prompt de sudo. Con `sudo -S` funcionó y el servicio se mantiene activo.
