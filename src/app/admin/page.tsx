@@ -780,18 +780,28 @@ export default function AdminDashboard() {
                         </td>
                         <td className="px-6 py-4 text-slate-400 text-sm">
                           {u.createdAt ? new Date(u.createdAt).toLocaleDateString("es-ES") : "—"}
-                          {u.role === 'university' && u.institutionalStatus === 'pending' && <div className="mt-3 min-w-64 space-y-2">
-                            <p>Verifique la representación de {u.universityName} por un canal institucional antes de aprobar.</p>
-                            <textarea aria-label={`Justificación para ${u.email}`} className="input-field" minLength={10} maxLength={1000}
-                              value={reviewNotes[u.id] || ''} onChange={event => setReviewNotes(previous => ({ ...previous, [u.id]: event.target.value }))}
-                              placeholder="Anote la verificación realizada o el motivo del rechazo" />
-                            <div className="flex gap-2">
-                              <button className="btn-primary" disabled={reviewBusy !== null || (reviewNotes[u.id] || '').trim().length < 10} onClick={() => reviewInstitution(u, 'approved')}>Aprobar cuenta</button>
-                              <button className="btn-secondary" disabled={reviewBusy !== null || (reviewNotes[u.id] || '').trim().length < 10} onClick={() => reviewInstitution(u, 'rejected')}>Rechazar cuenta</button>
-                            </div>
-                          </div>}
                         </td>
-                        <td className="px-6 py-4"><AdminEntityActions kind="users" record={u} institutions={univList} onSaved={refreshManagement} /></td>
+                        <td className="px-6 py-4">
+                          <AdminEntityActions kind="users" record={u} institutions={univList} onSaved={refreshManagement} />
+                          {u.role === 'university' && u.institutionalStatus === 'pending' && (() => {
+                            const noteLength = (reviewNotes[u.id] || '').trim().length;
+                            const hasValidNote = noteLength >= 10;
+                            return <div className="mt-3 min-w-64 space-y-2 rounded-lg border border-amber-200 bg-amber-50 p-3">
+                              <p className="text-sm text-slate-700">Verifique la representación de {u.universityName} por un canal institucional antes de aprobar.</p>
+                              <label className="block text-sm font-medium text-slate-800" htmlFor={`review-note-${u.id}`}>Justificación de la revisión</label>
+                              <textarea id={`review-note-${u.id}`} aria-describedby={`review-help-${u.id}`} className="input-field" minLength={10} maxLength={1000}
+                                value={reviewNotes[u.id] || ''} onChange={event => setReviewNotes(previous => ({ ...previous, [u.id]: event.target.value }))}
+                                placeholder="Indique cómo verificó la solicitud" />
+                              <p id={`review-help-${u.id}`} aria-live="polite" className="text-xs text-slate-600">
+                                {hasValidNote ? 'Justificación completa. Ya puede decidir.' : `Escriba al menos 10 caracteres para habilitar los botones (${noteLength}/10).`}
+                              </p>
+                              <div className="flex flex-wrap gap-2">
+                                <button className="btn-primary" disabled={reviewBusy !== null || !hasValidNote} onClick={() => reviewInstitution(u, 'approved')}>{reviewBusy === u.id ? 'Guardando…' : 'Aprobar cuenta'}</button>
+                                <button className="btn-secondary" disabled={reviewBusy !== null || !hasValidNote} onClick={() => reviewInstitution(u, 'rejected')}>Rechazar cuenta</button>
+                              </div>
+                            </div>;
+                          })()}
+                        </td>
                       </tr>
                     ))
                   )}
