@@ -20,6 +20,7 @@ body {
   font-family: var(--convoca-font);
   background-color: #F5F9FC;
   color: #102B46;
+  overflow-x: hidden;
 }
 
 .gradient-bg {
