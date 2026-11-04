@@ -302,6 +302,22 @@ sudo journalctl -u admision-enlinea -f
 
 Si el usuario `nexouser` no tiene `sudo`, reinicia el servicio como `root`.
 
+### Restaurar la base SQLite desde un respaldo
+
+Si el respaldo se creó como `root`, después de copiarlo al directorio de la aplicación restaura la propiedad y permisos del servicio antes de arrancarlo:
+
+```bash
+chown nexouser:nexouser /opt/admision-enlinea/sqlite.db
+chmod 660 /opt/admision-enlinea/sqlite.db
+for file in /opt/admision-enlinea/sqlite.db-wal /opt/admision-enlinea/sqlite.db-shm; do
+  if [ -e "$file" ]; then chown nexouser:nexouser "$file"; chmod 660 "$file"; fi
+done
+sudo -u nexouser test -r /opt/admision-enlinea/sqlite.db
+sudo -u nexouser test -w /opt/admision-enlinea/sqlite.db
+```
+
+No conserves en el archivo activo la propiedad `root:root` ni modo `600`: el servicio corre como `nexouser` y no podrá abrir la base.
+
 ---
 
 ## 15. Comandos utiles
