@@ -4,6 +4,7 @@ import { users, universities, institutionalReviews } from '@/db/schema';
 import { getSession } from '@/lib/auth';
 import { desc, eq, and } from 'drizzle-orm';
 import { z } from 'zod';
+import { randomUUID } from 'node:crypto';
 
 export async function GET() {
   try {
@@ -70,6 +71,16 @@ export async function PATCH(request: Request) {
     return NextResponse.json({ userId, institutionalStatus: decision });
   } catch (error) {
     if (error instanceof ReviewError) return NextResponse.json({ error: error.message }, { status: error.status });
-    return NextResponse.json({ error: 'No se pudo guardar la revisión' }, { status: 500 });
+    const reference = randomUUID();
+    const details = error && typeof error === 'object' ? error as { code?: unknown; errno?: unknown } : {};
+    const code = typeof details.code === 'string' && /^[A-Z0-9_]+$/.test(details.code) ? details.code : undefined;
+    const errno = typeof details.errno === 'number' ? details.errno : undefined;
+    console.error('Institutional review failed', {
+      reference,
+      errorName: error instanceof Error ? error.name : 'UnknownError',
+      code,
+      errno,
+    });
+    return NextResponse.json({ error: 'No se pudo guardar la revisión', reference }, { status: 500 });
   }
 }
