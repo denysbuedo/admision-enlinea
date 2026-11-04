@@ -108,7 +108,7 @@ export default function AdminDashboard() {
       const response = await fetch('/api/admin/users', { method: 'PATCH', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ userId: user.id, decision, note: reviewNotes[user.id] || '' }) });
       const result = await response.json();
-      if (!response.ok) throw new Error(result.error);
+      if (!response.ok) throw new Error(result.reference ? `${result.error} (referencia ${result.reference})` : result.error);
       setUsers(previous => previous.map(item => item.id === user.id ? { ...item, institutionalStatus: decision, isActive: decision === 'approved' } : item));
       setMessage({ type: 'success', text: 'Revisión institucional guardada' });
     } catch (error) { setMessage({ type: 'error', text: error instanceof Error ? error.message : 'No se pudo guardar la revisión' }); }
