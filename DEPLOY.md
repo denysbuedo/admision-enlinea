@@ -1,6 +1,16 @@
 # Deploy - CONVOCA
 
 
+## Última actualización desplegada — 5 de noviembre de 2026
+
+- Release `6664d6ea3dfe3ef198a0f0818c62de25b1dbc701` (`main`), desplegado en `vm-nexo` (`10.46.6.74`), aplicación `/opt/admision-enlinea`, servicio `admision-enlinea`.
+- Build Linux aislado y `typecheck` correctos en `/opt/convoca-build-6664d6e`; el servicio se activó después de compilar.
+- Respaldo previo en `/opt/convoca-backups/convoca-6664d6e-20261105`: snapshot SQLite consistente `sqlite-before.db`, código/configuración `source-config-before.tar.gz` y build anterior `next-before/`.
+- La BD viva no se reemplazó ni migró. Integridad antes/después correcta, volcado lógico igual al snapshot y permisos de producción preservados (`nexouser:nexouser`, modo `660`).
+- Verificación posterior: servicio activo; inicio y `/api/programs` responden 200; `/api/auth/me` sin sesión responde 401. El sitio público devuelve 200 en inicio, catálogo, login y registro.
+- El checkout remoto quedó en `main`, commit desplegado y árbol limpio. Los flujos de postulación y revisión no se modificaron manualmente sobre datos reales.
+
+
 ## Despliegue verificado de CONVOCA — 28 de octubre de 2026
 
 - Sitio activo: `https://convocatorias.reduniv.edu.cu/`.
