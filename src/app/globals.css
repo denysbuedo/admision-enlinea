@@ -23,6 +23,19 @@ body {
   overflow-x: hidden;
 }
 
+/* Auth pages share the public header, so their viewport height excludes it. */
+.auth-page {
+  min-height: calc(100vh - var(--ru-header-height));
+  min-height: calc(100svh - var(--ru-header-height));
+}
+
+@media (max-width: 760px) {
+  .auth-page {
+    min-height: calc(100vh - var(--ru-header-mobile));
+    min-height: calc(100svh - var(--ru-header-mobile));
+  }
+}
+
 .gradient-bg {
   background: #0C1D30;
 }
