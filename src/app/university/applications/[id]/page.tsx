@@ -27,7 +27,9 @@ import {
   Send,
   Users,
   AlertCircle,
+  Loader2,
 } from "lucide-react";
+import { APPLICATION_STATUS_TRANSITIONS, FINAL_APPLICATION_STATUSES } from "@/lib/application-status";
 
 interface Application {
   id: number;
@@ -89,7 +91,7 @@ export default function ReviewApplicationPage() {
   const router = useRouter();
   const [app, setApp] = useState<Application | null>(null);
   const [loading, setLoading] = useState(true);
-  const [updating, setUpdating] = useState(false);
+  const [updating, setUpdating] = useState<string | null>(null);
   const [reviewNotes, setReviewNotes] = useState("");
   const [score, setScore] = useState("");
   const [message, setMessage] = useState({ type: "", text: "" });
@@ -111,7 +113,7 @@ export default function ReviewApplicationPage() {
   }, [params.id, router]);
 
   const handleStatusChange = async (newStatus: string) => {
-    setUpdating(true);
+    setUpdating(newStatus);
     setMessage({ type: "", text: "" });
     try {
       const res = await fetch(`/api/applications/${params.id}`, {
@@ -127,16 +129,14 @@ export default function ReviewApplicationPage() {
       if (!res.ok) {
         setMessage({ type: "error", text: data.error || "Error al actualizar" });
       } else {
-        setApp((prev) =>
-          prev ? { ...prev, status: newStatus, reviewNotes, score: parseFloat(score) } : null
-        );
+        setApp((prev) => prev ? { ...prev, status: newStatus, reviewNotes, score: score ? parseFloat(score) : prev.score } : null);
         setMessage({ type: "success", text: `Estado actualizado a: ${statusLabels[newStatus]}` });
         setTimeout(() => setMessage({ type: "", text: "" }), 3000);
       }
     } catch {
       setMessage({ type: "error", text: "Error de conexión" });
     } finally {
-      setUpdating(false);
+      setUpdating(null);
     }
   };
 
@@ -267,7 +267,7 @@ export default function ReviewApplicationPage() {
                 </div>
                 {academic.otherStudies && (
                   <div className="mt-3 pt-3 border-t border-slate-100">
-                    <div className="text-xs text-slate-400 font-medium mb-1">Otros estudios</div>
+                    <div className="text-xs text-slate-400 font-medium mb-1">Otros estudios de posgrado</div>
                     <div className="text-sm text-slate-700">{academic.otherStudies}</div>
                   </div>
                 )}
@@ -282,11 +282,10 @@ export default function ReviewApplicationPage() {
                   <h2 className="text-lg font-bold text-slate-800">Experiencia profesional</h2>
                 </div>
                 <div className="space-y-4">
-                  {experience.map((exp: Record<string, string>, i: number) => (
+                {experience.map((exp: Record<string, string>, i: number) => (
                     <div key={i} className="border-b border-slate-100 pb-4 last:border-0 last:pb-0">
-                      <div className="font-semibold text-slate-800">
-                        {exp.position} en {exp.company}
-                      </div>
+                  <div className="text-xs font-medium text-slate-400">Institución y cargo</div>
+                      <div className="font-semibold text-slate-800">{exp.position} en {exp.company}</div>
                       <div className="text-slate-500 text-sm mt-1">
                         {exp.startDate} – {exp.endDate || "Actualidad"}
                       </div>
@@ -307,41 +306,23 @@ export default function ReviewApplicationPage() {
                   <h2 className="text-lg font-bold text-slate-800">Información complementaria</h2>
                 </div>
                 <div className="space-y-3">
-                  {complementary.languages && (
-                    <div className="flex items-start gap-2">
-                      <Languages className="w-4 h-4 text-slate-400 mt-0.5" />
-                      <div>
-                        <div className="text-xs text-slate-400 font-medium">Idiomas</div>
-                        <div className="text-sm text-slate-700">{complementary.languages}</div>
-                      </div>
-                    </div>
-                  )}
-                  {complementary.certifications && (
-                    <div className="flex items-start gap-2">
-                      <FileCheck className="w-4 h-4 text-slate-400 mt-0.5" />
-                      <div>
-                        <div className="text-xs text-slate-400 font-medium">Certificaciones</div>
-                        <div className="text-sm text-slate-700">{complementary.certifications}</div>
-                      </div>
-                    </div>
-                  )}
-                  {complementary.publications && (
-                    <div className="flex items-start gap-2">
-                      <BookOpen className="w-4 h-4 text-slate-400 mt-0.5" />
-                      <div>
-                        <div className="text-xs text-slate-400 font-medium">Publicaciones</div>
-                        <div className="text-sm text-slate-700">{complementary.publications}</div>
-                      </div>
-                    </div>
-                  )}
                   {complementary.research && (
                     <div className="flex items-start gap-2">
                       <Award className="w-4 h-4 text-slate-400 mt-0.5" />
                       <div>
-                        <div className="text-xs text-slate-400 font-medium">Líneas de investigación</div>
+                        <div className="text-xs text-slate-400 font-medium">Líneas de investigación previa</div>
                         <div className="text-sm text-slate-700">{complementary.research}</div>
                       </div>
                     </div>
+                  )}
+                  {complementary.publications && (
+                    <div className="flex items-start gap-2"><BookOpen className="w-4 h-4 text-slate-400 mt-0.5" /><div><div className="text-xs text-slate-400 font-medium">Publicaciones científicas</div><div className="text-sm text-slate-700">{complementary.publications}</div></div></div>
+                  )}
+                  {complementary.certifications && (
+                    <div className="flex items-start gap-2"><FileCheck className="w-4 h-4 text-slate-400 mt-0.5" /><div><div className="text-xs text-slate-400 font-medium">Certificaciones</div><div className="text-sm text-slate-700">{complementary.certifications}</div></div></div>
+                  )}
+                  {complementary.languages && (
+                    <div className="flex items-start gap-2"><Languages className="w-4 h-4 text-slate-400 mt-0.5" /><div><div className="text-xs text-slate-400 font-medium">Idiomas y nivel</div><div className="text-sm text-slate-700">{complementary.languages}</div></div></div>
                   )}
                 </div>
               </div>
@@ -376,7 +357,7 @@ export default function ReviewApplicationPage() {
           {/* Columna lateral - Panel de evaluación */}
           <div className="space-y-4">
             {/* Panel de acciones */}
-            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 sticky top-20">
+            <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
               <h3 className="font-bold text-slate-800 mb-4 flex items-center gap-2">
                 <FileCheck className="w-5 h-5 text-[#102B46]" />
                 Panel de evaluación
@@ -399,6 +380,9 @@ export default function ReviewApplicationPage() {
                 </div>
               )}
 
+              {FINAL_APPLICATION_STATUSES.includes(app.status as typeof FINAL_APPLICATION_STATUSES[number]) ? (
+                <div className="rounded-lg bg-slate-50 p-3 text-sm text-slate-600">Esta solicitud está cerrada como <strong>{statusLabels[app.status]}</strong> y no admite nuevos cambios.</div>
+              ) : <>
               {/* Puntaje */}
               <div className="mb-4">
                 <label className="block text-sm font-semibold text-slate-700 mb-1">
@@ -430,18 +414,19 @@ export default function ReviewApplicationPage() {
 
               {/* Botones de acción */}
               <div className="space-y-2">
-                {STATUS_FLOW.map((s) => (
+                {STATUS_FLOW.filter(s => (APPLICATION_STATUS_TRANSITIONS[app.status] || []).includes(s.value)).map((s) => (
                   <button
                     key={s.value}
                     onClick={() => handleStatusChange(s.value)}
-                    disabled={updating || app.status === s.value}
-                    className={`w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg text-white font-medium text-sm transition-all ${s.color} disabled:opacity-50 disabled:cursor-not-allowed`}
+                    disabled={Boolean(updating)}
+                    className={`w-full flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg text-white font-medium text-sm transition-all ${s.color} disabled:opacity-60 disabled:cursor-wait`}
                   >
-                    <s.icon className="w-4 h-4" />
+                    {updating === s.value ? <Loader2 className="w-4 h-4 animate-spin" /> : <s.icon className="w-4 h-4" />}
                     {s.label}
                   </button>
                 ))}
               </div>
+              </>}
             </div>
 
             {/* Exportar */}

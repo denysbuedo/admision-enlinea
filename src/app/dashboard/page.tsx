@@ -1,5 +1,6 @@
 "use client";
 import Brand from "@/components/Brand";
+import { NotificationBell } from "@/components/NotificationBell";
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
@@ -10,7 +11,6 @@ import {
   Send,
   Clock,
   CheckCircle,
-  Bell,
   LogOut,
   PlusCircle,
   Search,
@@ -30,15 +30,6 @@ interface Application {
   programType: string;
   score: number;
   reviewNotes: string;
-}
-
-interface Notification {
-  id: number;
-  title: string;
-  message: string;
-  isRead: boolean;
-  createdAt: string;
-  type: string;
 }
 
 const statusLabels: Record<string, string> = {
@@ -64,21 +55,17 @@ const statusColors: Record<string, string> = {
 export default function DashboardPage() {
   const router = useRouter();
   const [applications, setApplications] = useState<Application[]>([]);
-  const [notifications, setNotifications] = useState<Notification[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    Promise.all([
-      fetch("/api/applications").then((r) => r.json()),
-      fetch("/api/notifications").then((r) => r.json()),
-    ])
-      .then(([apps, notifs]) => {
+    fetch("/api/applications")
+      .then((r) => r.json())
+      .then((apps) => {
         if (apps.error === "No autorizado") {
           router.push("/login");
           return;
         }
         setApplications(Array.isArray(apps) ? apps : []);
-        setNotifications(Array.isArray(notifs) ? notifs : []);
         setLoading(false);
       })
       .catch(() => setLoading(false));
@@ -88,8 +75,6 @@ export default function DashboardPage() {
     await fetch("/api/auth/logout", { method: "POST" });
     router.push("/");
   };
-
-  const unreadCount = notifications.filter((n) => !n.isRead).length;
 
   const stats = {
     total: applications.length,
@@ -125,14 +110,7 @@ export default function DashboardPage() {
                 <Search className="w-4 h-4" />
                 Ver programas
               </Link>
-              {unreadCount > 0 && (
-                <div className="relative">
-                  <Bell className="w-5 h-5 text-slate-500" />
-                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center font-bold">
-                    {unreadCount}
-                  </span>
-                </div>
-              )}
+              <NotificationBell />
               <button
                 onClick={handleLogout}
                 className="flex items-center gap-1 text-slate-500 hover:text-red-600 text-sm transition-colors"
@@ -192,9 +170,9 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 gap-6">
           {/* Sección de Solicitudes */}
-          <div className="lg:col-span-2">
+          <div>
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-bold text-slate-800 flex items-center gap-2">
                 <FileText className="w-5 h-5 text-[#102B46]" />
@@ -267,59 +245,6 @@ export default function DashboardPage() {
             )}
           </div>
 
-          {/* Sección de Notificaciones */}
-          <div>
-            <h2 className="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2">
-              <Bell className="w-5 h-5 text-[#102B46]" />
-              Notificaciones
-              {unreadCount > 0 && (
-                <span className="bg-red-500 text-white text-xs rounded-full px-2 py-0.5 font-bold">
-                  {unreadCount} nuevas
-                </span>
-              )}
-            </h2>
-            {notifications.length === 0 ? (
-              <div className="bg-white rounded-xl shadow-sm border border-slate-200 text-center py-8">
-                <Bell className="w-12 h-12 text-slate-300 mx-auto mb-2" />
-                <p className="text-slate-400 text-sm">Sin notificaciones</p>
-              </div>
-            ) : (
-              <div className="space-y-2">
-                {notifications.slice(0, 8).map((notif) => (
-                  <div
-                    key={notif.id}
-                    className={`bg-white rounded-xl p-3 shadow-sm border transition-all ${
-                      !notif.isRead
-                        ? "border-l-4 border-l-[#102B46] border-slate-200"
-                        : "border-slate-200"
-                    }`}
-                  >
-                    <div className="flex items-start gap-2">
-                      {!notif.isRead && (
-                        <div className="w-2 h-2 rounded-full bg-[#102B46] mt-1.5 flex-shrink-0" />
-                      )}
-                      <div className="flex-1">
-                        <div className="font-semibold text-slate-700 text-sm">
-                          {notif.title}
-                        </div>
-                        <div className="text-slate-500 text-xs mt-1 line-clamp-2">
-                          {notif.message}
-                        </div>
-                        <div className="text-slate-400 text-xs mt-2">
-                          {new Date(notif.createdAt).toLocaleDateString("es-ES", {
-                            day: "numeric",
-                            month: "short",
-                            hour: "2-digit",
-                            minute: "2-digit",
-                          })}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
         </div>
       </div>
     </div>

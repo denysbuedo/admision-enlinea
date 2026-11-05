@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/db";
 import { notifications } from "@/db/schema";
-import { eq, desc } from "drizzle-orm";
+import { and, eq, desc } from "drizzle-orm";
 import { getSession } from "@/lib/auth";
 
 export async function GET() {
@@ -31,11 +31,13 @@ export async function PATCH(request: NextRequest) {
       return NextResponse.json({ error: "No autorizado" }, { status: 401 });
     }
 
-    // Mark all as read
-    await db
-      .update(notifications)
-      .set({ isRead: true })
-      .where(eq(notifications.userId, session.userId));
+    const body = await request.json().catch(() => ({}));
+    const id = Number(body.id);
+    await db.update(notifications).set({ isRead: true }).where(
+      Number.isInteger(id) && id > 0
+        ? and(eq(notifications.userId, session.userId), eq(notifications.id, id))
+        : eq(notifications.userId, session.userId)
+    );
 
     return NextResponse.json({ message: "Notificaciones marcadas como leídas" });
   } catch (error) {

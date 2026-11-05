@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/db";
-import { applications, programs } from "@/db/schema";
-import { eq, desc, and } from "drizzle-orm";
+import { applications, programs, users } from "@/db/schema";
+import { eq, desc, and, ne } from "drizzle-orm";
 import { getSession } from "@/lib/auth";
+import { splitApplicantName } from "@/lib/applicant-profile";
 
 export async function GET(request: NextRequest) {
   try {
@@ -30,6 +31,7 @@ export async function GET(request: NextRequest) {
         })
         .from(applications)
         .leftJoin(programs, eq(applications.programId, programs.id))
+        .where(ne(applications.status, 'draft'))
         .orderBy(desc(applications.createdAt));
     } else if (session.user.role === "university" && session.user.universityId) {
       results = await db
@@ -47,7 +49,7 @@ export async function GET(request: NextRequest) {
         })
         .from(applications)
         .leftJoin(programs, eq(applications.programId, programs.id))
-        .where(eq(programs.universityId, session.user.universityId))
+        .where(and(eq(programs.universityId, session.user.universityId), ne(applications.status, 'draft')))
         .orderBy(desc(applications.createdAt));
     } else {
       results = await db
@@ -94,6 +96,8 @@ export async function POST(request: NextRequest) {
     }
 
     const programId = Number(body.programId);
+    const today = new Date();
+    const localDay = new Date(Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate()));
 
     const [program] = await db.select().from(programs).where(eq(programs.id, programId)).limit(1);
     if (!program) {
@@ -104,29 +108,36 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "El programa no está disponible para postulaciones" }, { status: 400 });
     }
 
+    const openDay = program.openDate ? new Date(Date.UTC(program.openDate.getUTCFullYear(), program.openDate.getUTCMonth(), program.openDate.getUTCDate())) : null;
+    const closeDay = program.deadlineDate ? new Date(Date.UTC(program.deadlineDate.getUTCFullYear(), program.deadlineDate.getUTCMonth(), program.deadlineDate.getUTCDate())) : null;
+    if (openDay && localDay < openDay) {
+      return NextResponse.json({ error: "Las postulaciones aún no han abierto" }, { status: 400 });
+    }
+    if (closeDay && localDay > closeDay) {
+      return NextResponse.json({ error: "El plazo de postulaciones ha cerrado" }, { status: 400 });
+    }
+
     const [existing] = await db
       .select()
       .from(applications)
       .where(and(eq(applications.programId, programId), eq(applications.userId, session.userId)))
       .limit(1);
 
-    console.log("[DuplicateCheck] userId:", session.userId, "programId:", programId, "duplicate:", existing?.id ?? "none");
-
     if (existing) {
       return NextResponse.json(
-        { error: "Ya te has postulado a este programa", detail: existing.id },
+        { error: "Ya tienes una postulación para este programa", applicationId: existing.id, status: existing.status },
         { status: 409 }
       );
     }
 
-    const [newApp] = await db
-      .insert(applications)
-      .values({
-        programId,
-        userId: session.userId,
-        status: "draft",
-      })
-      .returning();
+
+    const [owner] = await db.select({ name: users.name, email: users.email }).from(users).where(eq(users.id, session.userId));
+    if (!owner) return NextResponse.json({ error: "Cuenta no encontrada" }, { status: 404 });
+    const identity = splitApplicantName(owner.name);
+
+    const [newApp] = await db.insert(applications).values({
+      programId, userId: session.userId, ...identity, email: owner.email, status: "draft",
+    }).returning();
 
     return NextResponse.json(newApp, { status: 201 });
   } catch (error) {

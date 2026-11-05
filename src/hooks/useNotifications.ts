@@ -1,64 +1,46 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 export type Notification = {
-  id?: string;
+  id: number;
   title: string;
   message: string;
-  type: 'info' | 'success' | 'warning' | 'error';
-  timestamp: string;
-  read?: boolean;
+  type: string;
+  createdAt: string;
+  isRead: boolean;
 };
 
 export function useNotifications() {
   const [notifications, setNotifications] = useState<Notification[]>([]);
-  const [unreadCount, setUnreadCount] = useState(0);
-  const [connected, setConnected] = useState(false);
 
-  useEffect(() => {
-    const eventSource = new EventSource('/api/notifications/stream', {
-      withCredentials: true,
-    });
-
-    eventSource.onopen = () => setConnected(true);
-    
-    eventSource.onerror = () => {
-      setConnected(false);
-      eventSource.close();
-      // Reconnect after 5 seconds
-      setTimeout(() => useNotifications(), 5000);
-    };
-
-    eventSource.onmessage = (event) => {
-      const data = JSON.parse(event.data);
-      
-      if (data.type === 'connected') return;
-
-      const newNotification: Notification = {
-        id: crypto.randomUUID(),
-        ...data,
-        read: false,
-      };
-
-      setNotifications(prev => [newNotification, ...prev]);
-      setUnreadCount(prev => prev + 1);
-    };
-
-    return () => {
-      eventSource.close();
-    };
+  const refresh = useCallback(async () => {
+    try {
+      const response = await fetch('/api/notifications', { cache: 'no-store' });
+      if (response.ok) setNotifications(await response.json());
+    } catch {
+      // Se conserva el último listado y se vuelve a consultar en el próximo ciclo.
+    }
   }, []);
 
-  const markAsRead = (id?: string) => {
-    if (id) {
-      setNotifications(prev => 
-        prev.map(n => n.id === id ? { ...n, read: true } : n)
-      );
-      setUnreadCount(prev => Math.max(0, prev - 1));
-    } else {
-      setNotifications(prev => prev.map(n => ({ ...n, read: true })));
-      setUnreadCount(0);
-    }
-  };
+  useEffect(() => {
+    const timer = window.setInterval(() => void refresh(), 15000);
+    const initialRefresh = window.setTimeout(() => void refresh(), 0);
+    return () => { window.clearInterval(timer); window.clearTimeout(initialRefresh); };
+  }, [refresh]);
 
-  return { notifications, unreadCount, connected, markAsRead };
+  const markAsRead = useCallback(async (id?: number) => {
+    try {
+      const response = await fetch('/api/notifications', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(id === undefined ? {} : { id }),
+      });
+      if (response.ok) {
+        setNotifications(previous => previous.map(item => id === undefined || item.id === id ? { ...item, isRead: true } : item));
+      }
+    } catch {
+      // El estado local no cambia si no se pudo confirmar la lectura.
+    }
+  }, []);
+
+  return { notifications, unreadCount: notifications.filter(item => !item.isRead).length, markAsRead };
 }

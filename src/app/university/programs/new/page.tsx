@@ -329,8 +329,9 @@ export default function NewProgramPage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-semibold text-slate-700 mb-1">
-                  Apertura de programa
+                  Apertura de postulaciones
                 </label>
+                <p className="mb-1 text-xs text-slate-500">Primer día en que los aspirantes pueden comenzar a postularse.</p>
                 <input
                   type="date"
                   className="w-full px-3 py-2 rounded-lg border border-slate-300 focus:border-[#102B46] focus:ring-2 focus:ring-[#102B46]/20 outline-none transition-all"
@@ -399,7 +400,7 @@ export default function NewProgramPage() {
               </div>
               <div>
                 <label className="block text-sm font-semibold text-slate-700 mb-1">
-                  Promedio mínimo (GPA)
+                  Promedio mínimo (GPA, opcional)
                 </label>
                 <input
                   type="number"
