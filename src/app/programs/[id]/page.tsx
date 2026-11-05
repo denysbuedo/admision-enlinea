@@ -94,6 +94,7 @@ export default function ProgramDetailPage() {
   const [program, setProgram] = useState<Program | null>(null);
   const [loading, setLoading] = useState(true);
   const [applying, setApplying] = useState(false);
+  const [existingApplication, setExistingApplication] = useState<{ id: number; status: string } | null>(null);
   const [message, setMessage] = useState("");
 
   useEffect(() => {
@@ -104,6 +105,17 @@ export default function ProgramDetailPage() {
         setLoading(false);
       })
       .catch(() => setLoading(false));
+  }, [params.id]);
+
+  useEffect(() => {
+    fetch('/api/applications')
+      .then(response => response.ok ? response.json() : [])
+      .then((items: Array<{ id: number; programId: number; status: string }>) => {
+        if (!Array.isArray(items)) return;
+        const existing = items.find(item => item.programId === Number(params.id));
+        if (existing) setExistingApplication({ id: existing.id, status: existing.status });
+      })
+      .catch(() => {});
   }, [params.id]);
 
   const handleApply = async () => {
@@ -126,8 +138,11 @@ export default function ProgramDetailPage() {
           router.push(`/login`);
           return;
         }
-        const detail = typeof data === 'object' && data && 'detail' in data ? (data as { detail?: string }).detail : '';
-        setMessage([data.error, detail].filter(Boolean).join(' — ') || "Error al postular");
+        if (res.status === 409 && typeof data.applicationId === 'number') {
+          setExistingApplication({ id: data.applicationId, status: data.status || 'submitted' });
+          return;
+        }
+        setMessage(data.error || "Error al postular");
       } else {
         router.push(`/dashboard/applications/${data.id}`);
       }
@@ -152,9 +167,10 @@ export default function ProgramDetailPage() {
     );
 
   const docs = program.requiredDocuments ? JSON.parse(program.requiredDocuments) : [];
-  const isOpen =
-    program.status === "published" &&
-    (!program.deadlineDate || new Date() <= new Date(program.deadlineDate));
+  const today = new Date().toISOString().slice(0, 10);
+  const openingDay = program.openDate ? new Date(program.openDate).toISOString().slice(0, 10) : null;
+  const closingDay = program.deadlineDate ? new Date(program.deadlineDate).toISOString().slice(0, 10) : null;
+  const isOpen = program.status === "published" && (!openingDay || today >= openingDay) && (!closingDay || today <= closingDay);
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -247,7 +263,7 @@ export default function ProgramDetailPage() {
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {[
-                  { label: "Apertura de programa", date: program.openDate, icon: Calendar },
+                  { label: "Apertura de postulaciones", date: program.openDate, icon: Calendar },
                   { label: "Cierre de postulaciones", date: program.deadlineDate, icon: Clock },
                   { label: "Publicación de resultados", date: program.resultsDate, icon: Award },
                   { label: "Inicio del programa", date: program.startDate, icon: GraduationCap },
@@ -372,7 +388,7 @@ export default function ProgramDetailPage() {
           {/* Columna lateral */}
           <div className="space-y-4">
             {/* Tarjeta de postulación */}
-            <div className="bg-white rounded-xl shadow-sm border-2 border-[#102B46]/20 p-6 sticky top-20">
+            <div className="bg-white rounded-xl shadow-sm border-2 border-[#102B46]/20 p-6">
               {program.totalCost && (
                 <div className="text-center mb-4 pb-4 border-b border-slate-100">
                   <div className="text-3xl font-bold text-slate-800">
@@ -401,7 +417,16 @@ export default function ProgramDetailPage() {
                 </div>
               )}
 
-              {isOpen ? (
+              {existingApplication ? (
+                <div className="space-y-3">
+                  <button disabled className="w-full rounded-lg bg-slate-100 px-4 py-3 font-semibold text-slate-600 cursor-not-allowed">
+                    {existingApplication.status === 'draft' ? 'Ya tienes una solicitud iniciada' : 'Ya te has postulado a este programa'}
+                  </button>
+                  <Link href={`/dashboard/applications/${existingApplication.id}`} className="block text-center text-sm font-semibold text-[#102B46] hover:underline">
+                    {existingApplication.status === 'draft' ? 'Continuar solicitud' : `Ver solicitud #${existingApplication.id}`}
+                  </Link>
+                </div>
+              ) : isOpen ? (
                 <button
                   onClick={handleApply}
                   disabled={applying}
@@ -422,7 +447,7 @@ export default function ProgramDetailPage() {
               ) : (
                 <div className="text-center py-3 bg-slate-100 rounded-lg text-slate-500 font-medium flex items-center justify-center gap-2">
                   <AlertCircle className="w-4 h-4" />
-                  Programa cerrado
+                  {openingDay && today < openingDay ? 'Postulaciones aún no abiertas' : 'Programa cerrado'}
                 </div>
               )}
 

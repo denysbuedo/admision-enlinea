@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
+import CountrySelect from "@/components/CountrySelect";
 import {
   ArrowLeft,
   Save,
@@ -18,7 +19,6 @@ import {
   MapPin,
   Phone,
   Mail,
-  Globe,
   Building2,
   Award,
   Languages,
@@ -102,7 +102,7 @@ export default function ApplicationPage() {
     lastName: "",
     birthDate: "",
     nationality: "",
-    documentType: "CC",
+    documentType: "CI",
     documentNumber: "",
     address: "",
     city: "",
@@ -157,7 +157,7 @@ export default function ApplicationPage() {
           lastName: data.lastName || "",
           birthDate: data.birthDate ? new Date(data.birthDate).toISOString().split("T")[0] : "",
           nationality: data.nationality || "",
-          documentType: data.documentType || "CC",
+          documentType: data.documentType || "CI",
           documentNumber: data.documentNumber || "",
           address: data.address || "",
           city: data.city || "",
@@ -248,6 +248,7 @@ export default function ApplicationPage() {
     );
 
   const isEditable = app.status === "draft";
+  const accountIdentityLocked = true;
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -373,9 +374,11 @@ export default function ApplicationPage() {
                 <input
                   className="w-full px-3 py-2 rounded-lg border border-slate-300 focus:border-[#102B46] focus:ring-2 focus:ring-[#102B46]/20 outline-none transition-all disabled:bg-slate-50 disabled:text-slate-500"
                   value={personal.firstName}
-                  disabled={!isEditable}
+                  disabled={!isEditable || accountIdentityLocked}
                   onChange={(e) => setPersonal({ ...personal, firstName: e.target.value })}
+                  readOnly
                 />
+                <p className="mt-1 text-xs text-slate-500">Corresponde al titular de esta cuenta. Para postular a otra persona, esa persona debe tener su propia cuenta.</p>
               </div>
               <div>
                 <label className="block text-sm font-semibold text-slate-700 mb-1">
@@ -384,13 +387,14 @@ export default function ApplicationPage() {
                 <input
                   className="w-full px-3 py-2 rounded-lg border border-slate-300 focus:border-[#102B46] focus:ring-2 focus:ring-[#102B46]/20 outline-none transition-all disabled:bg-slate-50 disabled:text-slate-500"
                   value={personal.lastName}
-                  disabled={!isEditable}
+                  disabled={!isEditable || accountIdentityLocked}
                   onChange={(e) => setPersonal({ ...personal, lastName: e.target.value })}
+                  readOnly
                 />
               </div>
               <div>
                 <label className="block text-sm font-semibold text-slate-700 mb-1">
-                  Fecha de nacimiento
+                  Fecha de nacimiento (opcional)
                 </label>
                 <div className="relative">
                   <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
@@ -402,20 +406,15 @@ export default function ApplicationPage() {
                     onChange={(e) => setPersonal({ ...personal, birthDate: e.target.value })}
                   />
                 </div>
+                <p className="mt-1 text-xs text-slate-500">Indícala solo si la convocatoria establece un requisito de edad.</p>
               </div>
               <div>
                 <label className="block text-sm font-semibold text-slate-700 mb-1">
-                  Nacionalidad
+                  Nacionalidad (país de ciudadanía)
                 </label>
-                <div className="relative">
-                  <Globe className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-                  <input
-                    className="w-full pl-10 pr-3 py-2 rounded-lg border border-slate-300 focus:border-[#102B46] focus:ring-2 focus:ring-[#102B46]/20 outline-none transition-all disabled:bg-slate-50"
-                    value={personal.nationality}
-                    disabled={!isEditable}
-                    onChange={(e) => setPersonal({ ...personal, nationality: e.target.value })}
-                  />
-                </div>
+                <CountrySelect id="nationality" value={personal.nationality} disabled={!isEditable}
+                  placeholder="Seleccione su nacionalidad"
+                  onChange={nationality => setPersonal({ ...personal, nationality })} />
               </div>
               <div>
                 <label className="block text-sm font-semibold text-slate-700 mb-1">
@@ -427,6 +426,7 @@ export default function ApplicationPage() {
                   disabled={!isEditable}
                   onChange={(e) => setPersonal({ ...personal, documentType: e.target.value })}
                 >
+                  <option value="CI">Carné de Identidad (Cuba)</option>
                   <option value="CC">Cédula de Ciudadanía</option>
                   <option value="CE">Cédula de Extranjería</option>
                   <option value="PASSPORT">Pasaporte</option>
@@ -473,12 +473,8 @@ export default function ApplicationPage() {
                 <label className="block text-sm font-semibold text-slate-700 mb-1">
                   País
                 </label>
-                <input
-                  className="w-full px-3 py-2 rounded-lg border border-slate-300 focus:border-[#102B46] focus:ring-2 focus:ring-[#102B46]/20 outline-none transition-all disabled:bg-slate-50"
-                  value={personal.country}
-                  disabled={!isEditable}
-                  onChange={(e) => setPersonal({ ...personal, country: e.target.value })}
-                />
+                <CountrySelect id="personal-country" value={personal.country} disabled={!isEditable}
+                  onChange={country => setPersonal({ ...personal, country })} />
               </div>
               <div>
                 <label className="block text-sm font-semibold text-slate-700 mb-1">
@@ -550,15 +546,8 @@ export default function ApplicationPage() {
                 <label className="block text-sm font-semibold text-slate-700 mb-1">
                   País
                 </label>
-                <div className="relative">
-                  <Globe className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
-                  <input
-                    className="w-full pl-10 pr-3 py-2 rounded-lg border border-slate-300 focus:border-[#102B46] focus:ring-2 focus:ring-[#102B46]/20 outline-none transition-all disabled:bg-slate-50"
-                    value={academic.country}
-                    disabled={!isEditable}
-                    onChange={(e) => setAcademic({ ...academic, country: e.target.value })}
-                  />
-                </div>
+                <CountrySelect id="academic-country" value={academic.country} disabled={!isEditable}
+                  onChange={country => setAcademic({ ...academic, country })} />
               </div>
               <div>
                 <label className="block text-sm font-semibold text-slate-700 mb-1">
@@ -576,7 +565,7 @@ export default function ApplicationPage() {
               </div>
               <div>
                 <label className="block text-sm font-semibold text-slate-700 mb-1">
-                  Promedio (GPA)
+                  Promedio (GPA, opcional)
                 </label>
                 <div className="relative">
                   <Award className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
@@ -592,8 +581,9 @@ export default function ApplicationPage() {
               </div>
               <div className="md:col-span-2">
                 <label className="block text-sm font-semibold text-slate-700 mb-1">
-                  Otros estudios
+                  Otros estudios de posgrado
                 </label>
+                <p className="mb-1 text-xs text-slate-500">Indica otras maestrías, doctorados, especializaciones o posgrados completados.</p>
                 <textarea
                   className="w-full px-3 py-2 rounded-lg border border-slate-300 focus:border-[#102B46] focus:ring-2 focus:ring-[#102B46]/20 outline-none transition-all resize-none disabled:bg-slate-50"
                   rows={3}
@@ -633,7 +623,7 @@ export default function ApplicationPage() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-semibold text-slate-700 mb-1">
-                      Empresa
+                      Institución
                     </label>
                     <input
                       className="w-full px-3 py-2 rounded-lg border border-slate-300 focus:border-[#102B46] focus:ring-2 focus:ring-[#102B46]/20 outline-none transition-all disabled:bg-slate-50"
@@ -744,21 +734,29 @@ export default function ApplicationPage() {
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-semibold text-slate-700 mb-1">
-                  Idiomas (nivel)
+                  Líneas de investigación previas
                 </label>
-                <div className="relative">
-                  <Languages className="absolute left-3 top-3 w-4 h-4 text-slate-400" />
-                  <textarea
-                    className="w-full pl-10 pr-3 py-2 rounded-lg border border-slate-300 focus:border-[#102B46] focus:ring-2 focus:ring-[#102B46]/20 outline-none transition-all resize-none disabled:bg-slate-50"
-                    rows={2}
-                    placeholder="Ej: Inglés B2, Francés A1..."
-                    value={complementary.languages}
-                    disabled={!isEditable}
-                    onChange={(e) =>
-                      setComplementary({ ...complementary, languages: e.target.value })
-                    }
-                  />
-                </div>
+                <textarea
+                  className="w-full px-3 py-2 rounded-lg border border-slate-300 focus:border-[#102B46] focus:ring-2 focus:ring-[#102B46]/20 outline-none transition-all resize-none disabled:bg-slate-50"
+                  rows={3}
+                  placeholder="Describe tus temas o líneas de investigación anteriores."
+                  value={complementary.research}
+                  disabled={!isEditable}
+                  onChange={(e) => setComplementary({ ...complementary, research: e.target.value })}
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-semibold text-slate-700 mb-1">
+                  Publicaciones científicas
+                </label>
+                <textarea
+                  className="w-full px-3 py-2 rounded-lg border border-slate-300 focus:border-[#102B46] focus:ring-2 focus:ring-[#102B46]/20 outline-none transition-all resize-none disabled:bg-slate-50"
+                  rows={3}
+                  placeholder="Título, revista o evento, año y enlace (si existe)."
+                  value={complementary.publications}
+                  disabled={!isEditable}
+                  onChange={(e) => setComplementary({ ...complementary, publications: e.target.value })}
+                />
               </div>
               <div>
                 <label className="block text-sm font-semibold text-slate-700 mb-1">
@@ -771,39 +769,27 @@ export default function ApplicationPage() {
                     rows={2}
                     value={complementary.certifications}
                     disabled={!isEditable}
-                    onChange={(e) =>
-                      setComplementary({ ...complementary, certifications: e.target.value })
-                    }
+                    onChange={(e) => setComplementary({ ...complementary, certifications: e.target.value })}
                   />
                 </div>
               </div>
               <div>
                 <label className="block text-sm font-semibold text-slate-700 mb-1">
-                  Publicaciones
+                  Idiomas y nivel
                 </label>
-                <textarea
-                  className="w-full px-3 py-2 rounded-lg border border-slate-300 focus:border-[#102B46] focus:ring-2 focus:ring-[#102B46]/20 outline-none transition-all resize-none disabled:bg-slate-50"
-                  rows={3}
-                  value={complementary.publications}
-                  disabled={!isEditable}
-                  onChange={(e) =>
-                    setComplementary({ ...complementary, publications: e.target.value })
-                  }
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-semibold text-slate-700 mb-1">
-                  Líneas de investigación previa
-                </label>
-                <textarea
-                  className="w-full px-3 py-2 rounded-lg border border-slate-300 focus:border-[#102B46] focus:ring-2 focus:ring-[#102B46]/20 outline-none transition-all resize-none disabled:bg-slate-50"
-                  rows={3}
-                  value={complementary.research}
-                  disabled={!isEditable}
-                  onChange={(e) =>
-                    setComplementary({ ...complementary, research: e.target.value })
-                  }
-                />
+                <div className="relative">
+                  <Languages className="absolute left-3 top-3 w-4 h-4 text-slate-400" />
+                  <textarea
+                    className="w-full pl-10 pr-3 py-2 rounded-lg border border-slate-300 focus:border-[#102B46] focus:ring-2 focus:ring-[#102B46]/20 outline-none transition-all resize-none disabled:bg-slate-50"
+                    rows={2}
+                    placeholder="Ej.: inglés B2 (intermedio alto), francés A1 (inicial)."
+                    value={complementary.languages}
+                    disabled={!isEditable}
+                    onChange={(e) =>
+                      setComplementary({ ...complementary, languages: e.target.value })
+                    }
+                  />
+                </div>
               </div>
             </div>
           </div>

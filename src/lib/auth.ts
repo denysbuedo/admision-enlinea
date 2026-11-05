@@ -15,6 +15,7 @@ export interface CustomSession {
   user: {
     id: string;
     email: string;
+    name?: string;
     role: "super_admin" | "university" | "aspirant";
     universityId: number | null;
   };
@@ -104,9 +105,10 @@ export async function getSession(): Promise<CustomSession | null> {
     if (!token) return null;
     const decoded = await verifyToken(token);
     if (!decoded) return null;
+    const [account] = await db.select({ name: users.name }).from(users).where(eq(users.id, decoded.userId));
     return {
       userId: decoded.userId, role: decoded.role, universityId: decoded.universityId, email: decoded.email,
-      user: { id: String(decoded.userId), email: decoded.email, role: decoded.role, universityId: decoded.universityId },
+      user: { id: String(decoded.userId), email: decoded.email, name: account?.name || '', role: decoded.role, universityId: decoded.universityId },
     };
   } catch {
     return null;
