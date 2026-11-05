@@ -1,6 +1,15 @@
 # Deploy - CONVOCA
 
 
+## Ajuste de scroll de login — 5 de noviembre de 2026
+
+- Desplegado en `main` `f9fb506742e9e184bc4f2ca9551b753f386195b3` en `/opt/admision-enlinea` (`vm-nexo`, servicio `admision-enlinea`).
+- La cabecera pública permanece dentro del flujo y mide 72 px en escritorio/64 px en móvil. El contenedor del login ahora usa el viewport disponible descontando la cabecera.
+- Chrome headless antes: 1440×900 → documento 972 px; 390×844 → 908 px. Después: documento 900 y 844 px respectivamente; sin overflow vertical.
+- Build y typecheck Linux correctos. Respaldo previo: `/opt/convoca-backups/login-scroll-20261105`, con snapshot SQLite, código/configuración y build anterior. La BD viva no se sustituyó ni migró; snapshot y producción tienen integridad y contenido lógico coincidente. Dueño/modo `nexouser:nexouser`, `660`.
+- Verificación posterior: `/login` y `/api/programs` HTTP 200; servicio activo.
+
+
 ## Última actualización desplegada — 5 de noviembre de 2026
 
 - Release `6664d6ea3dfe3ef198a0f0818c62de25b1dbc701` (`main`), desplegado en `vm-nexo` (`10.46.6.74`), aplicación `/opt/admision-enlinea`, servicio `admision-enlinea`.
