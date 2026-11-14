@@ -5,8 +5,11 @@ import { eq } from "drizzle-orm";
 import { verifyPassword, signToken } from "@/lib/auth";
 import { loginSchema } from "@/lib/validations";
 import { readBoundedJson } from "@/lib/bounded-json";
+import { rejectCrossOriginMutation } from '@/lib/same-origin';
 
 export async function POST(request: NextRequest) {
+  const originRejection = rejectCrossOriginMutation(request);
+  if (originRejection) return originRejection;
   try {
     if (!request.headers.get('content-type')?.toLowerCase().startsWith('application/json')) {
       return NextResponse.json({ error: 'Se requiere una solicitud JSON' }, { status: 415 });

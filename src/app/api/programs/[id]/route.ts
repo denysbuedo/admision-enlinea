@@ -3,6 +3,7 @@ import { db } from "@/db";
 import { programs, universities, applications } from "@/db/schema";
 import { eq, and, notExists } from "drizzle-orm";
 import { getSession } from "@/lib/auth";
+import { rejectCrossOriginMutation } from '@/lib/same-origin';
 
 export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
@@ -66,6 +67,8 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
 }
 
 export async function PATCH(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  const originRejection = rejectCrossOriginMutation(request);
+  if (originRejection) return originRejection;
   try {
     const session = await getSession();
     if (!session) {
@@ -132,6 +135,8 @@ export async function PATCH(request: NextRequest, { params }: { params: Promise<
 }
 
 export async function DELETE(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  const originRejection = rejectCrossOriginMutation(request);
+  if (originRejection) return originRejection;
   try {
     const session = await getSession();
     if (!session || session.role !== "super_admin") {

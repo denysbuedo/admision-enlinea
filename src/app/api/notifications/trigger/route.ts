@@ -1,8 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { notificationStore } from '@/lib/notification-store';
 import { getSession } from '@/lib/auth';
+import { rejectCrossOriginMutation } from '@/lib/same-origin';
 
 export async function POST(request: NextRequest) {
+  const originRejection = rejectCrossOriginMutation(request);
+  if (originRejection) return originRejection;
   try {
     const session = await getSession();
     if (!session) return NextResponse.json({ error: 'No autorizado' }, { status: 401 });

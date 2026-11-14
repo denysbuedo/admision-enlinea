@@ -4,6 +4,7 @@ import { applications, programs, users } from "@/db/schema";
 import { eq, desc, and, ne } from "drizzle-orm";
 import { getSession } from "@/lib/auth";
 import { splitApplicantName } from "@/lib/applicant-profile";
+import { rejectCrossOriginMutation } from '@/lib/same-origin';
 
 export async function GET(request: NextRequest) {
   try {
@@ -79,6 +80,8 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: NextRequest) {
+  const originRejection = rejectCrossOriginMutation(request);
+  if (originRejection) return originRejection;
   try {
     const session = await getSession();
     if (!session) {
