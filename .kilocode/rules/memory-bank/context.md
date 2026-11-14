@@ -1,5 +1,10 @@
 # Active Context: Nexo – Academic Admissions Cloud
 
+### SEG-006 — proxy comprobado y límites de login diseñados (2026-11-14)
+- Operador aplicó el backend convoca_backend y confirmó reload exitoso. Dos GET anónimos controlados en la VM verifican una sola XFF/X-Real-IP válida e idéntica, sustitución de valores falsos, identidad estable y origen TCP del HAProxy esperado. Sin guardar paquetes, IP, cookies o credenciales; ambos GET devolvieron 401.
+- La VM escucha 0.0.0.0:3000; UFW inactivo, iptables ACCEPT sin reglas y nftables vacío. Falta confirmar restricción en la nube/red antes de confiar en cabeceras para cuotas. No se modificaron firewall ni servicio. La lista negra compartida permanece pendiente de revisión.
+- Diseño en docs/LOGIN-RATE-LIMIT-PLAN.md: cuotas propuestas por IP/correo e IP compartida, persistencia atómica, claves HMAC, 429/Retry-After y ensayo de migración. No hay limitador implementado ni activado; siguiente paso depende de acreditar/restringir el acceso directo a TCP 3000.
+
 ### SEG-006 — guard de origen de mutaciones desplegado (2026-11-13)
 - Añadido `src/lib/same-origin.ts`: rechaza `Sec-Fetch-Site: cross-site`, `Origin: null`, valores mal formados y orígenes distintos al dominio canónico en producción. Solicitudes sin `Origin` siguen admitidas para compatibilidad no-browser.
 - Aplicado a todos los handlers API mutables existentes: auth, administración, notificaciones, programas y postulaciones. `/api/admin/seed` permanece inerte y responde 410.
