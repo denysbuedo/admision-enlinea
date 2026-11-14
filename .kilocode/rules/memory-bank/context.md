@@ -2,11 +2,10 @@
 
 ### SEG-006 — endurecimiento inicial de login/registro (2026-11-13)
 
-- Ramas estaban limpias y sincronizadas al inicio: `main`/`origin/main` `468d1f2`, `dev`/`origin/dev` `f4d3547`; referencia de producción conocida `f9fb506`. El cambio está comprometido en `dev` como `a78cc7a`; falta publicar el commit a origin y validar Linux. Sin despliegue.
+- Ramas estaban limpias y sincronizadas al inicio: `main`/`origin/main` `468d1f2`, `dev`/`origin/dev` `f4d3547`; referencia de producción conocida `f9fb506`. Código comprometido en `dev` como `a78cc7a`, publicado junto a docs `08753d0`. Linux typecheck/lint/build y cinco pruebas nuevas específicas pasan. Sin despliegue.
 - Añadido lector JSON acotado por bytes (8 KiB login, 16 KiB registro), comprobación real del stream independiente de Content-Length, requisito de application/json y validación Zod del login. Ver `docs/STABILITY-08.md`.
-- Pendiente validar e integrar. Rate limiting/IP confiable, CSRF/origen global y límites TLS/proxy quedan abiertos hasta revisar configuración real; no confiar en X-Forwarded-For sin validar proxy. No se tocó producción.
-- Validación local: typecheck, lint focalizado, build y diff check pasan. El build omite typecheck por `ignoreBuildErrors`; se ejecutó el typecheck directo. No se ejecutaron pruebas automatizadas ni validación Linux.
-- Pasos: publicar `dev`, completar rate limiting/origen/proxy con configuración verificada y pruebas sintéticas aisladas; luego seguir `docs/RELEASE-WORKFLOW.md` antes de mergear/desplegar.
+- La suite completa arroja 54 aprobadas, 4 fallidas y 6 archivos sin cargar. Al ejecutarla desde `origin/main` en el mismo Linux reprodujo exactamente los mismos fallos (mocks Zod y expectativas obsoletas). El flujo del proyecto bloquea merge/publicación mientras no se corrija esa base.
+- Pendiente subir tests/evidencia a `dev`, resolver fallos base, después revisar rate limiting/origen/proxy con configuración verificada. No confiar en X-Forwarded-For sin validar proxy. No tocar producción.
 
 ### Administrative CRUD and authenticated navigation — iteration 09
 
