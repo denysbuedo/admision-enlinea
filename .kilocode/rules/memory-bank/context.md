@@ -7,7 +7,8 @@
 - Suite Linux Node 22: 175/175 pruebas y 11/11 archivos pasan; typecheck, lint focalizado y build Bun 1.3.14 pasan. Vitest falla al cargar Zod cuando se invoca bajo Bun 1.3.14; fijar el ejecutor/runtime permanece en CAL-001.
 - Se añadieron cinco tests del lector, se actualizaron requests de pruebas para `Content-Type` y transiciones reales; fixture con SQLite temporal en disco.
 - Verificación pública: login y programas 200; límites de login/registro devuelven 413; entradas inválidas 400; esquema SQLite intacto, servicio activo sin reinicios.
-- Próximo: revisar configuración HAProxy/TLS y determinar rate limiting/origen sin confiar en X-Forwarded-For hasta validar el proxy. SEG-006 continúa abierto; no bloquear redes institucionales compartidas.
+- HAProxy revisión de solo lectura: 2.9.10 activo; frontend `option forwardfor`, pero `nexo_backend` no quita XFF entrante ni establece IP fuente explícita; otros backends sí lo hacen. No se hallaron reglas de rate limiting. Rutas de mutación no validan Origin/Sec-Fetch-Site. No se alteró ni recargó HAProxy.
+- Próximo: con acceso operativo adecuado, respaldar y sanear XFF en `nexo_backend`, validar config/reload y smoke; después añadir origen/CSRF y diseñar límites que no bloqueen redes institucionales compartidas. SEG-006 continúa abierto.
 
 ### Administrative CRUD and authenticated navigation — iteration 09
 
