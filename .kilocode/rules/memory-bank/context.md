@@ -1,5 +1,9 @@
 # Active Context: Nexo – Academic Admissions Cloud
 
+### Prioridad indicada por el propietario — funcionalidad de la aplicación (2026-11-14)
+- El propietario pospone los próximos cambios de seguridad de infraestructura/limitador y solicita volver a los temas funcionales. Mantener SEG-006 y la restricción de TCP 3000 documentados como pendientes, sin ejecutarlos por esta revisión.
+- Prioridad propuesta: revisar el recorrido de postulación (validación completa al enviar, conservación de borradores, fechas y duplicados/concurrencia), después evaluación/entrevistas, notificaciones y alcance de documentos. No presentar como faltantes los ajustes de formulario, campana por sondeo y estados finales ya desplegados en noviembre.
+
 ### SEG-006 — proxy comprobado y límites de login diseñados (2026-11-14)
 - Operador aplicó el backend convoca_backend y confirmó reload exitoso. Dos GET anónimos controlados en la VM verifican una sola XFF/X-Real-IP válida e idéntica, sustitución de valores falsos, identidad estable y origen TCP del HAProxy esperado. Sin guardar paquetes, IP, cookies o credenciales; ambos GET devolvieron 401.
 - La VM escucha 0.0.0.0:3000; UFW inactivo, iptables ACCEPT sin reglas y nftables vacío. Falta confirmar restricción en la nube/red antes de confiar en cabeceras para cuotas. No se modificaron firewall ni servicio. La lista negra compartida permanece pendiente de revisión.
