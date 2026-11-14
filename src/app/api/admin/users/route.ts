@@ -5,6 +5,7 @@ import { getSession } from '@/lib/auth';
 import { desc, eq, and } from 'drizzle-orm';
 import { z } from 'zod';
 import { randomUUID } from 'node:crypto';
+import { rejectCrossOriginMutation } from '@/lib/same-origin';
 
 export async function GET() {
   try {
@@ -48,6 +49,8 @@ class ReviewError extends Error {
 }
 
 export async function PATCH(request: Request) {
+  const originRejection = rejectCrossOriginMutation(request);
+  if (originRejection) return originRejection;
   try {
     const session = await getSession();
     if (!session) return NextResponse.json({ error: 'No autorizado' }, { status: 401 });

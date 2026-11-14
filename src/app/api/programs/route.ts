@@ -3,6 +3,7 @@ import { db } from "@/db";
 import { programs, universities } from "@/db/schema";
 import { eq, desc, sql } from "drizzle-orm";
 import { getSession } from "@/lib/auth";
+import { rejectCrossOriginMutation } from '@/lib/same-origin';
 
 export async function GET(request: NextRequest) {
   try {
@@ -72,6 +73,8 @@ function toDate(val: unknown): Date | null {
 }
 
 export async function POST(request: NextRequest) {
+  const originRejection = rejectCrossOriginMutation(request);
+  if (originRejection) return originRejection;
   try {
     const session = await getSession();
 

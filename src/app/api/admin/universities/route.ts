@@ -5,6 +5,7 @@ import { getSession } from '@/lib/auth';
 import { desc } from 'drizzle-orm';
 import { universityEdit } from '@/lib/admin-management';
 import { manage } from '@/lib/admin-management-route';
+import { rejectCrossOriginMutation } from '@/lib/same-origin';
 
 export async function GET() {
   try {
@@ -26,6 +27,8 @@ export async function GET() {
 }
 
 export async function POST(req: NextRequest) {
+  const originRejection = rejectCrossOriginMutation(req);
+  if (originRejection) return originRejection;
   try {
     const session = await getSession();
     if (!session || session.user.role !== 'super_admin') {
@@ -61,6 +64,8 @@ export async function POST(req: NextRequest) {
 }
 
 export async function PATCH(req: NextRequest) {
+  const originRejection = rejectCrossOriginMutation(req);
+  if (originRejection) return originRejection;
   const body = await req.json().catch(() => null);
   const id = body?.id;
   if (!Number.isSafeInteger(id) || id <= 0) return NextResponse.json({ error: 'ID inválido' }, { status: 400 });

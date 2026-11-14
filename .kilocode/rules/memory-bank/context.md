@@ -1,5 +1,11 @@
 # Active Context: Nexo – Academic Admissions Cloud
 
+### SEG-006 — guard de origen de mutaciones preparado (2026-11-13)
+- Añadido `src/lib/same-origin.ts`: rechaza `Sec-Fetch-Site: cross-site`, `Origin: null`, valores mal formados y orígenes distintos al dominio canónico en producción. Solicitudes sin `Origin` siguen admitidas para compatibilidad no-browser.
+- Aplicado a todos los handlers API mutables existentes: auth, administración, notificaciones, programas y postulaciones. `/api/admin/seed` permanece inerte y responde 410.
+- Seis pruebas del helper pasan; suite local Node 22: 181/181 y typecheck pasan. Lint global todavía reporta dos errores preexistentes en `programs/page.tsx` y `useAuth.ts`; pendiente correr lint focalizado y validación Linux/Bun.
+- Este cambio está sin commit ni despliegue en `dev`; no presentarlo como producción. Continúan pendientes el saneamiento XFF y el rate limiting de HAProxy.
+
 ### SEG-006 — endurecimiento inicial de login/registro (2026-11-13)
 
 - Desplegado desde `main` `ca1814a509286fb3d0a7e6f2b79ec94f73517dad`; dev sincronizada tras el merge. Producción ejecuta Bun 1.3.14 y el build aislado con esa versión pasó. Respaldo `/opt/convoca-backups/auth-body-20261113-ca1814a`, snapshot/restauración SQLite verificados, sin tocar BD viva ni migraciones.

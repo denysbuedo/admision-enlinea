@@ -1,8 +1,11 @@
 import { NextResponse } from 'next/server';
 import { getSession } from '@/lib/auth';
 import { ManagementError, userEdit, universityEdit, editUser, deleteUser, editUniversity, deleteUniversity } from './admin-management';
+import { rejectCrossOriginMutation } from './same-origin';
 
 export async function manage(request: Request, params: Promise<{ id: string }>, kind: 'users' | 'universities', method: 'PATCH' | 'DELETE') {
+  const originRejection = rejectCrossOriginMutation(request);
+  if (originRejection) return originRejection;
   try {
     const session = await getSession();
     if (!session) return NextResponse.json({ error: 'No autorizado' }, { status: 401 });

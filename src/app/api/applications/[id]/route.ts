@@ -5,6 +5,7 @@ import { and, eq } from "drizzle-orm";
 import { getSession, type CustomSession } from "@/lib/auth";
 import { splitApplicantName } from "@/lib/applicant-profile";
 import { APPLICATION_STATUS_TRANSITIONS } from "@/lib/application-status";
+import { rejectCrossOriginMutation } from '@/lib/same-origin';
 
 async function canAccessApplication(session: CustomSession, application: typeof applications.$inferSelect) {
   if (session.role === "super_admin") return true;
@@ -60,6 +61,8 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
 }
 
 export async function PATCH(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
+  const originRejection = rejectCrossOriginMutation(request);
+  if (originRejection) return originRejection;
   try {
     const session = await getSession();
     if (!session) {
