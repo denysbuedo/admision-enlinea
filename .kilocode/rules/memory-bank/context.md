@@ -3,8 +3,8 @@
 ### SEG-006 — guard de origen de mutaciones preparado (2026-11-13)
 - Añadido `src/lib/same-origin.ts`: rechaza `Sec-Fetch-Site: cross-site`, `Origin: null`, valores mal formados y orígenes distintos al dominio canónico en producción. Solicitudes sin `Origin` siguen admitidas para compatibilidad no-browser.
 - Aplicado a todos los handlers API mutables existentes: auth, administración, notificaciones, programas y postulaciones. `/api/admin/seed` permanece inerte y responde 410.
-- Seis pruebas del helper pasan; suite local Node 22: 181/181 y typecheck pasan. Lint global todavía reporta dos errores preexistentes en `programs/page.tsx` y `useAuth.ts`; pendiente correr lint focalizado y validación Linux/Bun.
-- Este cambio está sin commit ni despliegue en `dev`; no presentarlo como producción. Continúan pendientes el saneamiento XFF y el rate limiting de HAProxy.
+- Seis pruebas del helper pasan; suite local Node 22: 181/181. En Linux aislado, Bun 1.3.14 con instalación congelada, typecheck, lint focalizado, build y suite Node 20 (181/181) pasan. Lint global todavía reporta dos errores preexistentes en `programs/page.tsx` y `useAuth.ts`.
+- Commit `393bd73` está publicado en `dev`, validado y pendiente de merge/despliegue; no presentarlo aún como producción. Continúan pendientes el saneamiento XFF y el rate limiting de HAProxy.
 
 ### SEG-006 — endurecimiento inicial de login/registro (2026-11-13)
 
