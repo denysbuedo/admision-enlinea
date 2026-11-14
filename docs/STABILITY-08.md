@@ -1,6 +1,6 @@
 # Estabilización 08 — Límite de solicitudes de autenticación
 
-Fecha: 2026-11-13. SEG-006, primer alcance. Desarrollo en `dev`; no desplegado.
+Fecha: 2026-11-13. SEG-006, primer alcance. Desarrollo en `dev`, integración y despliegue desde `main` `ca1814a509286fb3d0a7e6f2b79ec94f73517dad`.
 
 ## Cambio preparado
 
@@ -11,17 +11,18 @@ Fecha: 2026-11-13. SEG-006, primer alcance. Desarrollo en `dev`; no desplegado.
 
 ## Validación
 
-- Linux aislado desde `dev`: `bun install --frozen-lockfile`, typecheck, lint focalizado y build pasaron. Next informa que omite typecheck durante build; se ejecutó de forma independiente.
+- Linux aislado: `bun install --frozen-lockfile`, typecheck y lint focalizado pasaron; Next informa que omite typecheck en build, por lo que se ejecutó aparte.
 - Se añadieron cinco pruebas del lector: límite exacto, exceso sin `Content-Length`, longitud declarada excesiva, bytes UTF-8 y JSON mal formado. Las cinco pasan en Linux.
-- Suite Linux con Node 22: 11 archivos y 175 pruebas aprobadas. Se actualizaron pruebas para declarar el `Content-Type` real y para respetar transiciones válidas; la prueba de permisos usa SQLite temporal en disco porque las transacciones no se conservan entre conexiones `file::memory:`.
-- Ejecutar Vitest directamente mediante Bun 1.4.4 da errores de carga Zod que no aparecen con Node 22. El build sí pasa en Bun. El proyecto aún debe fijar explícitamente runtime/ejecutor en CAL-001.
-- El artefacto validado no incluye datos ni secretos y no ha sido desplegado; no hay cambios en producción.
+- Suite Linux con Node 22: 11 archivos y 175 pruebas aprobadas. Se actualizaron pruebas para declarar `Content-Type` y respetar las transiciones vigentes; el test de transacción usa SQLite temporal en disco.
+- El servidor usa Bun 1.3.14. El build del candidato pasó en un worktree aislado de la VM con esa versión y dependencias congeladas. Vitest ejecutado con Bun 1.3.14 falla al importar Zod; por ello las pruebas de release se ejecutaron con Node 22. Fijar runtime y ejecutor continúa en CAL-001.
+- Desplegado el 13/11/2026. El backup `/opt/convoca-backups/auth-body-20261113-ca1814a` contiene snapshot SQLite, código/configuración y build previo. La copia de BD y el ensayo de restauración pasaron `integrity_check`; el esquema y conteos del snapshot/restauración coincidieron. Backup protegido con directorio 700 y archivos 600.
+- Verificación tras activar: servicio activo, cero reinicios adicionales; `/login` y `/api/programs` públicos 200; login/registro con cuerpo excesivo 413 y payload inválido 400. SQLite conservó integridad, esquema, dueño `nexouser` y modo `660`. Sin migraciones ni modificación de cuentas/datos de producción.
 
 ## Pendiente dentro de SEG-006
 
 - No hay rate limiter en la aplicación. Un limitador local en memoria no coordina procesos ni reinicios, y confiar sin comprobación en `X-Forwarded-For` permite suplantar IP. Antes de fijar cuotas hay que inspeccionar la configuración efectiva del proxy y elegir una identidad/almacén que funcione para redes institucionales compartidas.
 - `auth_token` usa `HttpOnly`, `SameSite=Lax` y `Secure` en producción. La protección de origen para todas las mutaciones autenticadas y la configuración TLS/proxy no quedan demostradas por esta revisión del código; requieren inventario operativo y una política compatible con clientes legítimos.
-- No se ha ejecutado prueba de seguridad ni se ha publicado este cambio. Una vez resueltos los fallos base, seguir backup/restauración y publicación descritos en [RELEASE-WORKFLOW](RELEASE-WORKFLOW.md).
+- Esta entrega solo cubre límites de cuerpo y validación inicial. No implementa rate limiting ni verificación global de origen/CSRF. Antes de esas defensas, inspeccionar HAProxy y elegir una política de identidad que no bloquee redes institucionales compartidas.
 
 ## Reversión
 
