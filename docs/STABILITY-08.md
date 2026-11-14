@@ -20,9 +20,10 @@ Fecha: 2026-11-13. SEG-006, primer alcance. Desarrollo en `dev`, integración y 
 
 ## Pendiente dentro de SEG-006
 
-- No hay rate limiter en la aplicación. Un limitador local en memoria no coordina procesos ni reinicios, y confiar sin comprobación en `X-Forwarded-For` permite suplantar IP. Antes de fijar cuotas hay que inspeccionar la configuración efectiva del proxy y elegir una identidad/almacén que funcione para redes institucionales compartidas.
-- `auth_token` usa `HttpOnly`, `SameSite=Lax` y `Secure` en producción. La protección de origen para todas las mutaciones autenticadas y la configuración TLS/proxy no quedan demostradas por esta revisión del código; requieren inventario operativo y una política compatible con clientes legítimos.
-- Esta entrega solo cubre límites de cuerpo y validación inicial. No implementa rate limiting ni verificación global de origen/CSRF. Antes de esas defensas, inspeccionar HAProxy y elegir una política de identidad que no bloquee redes institucionales compartidas.
+- Revisión de solo lectura de HAProxy (13/11/2026): versión 2.9.10, servicio activo en `proxyinversoapp`. El frontend global usa `option forwardfor`; `nexo_backend` apunta a `10.46.6.74:3000`, pero no contiene reglas visibles para eliminar un `X-Forwarded-For` recibido ni establecer `X-Real-IP`. Otros backends sí eliminan el XFF entrante y establecen la IP fuente. No se hallaron reglas HAProxy de rate limiting. Tratar XFF como no confiable hasta corregir y verificar el backend CONVOCA.
+- Las mutaciones de las rutas API aún no validan `Origin` ni `Sec-Fetch-Site`. La cookie `auth_token` usa `HttpOnly`, `SameSite=Lax` y `Secure` en producción. Añadir verificación de origen con el dominio canónico y pruebas que cubran las mutaciones, manteniendo los clientes legítimos.
+- No se modificó ni recargó HAProxy en esta entrega. Antes de usar IP para límites, hacer un cambio acotado en `nexo_backend`: eliminar XFF entrante y propagar una IP fuente confiable; respaldar configuración, validar con `haproxy -c`, recargar y comprobar rutas. Después decidir el limitador considerando un único proceso/reinicios y redes institucionales compartidas.
+- Esta entrega solo cubre límites de cuerpo y validación inicial. Rate limiting, origen/CSRF y el ajuste del proxy siguen pendientes.
 
 ## Reversión
 
