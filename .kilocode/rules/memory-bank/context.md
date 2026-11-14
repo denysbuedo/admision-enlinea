@@ -4,8 +4,9 @@
 
 - Ramas estaban limpias y sincronizadas al inicio: `main`/`origin/main` `468d1f2`, `dev`/`origin/dev` `f4d3547`; referencia de producción conocida `f9fb506`. Código comprometido en `dev` como `a78cc7a`, publicado junto a docs `08753d0`. Linux typecheck/lint/build y cinco pruebas nuevas específicas pasan. Sin despliegue.
 - Añadido lector JSON acotado por bytes (8 KiB login, 16 KiB registro), comprobación real del stream independiente de Content-Length, requisito de application/json y validación Zod del login. Ver `docs/STABILITY-08.md`.
-- La suite completa arroja 54 aprobadas, 4 fallidas y 6 archivos sin cargar. Al ejecutarla desde `origin/main` en el mismo Linux reprodujo exactamente los mismos fallos (mocks Zod y expectativas obsoletas). El flujo del proyecto bloquea merge/publicación mientras no se corrija esa base.
-- Pendiente subir tests/evidencia a `dev`, resolver fallos base, después revisar rate limiting/origen/proxy con configuración verificada. No confiar en X-Forwarded-For sin validar proxy. No tocar producción.
+- Suite Linux Node 22: 175/175 pruebas y 11/11 archivos pasan; typecheck, lint focalizado y build también pasan (build con Bun). En Bun 1.4.4 Vitest carga Zod incorrectamente; fijar el ejecutor/runtime es pendiente CAL-001.
+- Se añadieron cinco tests del lector, se actualizaron requests de pruebas para `Content-Type` y transiciones reales; fixture con SQLite temporal en disco.
+- Próximo: integrar esta entrega pequeña mediante flujo `docs/RELEASE-WORKFLOW.md` (candidato main, backup/restauración y despliegue) si todo pasa; SEG-006 permanece abierto por rate limiting, CSRF/origen y auditoría proxy/TLS. No confiar en X-Forwarded-For sin validar proxy.
 
 ### Administrative CRUD and authenticated navigation — iteration 09
 

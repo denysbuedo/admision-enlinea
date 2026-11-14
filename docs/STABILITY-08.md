@@ -13,8 +13,9 @@ Fecha: 2026-11-13. SEG-006, primer alcance. Desarrollo en `dev`; no desplegado.
 
 - Linux aislado desde `dev`: `bun install --frozen-lockfile`, typecheck, lint focalizado y build pasaron. Next informa que omite typecheck durante build; se ejecutó de forma independiente.
 - Se añadieron cinco pruebas del lector: límite exacto, exceso sin `Content-Length`, longitud declarada excesiva, bytes UTF-8 y JSON mal formado. Las cinco pasan en Linux.
-- La suite completa reporta 54 pruebas aprobadas, cuatro fallidas y seis archivos que no cargan. Se repitió contra `origin/main` en el mismo entorno y obtuvo los mismos fallos: mocks Zod y expectativas antiguas de transiciones. Ninguno corresponde a este cambio, pero el flujo de release bloquea integración/publicación mientras la suite general falle.
-- No hay cambios en producción. Tests y esta evidencia están pendientes de commit.
+- Suite Linux con Node 22: 11 archivos y 175 pruebas aprobadas. Se actualizaron pruebas para declarar el `Content-Type` real y para respetar transiciones válidas; la prueba de permisos usa SQLite temporal en disco porque las transacciones no se conservan entre conexiones `file::memory:`.
+- Ejecutar Vitest directamente mediante Bun 1.4.4 da errores de carga Zod que no aparecen con Node 22. El build sí pasa en Bun. El proyecto aún debe fijar explícitamente runtime/ejecutor en CAL-001.
+- El artefacto validado no incluye datos ni secretos y no ha sido desplegado; no hay cambios en producción.
 
 ## Pendiente dentro de SEG-006
 
