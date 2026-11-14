@@ -2,10 +2,11 @@
 
 ### SEG-006 — endurecimiento inicial de login/registro (2026-11-13)
 
-- Ramas estaban limpias y sincronizadas: `main`/`origin/main` `468d1f2`, `dev`/`origin/dev` `f4d3547`; referencia de producción conocida `f9fb506`. Trabajo actual en `dev`, todavía sin commit ni despliegue.
+- Ramas estaban limpias y sincronizadas al inicio: `main`/`origin/main` `468d1f2`, `dev`/`origin/dev` `f4d3547`; referencia de producción conocida `f9fb506`. El cambio está comprometido en `dev` como `a78cc7a`; falta publicar el commit a origin y validar Linux. Sin despliegue.
 - Añadido lector JSON acotado por bytes (8 KiB login, 16 KiB registro), comprobación real del stream independiente de Content-Length, requisito de application/json y validación Zod del login. Ver `docs/STABILITY-08.md`.
 - Pendiente validar e integrar. Rate limiting/IP confiable, CSRF/origen global y límites TLS/proxy quedan abiertos hasta revisar configuración real; no confiar en X-Forwarded-For sin validar proxy. No se tocó producción.
-- Pasos: typecheck, lint focalizado, build; resolver fallos en `dev`, actualizar evidencia y después seguir `docs/RELEASE-WORKFLOW.md` antes de desplegar.
+- Validación local: typecheck, lint focalizado, build y diff check pasan. El build omite typecheck por `ignoreBuildErrors`; se ejecutó el typecheck directo. No se ejecutaron pruebas automatizadas ni validación Linux.
+- Pasos: publicar `dev`, completar rate limiting/origen/proxy con configuración verificada y pruebas sintéticas aisladas; luego seguir `docs/RELEASE-WORKFLOW.md` antes de mergear/desplegar.
 
 ### Administrative CRUD and authenticated navigation — iteration 09
 
