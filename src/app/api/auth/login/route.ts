@@ -3,15 +3,19 @@ import { db } from "@/db";
 import { users, universities } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { verifyPassword, signToken } from "@/lib/auth";
+import { loginSchema } from "@/lib/validations";
+import { readBoundedJson } from "@/lib/bounded-json";
 
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
-    const { email, password } = body;
-
-    if (!email || !password) {
-      return NextResponse.json({ error: "Email y contraseña son requeridos" }, { status: 400 });
+    if (!request.headers.get('content-type')?.toLowerCase().startsWith('application/json')) {
+      return NextResponse.json({ error: 'Se requiere una solicitud JSON' }, { status: 415 });
     }
+    const parsedBody = await readBoundedJson(request, 8 * 1024);
+    if (!parsedBody.ok) return NextResponse.json({ error: parsedBody.error }, { status: parsedBody.status });
+    const validation = loginSchema.safeParse(parsedBody.value);
+    if (!validation.success) return NextResponse.json({ error: 'Email o contraseña inválidos' }, { status: 400 });
+    const { email, password } = validation.data;
 
     const [user] = await db.select().from(users).where(eq(users.email, email));
 

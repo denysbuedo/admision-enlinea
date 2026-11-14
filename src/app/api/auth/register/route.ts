@@ -4,10 +4,16 @@ import { users, universities } from '@/db/schema';
 import { userRegisterSchema } from '@/lib/validations';
 import bcrypt from 'bcryptjs';
 import { eq } from 'drizzle-orm';
+import { readBoundedJson } from '@/lib/bounded-json';
 
 export async function POST(request: Request) {
   try {
-    const body = await request.json();
+    if (!request.headers.get('content-type')?.toLowerCase().startsWith('application/json')) {
+      return NextResponse.json({ error: 'Se requiere una solicitud JSON' }, { status: 415 });
+    }
+    const parsedBody = await readBoundedJson(request, 16 * 1024);
+    if (!parsedBody.ok) return NextResponse.json({ error: parsedBody.error }, { status: parsedBody.status });
+    const body = parsedBody.value;
     
     // 1. Validar datos con Zod
     const validation = userRegisterSchema.safeParse(body);

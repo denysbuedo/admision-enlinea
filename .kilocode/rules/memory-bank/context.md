@@ -1,5 +1,12 @@
 # Active Context: Nexo – Academic Admissions Cloud
 
+### SEG-006 — endurecimiento inicial de login/registro (2026-11-13)
+
+- Ramas estaban limpias y sincronizadas: `main`/`origin/main` `468d1f2`, `dev`/`origin/dev` `f4d3547`; referencia de producción conocida `f9fb506`. Trabajo actual en `dev`, todavía sin commit ni despliegue.
+- Añadido lector JSON acotado por bytes (8 KiB login, 16 KiB registro), comprobación real del stream independiente de Content-Length, requisito de application/json y validación Zod del login. Ver `docs/STABILITY-08.md`.
+- Pendiente validar e integrar. Rate limiting/IP confiable, CSRF/origen global y límites TLS/proxy quedan abiertos hasta revisar configuración real; no confiar en X-Forwarded-For sin validar proxy. No se tocó producción.
+- Pasos: typecheck, lint focalizado, build; resolver fallos en `dev`, actualizar evidencia y después seguir `docs/RELEASE-WORKFLOW.md` antes de desplegar.
+
 ### Administrative CRUD and authenticated navigation — iteration 09
 
 - User requested authenticated header without signup and with logout, user/university editing/deletion and role management. Added shared transactional safeguards and dedicated admin endpoints/edit dialogs; pending review preserved, institutional reassignment audited, self-admin destructive changes blocked and linked deletions rejected. University deactivation revokes mapped sessions and login/session reject inactive/missing institutions. Legacy university routes unified.
