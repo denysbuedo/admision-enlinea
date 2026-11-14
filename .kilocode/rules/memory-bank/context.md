@@ -1,10 +1,11 @@
 # Active Context: Nexo – Academic Admissions Cloud
 
-### SEG-006 — guard de origen de mutaciones preparado (2026-11-13)
+### SEG-006 — guard de origen de mutaciones desplegado (2026-11-13)
 - Añadido `src/lib/same-origin.ts`: rechaza `Sec-Fetch-Site: cross-site`, `Origin: null`, valores mal formados y orígenes distintos al dominio canónico en producción. Solicitudes sin `Origin` siguen admitidas para compatibilidad no-browser.
 - Aplicado a todos los handlers API mutables existentes: auth, administración, notificaciones, programas y postulaciones. `/api/admin/seed` permanece inerte y responde 410.
 - Seis pruebas del helper pasan; suite local Node 22: 181/181. En Linux aislado, Bun 1.3.14 con instalación congelada, typecheck, lint focalizado, build y suite Node 20 (181/181) pasan. Lint global todavía reporta dos errores preexistentes en `programs/page.tsx` y `useAuth.ts`.
-- Commit `393bd73` está publicado en `dev`, validado y pendiente de merge/despliegue; no presentarlo aún como producción. Continúan pendientes el saneamiento XFF y el rate limiting de HAProxy.
+- Integrado de `dev` y desplegado desde `main` `7414a27`. Servicio activo; build `U8Szu1zmVXTgy4XYnfgPc`. Smoke local y público: login/programas 200, origen ajeno/Fetch Metadata cruzado 403, origen canónico inválido 400; Origin ausente continúa compatible.
+- Backup `/opt/convoca-backups/same-origin-20261113-7414a27`: snapshot SQLite y ensayo de restauración con integridad/esquema/conteos coincidentes; build previo, fuente, unidad y archivo de entorno protegidos (700/600). Sin migraciones ni cambios de datos/cuentas; DB íntegra, esquema intacto, `nexouser:nexouser 660`. Continúan pendientes el saneamiento XFF y el rate limiting de HAProxy.
 
 ### SEG-006 — endurecimiento inicial de login/registro (2026-11-13)
 
