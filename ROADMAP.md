@@ -1,7 +1,7 @@
 # CONVOCA — Hoja de ruta de estabilidad
 
-Fecha: 31 de octubre de 2026. Referencia de código revisada: `2a2931d`.
-Estado: plan propuesto; las tareas pendientes no están implementadas.
+Actualizado: 13 de noviembre de 2026. Referencia de producción conocida: `f9fb506`; ramas sincronizadas antes de este bloque en `main` `468d1f2` y `dev` `f4d3547`.
+Estado: fases 0–7 continúan abiertas según sus criterios de aceptación; SEG-001–005 están desplegadas. SEG-006 está en curso; el límite de cuerpos de autenticación y su suite (175 pruebas) pasan en Linux/Node 22. Rate limiting, CSRF/origen y auditoría TLS/proxy siguen pendientes.
 Alcance: CONVOCA, su API, datos y operación. No modifica CONECTA ni APRENDE.
 
 ## Objetivo y regla de trabajo
@@ -12,12 +12,12 @@ Esta hoja de ruta sustituye el orden de prioridades de `PLAN-EVOLUCION.md` y del
 
 ## Estado comprobado y límites
 
-- Identidad visual y cabecera publicadas; pruebas visuales recientes en móvil/escritorio. La última sincronización verificada quedó en `2a2931d`.
+- Identidad visual, flujos de admisión y corrección de scroll del login publicados; la última referencia de producción conocida es `f9fb506`. Documentación adicional en `main` llega a `468d1f2`; `dev` estaba sincronizada en `f4d3547` antes de este bloque.
 - Compilación y TypeScript pasaron en trabajos anteriores. Existen seis pruebas básicas; no acreditan permisos, integridad ni recorridos completos.
 - Hay respaldos manuales y builds anteriores conservados. No se ha acreditado restauración integral ensayada, política automática de backups ni monitorización con alertas.
 - SQLite contiene datos de producción y está excluido de nuevos commits; las variables de entorno también. El archivo estuvo versionado en el historial: retirar seguimiento no elimina las revisiones antiguas.
 - No hay carpeta `.github` en el árbol revisado; no se verificó si existen controles externos de CI.
-- Esta revisión fue estática y focalizada. No se intentó explotar fallos ni se escribió en producción; disponibilidad, carga, dependencias efectivas y controles de red requieren auditoría específica.
+- Este estado se basa en revisión de repositorio y evidencia de releases previas; en este bloque no se modificó ni consultó producción. La configuración activa de proxy/TLS, disponibilidad, carga y dependencias efectivas requieren auditoría operativa específica.
 
 ## Hallazgos que determinan la prioridad
 
@@ -70,7 +70,7 @@ Responsable: desarrollo; revisión de QA con datos sintéticos y dos institucion
 - [x] **SEG-003** Corregir H04/H05: aspirantes no editan programas; publicar/rechazar requiere administrador; catálogo y detalle anónimos solo muestran published. Closed consultable solo por institución propietaria/administración. Desplegado desde main `a4cd816`, 61 pruebas y ensayo HTTP correctos; [evidencia y límites](docs/STABILITY-03.md).
 - [x] **SEG-004** Cerrado, desplegado `1c21b95`: JWT estricto, usuario vigente, contador persistente monotónico por cuenta y triggers de seguridad; revocación mantenida tras restaurar campos anteriores. 129 pruebas, migración ensayada y producción verificada. [Evidencia y límites](docs/STABILITY-06.md).
 - [x] **SEG-005** Cerrado, desplegado `2e663bb`: trigger restringido a administrador vigente; seed GET/POST retirado (410), setup redirige a login. Inicialización y recuperación por comandos de servidor con BD explícita y sin promover/sobrescribir cuentas. 119 pruebas y ensayo CLI/HTTP correctos; [evidencia](docs/STABILITY-05.md) y [procedimiento operativo](docs/ADMIN-OPERATIONS.md).
-- [ ] **SEG-006** Endurecer límites de login/registro, tamaño de petición, mensajes de error y validación de entrada; revisar CSRF/origen en operaciones con cookies y configuración TLS/proxy. Probar que no se bloquea el uso legítimo desde redes institucionales compartidas.
+- [ ] **SEG-006** En curso. El bloque actual limita a 8 KiB el JSON de login y 16 KiB el de registro, también con `Content-Length` ausente o falso; exige JSON y valida login con Zod. Linux/Node 22: 175 pruebas, typecheck y lint focalizado pasan; build Linux/Bun pasa. Vitest invocado con Bun 1.4.4 sí presenta errores de carga Zod, por lo que CAL-001 debe fijar el ejecutor. Pendientes: rate limiting distribuido con IP confiable, CSRF/origen para mutaciones autenticadas y confirmar límites TLS/proxy. No confiar en X-Forwarded-For sin verificar proxy; no bloquear redes institucionales compartidas. Ver [STABILITY-08](docs/STABILITY-08.md).
 - [ ] **SEG-007** Parcial: inventario y exposición histórica auditados; cinco blobs de sqlite.db en Git, ocho hashes entonces vigentes (tres privilegiados) coincidentes. Todas las cuentas previas se eliminaron por instrucción del usuario y se creó un administrador nuevo. Pendiente tratamiento autorizado de historial, clones/backups y accesos de infraestructura; sin reescritura automática. [Evidencia](docs/ACCESS-REVIEW.md).
 
 **Aceptación:** pruebas de API con anónimo, aspirante A/B, universidad A/B, administrador, usuario desactivado y token inválido/expirado. Todo acceso prohibido se rechaza sin efectos en BD; se conserva el acceso permitido. Ningún hallazgo P0 abierto para pasar al piloto.

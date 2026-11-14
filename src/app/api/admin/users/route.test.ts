@@ -47,7 +47,7 @@ beforeEach(async () => {
   await db.delete(institutionalReviews); await db.delete(users); await db.delete(universities);
   await db.insert(universities).values({ id: 1, name: 'Synthetic institution' });
   const [admin] = await db.insert(users).values({ id: 1, name: 'Admin', email: 'admin@example.invalid', password: 'unused', role: 'super_admin' }).returning();
-  const response = await register(new Request('http://localhost/api/auth/register', { method: 'POST', body: JSON.stringify({ ...credentials, isActive: true, institutionalStatus: 'approved' }) }));
+  const response = await register(new Request('http://localhost/api/auth/register', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...credentials, isActive: true, institutionalStatus: 'approved' }) }));
   expect(response.status).toBe(201);
   applicantId = (await response.json()).id;
   isolated.token = signToken(admin);
@@ -55,7 +55,7 @@ beforeEach(async () => {
 function review(extra: Record<string, unknown> = {}) {
   return PATCH(new Request('http://localhost/api/admin/users', { method: 'PATCH', body: JSON.stringify({ userId: applicantId, decision: 'approved', note: 'Verified through synthetic institutional contact', ...extra }) }));
 }
-function authenticate() { return login(new NextRequest('http://localhost/api/auth/login', { method: 'POST', body: JSON.stringify(credentials) })); }
+function authenticate() { return login(new NextRequest('http://localhost/api/auth/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(credentials) })); }
 async function applicant() { return (await db.select().from(users).where(eq(users.id, applicantId)))[0]; }
 async function state() { return { users: await db.select().from(users), reviews: await db.select().from(institutionalReviews) }; }
 

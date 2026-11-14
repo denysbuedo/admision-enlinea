@@ -42,7 +42,7 @@ function altered(extra: Record<string, unknown>, algorithm: jwt.Algorithm = 'HS2
   return jwt.sign(payload, secret, { algorithm, noTimestamp: 'iat' in extra && extra.iat === undefined });
 }
 async function requestLogin(password = 'test-password') {
-  return login(new NextRequest('http://localhost/api/auth/login', { method: 'POST', body: JSON.stringify({ email: user.email, password }) }));
+  return login(new NextRequest('http://localhost/api/auth/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: user.email, password }) }));
 }
 describe('JWT validation and live session authorization', () => {
   it.each([
