@@ -2,11 +2,12 @@
 
 ### SEG-006 — endurecimiento inicial de login/registro (2026-11-13)
 
-- Ramas estaban limpias y sincronizadas al inicio: `main`/`origin/main` `468d1f2`, `dev`/`origin/dev` `f4d3547`; referencia de producción conocida `f9fb506`. Código comprometido en `dev` como `a78cc7a`, publicado junto a docs `08753d0`. Linux typecheck/lint/build y cinco pruebas nuevas específicas pasan. Sin despliegue.
+- Desplegado desde `main` `ca1814a509286fb3d0a7e6f2b79ec94f73517dad`; dev sincronizada tras el merge. Producción ejecuta Bun 1.3.14 y el build aislado con esa versión pasó. Respaldo `/opt/convoca-backups/auth-body-20261113-ca1814a`, snapshot/restauración SQLite verificados, sin tocar BD viva ni migraciones.
 - Añadido lector JSON acotado por bytes (8 KiB login, 16 KiB registro), comprobación real del stream independiente de Content-Length, requisito de application/json y validación Zod del login. Ver `docs/STABILITY-08.md`.
-- Suite Linux Node 22: 175/175 pruebas y 11/11 archivos pasan; typecheck, lint focalizado y build también pasan (build con Bun). En Bun 1.4.4 Vitest carga Zod incorrectamente; fijar el ejecutor/runtime es pendiente CAL-001.
+- Suite Linux Node 22: 175/175 pruebas y 11/11 archivos pasan; typecheck, lint focalizado y build Bun 1.3.14 pasan. Vitest falla al cargar Zod cuando se invoca bajo Bun 1.3.14; fijar el ejecutor/runtime permanece en CAL-001.
 - Se añadieron cinco tests del lector, se actualizaron requests de pruebas para `Content-Type` y transiciones reales; fixture con SQLite temporal en disco.
-- Próximo: integrar esta entrega pequeña mediante flujo `docs/RELEASE-WORKFLOW.md` (candidato main, backup/restauración y despliegue) si todo pasa; SEG-006 permanece abierto por rate limiting, CSRF/origen y auditoría proxy/TLS. No confiar en X-Forwarded-For sin validar proxy.
+- Verificación pública: login y programas 200; límites de login/registro devuelven 413; entradas inválidas 400; esquema SQLite intacto, servicio activo sin reinicios.
+- Próximo: revisar configuración HAProxy/TLS y determinar rate limiting/origen sin confiar en X-Forwarded-For hasta validar el proxy. SEG-006 continúa abierto; no bloquear redes institucionales compartidas.
 
 ### Administrative CRUD and authenticated navigation — iteration 09
 

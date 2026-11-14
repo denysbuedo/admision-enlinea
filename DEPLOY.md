@@ -1,5 +1,14 @@
 # Deploy - CONVOCA
 
+## Endurecimiento de login/registro — 13 de noviembre de 2026
+
+- Desplegado desde `main` `ca1814a509286fb3d0a7e6f2b79ec94f73517dad` en `vm-nexo`; build aislado con Bun 1.3.14, igual que la VM.
+- Login limita JSON a 8 KiB; registro a 16 KiB; ambos validan `Content-Type` y cuentan los bytes reales recibidos. Login aplica Zod.
+- Suite Linux/Node 22: 175/175; typecheck y lint focalizado correctos; build Linux/Bun 1.3.14 correcto.
+- Respaldo `/opt/convoca-backups/auth-body-20261113-ca1814a`: SQLite snapshot con integridad y ensayo de restauración correctos, código/configuración y `.next` previo verificado idéntico. Permisos de respaldo 700/600.
+- Tras activar: `/login` y `/api/programs` públicos 200; cuerpo excesivo en login/registro 413; payload inválido 400; SQLite íntegra y esquema sin cambios; servicio activo; permisos `nexouser:nexouser`, modo `660`.
+- No se ejecutaron migraciones ni se modificaron cuentas o solicitudes. SEG-006 continúa: rate limiting, CSRF/origen y configuración HAProxy/TLS requieren revisión aparte.
+
 
 ## Ajuste de scroll de login — 5 de noviembre de 2026
 

@@ -1,7 +1,7 @@
 # CONVOCA — Hoja de ruta de estabilidad
 
-Actualizado: 13 de noviembre de 2026. Referencia de producción conocida: `f9fb506`; ramas sincronizadas antes de este bloque en `main` `468d1f2` y `dev` `f4d3547`.
-Estado: fases 0–7 continúan abiertas según sus criterios de aceptación; SEG-001–005 están desplegadas. SEG-006 está en curso; el límite de cuerpos de autenticación y su suite (175 pruebas) pasan en Linux/Node 22. Rate limiting, CSRF/origen y auditoría TLS/proxy siguen pendientes.
+Actualizado: 13 de noviembre de 2026. Producción actualizada desde `main` `ca1814a`; respaldo, restauración y healthchecks registrados en [STABILITY-08](docs/STABILITY-08.md).
+Estado: fases 0–7 continúan abiertas según sus criterios de aceptación; SEG-001–005 están desplegadas. SEG-006 está en curso; límites de cuerpos de autenticación desplegados y suite (175 pruebas) aprobada con Node 22 en Linux. Rate limiting, CSRF/origen y auditoría TLS/proxy siguen pendientes.
 Alcance: CONVOCA, su API, datos y operación. No modifica CONECTA ni APRENDE.
 
 ## Objetivo y regla de trabajo
